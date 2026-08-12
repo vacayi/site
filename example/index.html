@@ -679,8 +679,12 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
 .bkgh{font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--soft);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
 .bkn{font-variant-numeric:tabular-nums;background:var(--mist);border:1px solid var(--line);border-radius:99px;padding:1px 8px;font-size:11px;letter-spacing:0}
 .resv.todo{border-style:dashed}
-.resv.done{opacity:.55}
-.resv.done .rhead b{text-decoration:line-through}
+/* A sorted booking LIGHTS UP — it does not fade or strike through. Fading read
+   as "cancelled/ignore me", the opposite of the intended "this one's handled".
+   A solid glowing green border says done without dimming the details you still
+   want to see (dates, confirmation, the attach button). */
+.resv.done{border-style:solid;border-color:#1FB574;
+  box-shadow:0 0 0 1.5px #1FB574,0 0 18px rgba(31,181,116,.42)}
 .bkchk{flex:none;margin-top:3px}
 /* THE BOOK-NOW BUTTON wears the brand gradient — the one loud thing on the
    card, because it is the one thing the wallet exists to make people do. White
@@ -965,7 +969,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 <button class="bkf" data-bkf="other" role="tab">📌 Other</button>
       </div>
   <h3 class="bkgh reveal" data-bkgh="booked">🎟️ In your wallet <span class="bkn">2</span></h3>
-       <div class="card reveal resv" data-kind="flight" data-bkg="booked" data-bk="flight boston lisbon">
+       <div class="card reveal resv done" data-kind="flight" data-bkg="booked" data-bk="flight boston lisbon">
     <div class="rhead">
       <label class="check bkchk" title="Mark as booked">
         <input type="checkbox" data-bk="flight boston lisbon" checked aria-label="Mark as booked">
@@ -989,7 +993,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="0">📎 Attach confirmation</button></div>
     <div class="callout warn"><b>Verify</b>Check the terminal the day before — TAP has moved gates at BOS.</div>
   </div>
-<div class="card reveal resv" data-kind="lodging" data-bkg="booked" data-bk="lodging memmo alfama hotel">
+<div class="card reveal resv done" data-kind="lodging" data-bkg="booked" data-bk="lodging memmo alfama hotel">
     <div class="rhead">
       <label class="check bkchk" title="Mark as booked">
         <input type="checkbox" data-bk="lodging memmo alfama hotel" checked aria-label="Mark as booked">
