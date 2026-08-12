@@ -146,7 +146,16 @@
          A single warm card so the page's opening argument reads as one voice
          rather than a grid of claims. Two soft suns behind it: light spilling
          in does more for "welcoming" than any decoration would. ---- */
-  .who{padding:clamp(54px,8vw,96px) 0;
+  /* `.whoband`, NOT `.who` — and the name is the whole point. `.who` was
+     already an element class on this page, used by every scoreboard row
+     (`.qrow .who`) and by the crew demo's tag row (`.demo-top .who`). A bare
+     `.who` section rule leaked this padding and these background suns into all
+     of them: the quest board came out with ~90px gaps between names and faint
+     orange blobs behind each one. Neither of those inner rules sets `padding`
+     or `background-image`, so being more specific did not save them — nothing
+     was there to win against. A generic section name on a page that already
+     uses it as a component name is a collision waiting for the next edit. */
+  .whoband{padding:clamp(54px,8vw,96px) 0;
     background-image:
       radial-gradient(52% 40% at 14% 8%,rgba(247,148,29,.16),transparent 68%),
       radial-gradient(48% 38% at 90% 94%,rgba(238,77,119,.12),transparent 70%)}
@@ -394,7 +403,7 @@
      The first thing after the slogan: someone should recognise themselves here
      before they are told what the product does. Deliberately one voice and one
      card, not a grid — the grid comes next, once they know it is for them. -->
-<section class="who">
+<section class="whoband">
   <div class="wrap">
     <div class="whocard r">
       <h2 class="wholead">
