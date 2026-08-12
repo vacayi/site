@@ -141,6 +141,43 @@
   section{position:relative}
   .band{padding:clamp(72px,11vw,128px) 0}
   .band-tight{padding:clamp(56px,8vw,92px) 0}
+
+  /* ---- WHO IT'S FOR — the first thing after the slogan.
+         A single warm card so the page's opening argument reads as one voice
+         rather than a grid of claims. Two soft suns behind it: light spilling
+         in does more for "welcoming" than any decoration would. ---- */
+  .who{padding:clamp(54px,8vw,96px) 0;
+    background-image:
+      radial-gradient(52% 40% at 14% 8%,rgba(247,148,29,.16),transparent 68%),
+      radial-gradient(48% 38% at 90% 94%,rgba(238,77,119,.12),transparent 70%)}
+  .whocard{max-width:660px;margin:0 auto;background:var(--card);
+    border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);
+    padding:clamp(30px,6vw,58px) clamp(24px,6vw,56px) clamp(32px,6vw,50px);
+    position:relative;overflow:hidden}
+  /* The brand as a thread across the top, present rather than announced. */
+  .whocard::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;
+    background:var(--grad-hero)}
+  .wholead{font-family:var(--disp);font-size:clamp(24px,4.6vw,36px);
+    line-height:1.22;letter-spacing:-.015em;font-weight:600;
+    margin:0 0 clamp(20px,3.4vw,28px);text-wrap:balance;color:var(--ink)}
+  .wholead em{font-style:normal;background:var(--grad);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  /* Left-aligned body between two centred moments — centring four paragraphs
+     as well would make them genuinely hard to track. */
+  .whocard p{font-size:clamp(15.5px,2.1vw,17px);line-height:1.68;
+    color:var(--soft);margin:0 0 1.15em;text-align:left}
+  .whocard p:last-of-type{margin-bottom:0}
+  .whocard strong{color:var(--ink);font-weight:700}
+  .whorule{height:1px;border:0;margin:clamp(26px,4.5vw,36px) 0 clamp(22px,4vw,30px);
+    background:linear-gradient(90deg,transparent,var(--line) 18%,var(--line) 82%,transparent)}
+  /* `.whocard p` above is (0,1,1) and would OUTRANK a bare `.whopayoff` (0,1,0)
+     — it was winning on colour, alignment and size, so the slogan rendered as
+     ordinary grey body text with the gradient silently dead. Scoped to beat it
+     rather than marked !important, so the cascade still reads honestly. */
+  .whocard p.whopayoff{text-align:center;font-family:var(--disp);
+    font-size:clamp(21px,3.8vw,29px);line-height:1.28;letter-spacing:-.01em;
+    margin:0;background:var(--grad-hero);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
   .center{text-align:center}
   .center .lead{margin-left:auto;margin-right:auto}
   h2.big{font-size:clamp(30px,5.2vw,54px);max-width:16ch}
@@ -352,6 +389,42 @@
   </div>
   <div class="scrollcue" aria-hidden="true">Scroll<span>↓</span></div>
 </header>
+
+<!-- ============ WHO IT'S FOR ============
+     The first thing after the slogan: someone should recognise themselves here
+     before they are told what the product does. Deliberately one voice and one
+     card, not a grid — the grid comes next, once they know it is for them. -->
+<section class="who">
+  <div class="wrap">
+    <div class="whocard r">
+      <h2 class="wholead">
+        Vacayi is for people who <em>don't like planning a vacation out</em>, but still like having plans.
+      </h2>
+      <p>
+        For people who stress about creating the perfect trip, or about having to plan every
+        single piece of it. For anyone with multiple factors to consider when they travel — and
+        for families who just want something convenient and personalized.
+      </p>
+      <p>
+        The point of vacayi is to let the app learn about you, then correlate every bit of
+        information it has to build a complete trip guide around your preferences. That's what
+        makes planning a vacation <strong>effortless</strong>: the bulk of it is already done, in
+        accordance with what you actually like. Some things will need tweaking — but the intention
+        is that you <strong>trust its selections and follow the guide</strong>.
+      </p>
+      <p>
+        It's built to be your one stop shop. Designed to feel like you took the time to create it
+        yourself, and to be something you and the family will genuinely have fun with.
+      </p>
+      <p>
+        And for the people who get stuck bored on a weekend, wishing they had a full day planned
+        out with the family — that's what it's there for too.
+      </p>
+      <hr class="whorule">
+      <p class="whopayoff">Plan nothing. Know everything.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ============ PITCH ============ -->
 <section class="band pitch center" id="how">
