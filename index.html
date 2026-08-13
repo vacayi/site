@@ -242,57 +242,159 @@
     transition:opacity .3s}
   .adapt-empty.hide{opacity:0;height:0;padding:0;overflow:hidden}
 
-  /* ============ phone mockups ============ */
-  .phones{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,3vw,34px);
-    margin-top:56px;align-items:end}
-  .phone{background:var(--ink);border-radius:38px;padding:11px;box-shadow:var(--shadow);
+  /* ============ the day rail ============
+     HORIZONTAL, and that is the point. Three stacked cards made you scroll DOWN
+     through a thing that happens left-to-right in time, and only ever showed one
+     day at a glance. Swiping sideways through days is the same gesture the guide
+     itself uses, and the peek of the next card is what says "there are more".
+
+     The rail is FULL-BLEED (a direct child of the section, not of .wrap) and
+     pads itself back to the wrap's own gutter, so on a wide screen the first
+     card lines up with the headline above it and on a phone a card can sit dead
+     centre. scroll-padding-inline matches, or snapping fights the padding. */
+  .railwrap{position:relative;margin-top:clamp(38px,5vw,54px)}
+  /* scroll-behavior DOES NOT INHERIT, so `html{scroll-behavior:smooth}` above
+     leaves this container on `auto`. It has to be declared here — and declaring
+     it here is also what lets the script page the rail with a plain
+     `scrollLeft =` assignment instead of `scrollTo({behavior:"smooth"})`, which
+     was MEASURED doing nothing at all in one renderer. A control that silently
+     fails to scroll is a dead button; letting CSS own the easing means the
+     worst case is an instant jump. */
+  .dayrail{display:flex;gap:clamp(16px,3vw,30px);overflow-x:auto;scroll-behavior:smooth;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding:16px max(20px,calc(50vw - 560px)) 24px;
+    scroll-padding-inline:max(20px,calc(50vw - 560px));
+    scrollbar-width:none}
+  .dayrail::-webkit-scrollbar{display:none}
+  /* THE MAX WIDTH IS LOAD-BEARING, not taste. The rail's own padding is
+     calc(50vw - 560px) a side, so the overflow test reduces to
+     3*card + 2*gap > 1120px at ANY wide viewport — the vw terms cancel. At the
+     320px this first shipped as, that sum was 1020 and the rail was measured
+     NOT SCROLLABLE on desktop: three cards fitting exactly, arrows and dots
+     present and doing nothing. 372 puts the sum at 1176, so a slice of the
+     third card always shows and the controls always mean something. */
+  .phone{flex:0 0 clamp(272px,78vw,372px);scroll-snap-align:center;
+    background:var(--ink);border-radius:38px;padding:11px;box-shadow:var(--shadow);
     transition:transform .5s cubic-bezier(.2,.7,.2,1)}
   .phone:hover{transform:translateY(-8px)}
-  .phone.mid{transform:translateY(-26px)}
-  .phone.mid:hover{transform:translateY(-36px)}
-  .screen{background:var(--paper);border-radius:29px;overflow:hidden;
-    min-height:430px;position:relative}
+  .screen{background:var(--paper);border-radius:29px;overflow:hidden;position:relative}
   .ph-head{background:var(--grad);color:#fff;padding:20px 18px 16px;text-align:left}
   .ph-head .k{font:800 10px/1 var(--body);letter-spacing:.13em;text-transform:uppercase;opacity:.92}
-  .ph-head h4{color:#fff;font-family:var(--disp);font-size:19px;margin-top:6px;font-weight:600}
+  .ph-head h4{color:#fff;font-family:var(--disp);font-size:20px;margin-top:6px;font-weight:600}
   .ph-head .sub{font-size:12.5px;opacity:.94;margin-top:5px}
-  .ph-body{padding:14px 15px}
+  .ph-body{padding:14px 15px 18px}
   .st{background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:12px 13px;margin-bottom:10px;box-shadow:0 1px 2px rgba(36,26,46,.04);text-align:left}
+    padding:11px 12px 12px;margin-bottom:10px;box-shadow:0 1px 2px rgba(36,26,46,.04);text-align:left}
+  /* The scene tiles are hand-drawn SVG, not photography. We licence no stock, and
+     an honest illustration in the brand's own light beats a stand-in photograph
+     of somewhere the guide never went. */
+  .stthumb{display:block;width:100%;height:70px;border-radius:10px;overflow:hidden;
+    margin:-2px 0 10px;background:color-mix(in srgb,var(--orc) 8%,var(--paper))}
+  .stthumb svg{display:block;width:100%;height:100%}
   .st .time{font:800 11px/1 var(--body);color:var(--orc);letter-spacing:.03em}
-  .st .nm{font-weight:800;font-size:14px;margin:4px 0 2px}
+  .st .nm{font-weight:800;font-size:14px;margin:5px 0 3px;line-height:1.3}
   .st .bl{font-size:12.5px;color:var(--soft);line-height:1.45}
   .st.tip{border-left:3px solid var(--sun);background:#FFF6EA}
   .st.tip .tp{font-size:11px;font-weight:800;color:var(--sun);letter-spacing:.05em;text-transform:uppercase}
-  .st .badge{display:inline-block;margin-top:7px;font-size:10.5px;font-weight:800;
+  /* THE CREW LINE IS THE PRODUCT. A stop with a time and a blurb is any travel
+     blog; the line that names a person and what changed for them is the only
+     thing on the card no one else can write. */
+  .st .crew{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding-top:9px;
+    border-top:1px dashed var(--line);font-size:12px;line-height:1.45;color:var(--soft)}
+  .st .crew .cw{flex:none;font-weight:800;color:var(--orc);white-space:nowrap}
+  .st .badge{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;
     background:color-mix(in srgb,var(--orc) 12%,#fff);color:var(--orc);
-    border:1px solid color-mix(in srgb,var(--orc) 26%,transparent);border-radius:999px;padding:2px 8px}
-  .ph-cap{text-align:center;color:var(--soft);font-size:14px;font-weight:700;margin-top:16px}
+    border:1px solid color-mix(in srgb,var(--orc) 26%,transparent);border-radius:999px;padding:3px 9px}
+  .st .badge.q{background:color-mix(in srgb,var(--sun) 14%,#fff);color:#B36B08;
+    border-color:color-mix(in srgb,var(--sun) 34%,transparent)}
+  /* rail controls — arrows where there is room to hover, dots everywhere */
+  .railnav{position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    width:48px;height:48px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(255,255,255,.92);backdrop-filter:blur(6px);cursor:pointer;
+    display:none;place-items:center;font-size:19px;color:var(--ink);
+    box-shadow:var(--shadow-sm);transition:transform .18s,box-shadow .18s,opacity .2s}
+  .railnav:hover{transform:translateY(-50%) scale(1.07);box-shadow:var(--shadow)}
+  .railnav[disabled]{opacity:.3;cursor:default}
+  .railnav.prev{left:max(8px,calc(50vw - 616px))}
+  .railnav.next{right:max(8px,calc(50vw - 616px))}
+  .raildots{display:flex;gap:9px;justify-content:center;margin-top:4px}
+  .raildots button{width:8px;height:8px;padding:0;border:0;border-radius:99px;cursor:pointer;
+    background:color-mix(in srgb,var(--orc) 22%,var(--line));transition:width .3s,background .3s}
+  .raildots button[aria-current="true"]{width:26px;background:var(--grad)}
+  .ph-cap{text-align:center;color:var(--soft);font-size:14px;font-weight:700;margin-top:18px}
+  /* `:not([hidden])`, because the `hidden` ATTRIBUTE only carries a UA
+     `display:none` and any author `display` rule outranks it — the script
+     hides these when the rail has nothing to scroll, and a bare `.railnav
+     {display:grid}` here would quietly put them back. */
+  @media (hover:hover) and (min-width:1000px){ .railnav:not([hidden]){display:grid} }
 
-  /* ============ quests ============ */
+  /* ============ quests ============
+     THE BOARD PLAYS ITSELF when it scrolls into view: quests arrive one by one,
+     a named crew member ticks each one off, and that person's bar and score move
+     in the same beat. A static leaderboard is a picture of a game; this is the
+     game. Every step is failsafed to its finished state (see the script), so a
+     browser that never fires the observer shows the final board rather than an
+     empty one. */
   .quests{background:linear-gradient(180deg,#fff,var(--paper))}
+  .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,52px);
+    align-items:start;margin-top:44px}
   .board{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    padding:26px 26px 22px;box-shadow:var(--shadow-sm);margin-top:40px;max-width:560px}
+    padding:26px 26px 22px;box-shadow:var(--shadow-sm)}
   .board h3{font-size:18px;margin-bottom:4px}
   .board .sub{color:var(--soft);font-size:14px;margin-bottom:20px}
   .qrow{display:grid;grid-template-columns:104px 1fr 44px;align-items:center;gap:12px;margin:13px 0}
   .qrow .who{font-weight:800;font-size:14px;display:flex;align-items:center;gap:7px}
-  .qrow .who .crown{opacity:0;transition:opacity .4s}
-  .qrow.lead .who .crown{opacity:1}
+  .qrow .who .crown{opacity:0;transform:scale(.5);
+    transition:opacity .45s,transform .45s cubic-bezier(.3,1.6,.5,1)}
+  .qrow.lead .who .crown{opacity:1;transform:none}
   .track{height:12px;border-radius:99px;background:color-mix(in srgb,var(--orc) 8%,var(--paper));
     border:1px solid var(--line);overflow:hidden}
   .track i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);
-    transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+    transition:width .9s cubic-bezier(.2,.8,.2,1)}
   .qrow .pts{font-weight:800;font-size:14px;text-align:right;font-variant-numeric:tabular-nums;color:var(--orc)}
-  .qcards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
-  .qc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;
-    box-shadow:var(--shadow-sm);transition:transform .2s}
+  /* the row that just scored gets a beat of attention, then hands it back */
+  .qrow.hit .pts{animation:bump .55s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes bump{0%{transform:scale(1)}38%{transform:scale(1.32);color:var(--ok)}100%{transform:scale(1)}}
+  /* the live feed — what a scoreboard cannot say on its own: WHO, and just now */
+  .qfeed{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
+    min-height:44px;display:flex;align-items:center}
+  .qfeed .fx{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;
+    color:var(--ink);transition:opacity .32s ease,transform .32s ease}
+  html.js .qfeed .fx{opacity:0;transform:translateY(7px)}
+  html.js .qfeed .fx.on{opacity:1;transform:none}
+  .qfeed .fp{flex:none;font-weight:900;font-size:12px;color:#fff;background:var(--ok);
+    border-radius:999px;padding:4px 9px}
+  .qfeed .fw{color:var(--soft);font-weight:600}
+  .qcards{display:grid;gap:14px}
+  .qc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:18px 20px;box-shadow:var(--shadow-sm);
+    transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s ease,
+      border-color .35s ease,box-shadow .35s ease}
+  html.js .qc{opacity:0;transform:translateY(16px) scale(.97)}
+  html.js .qc.pop{opacity:1;transform:none}
   .qc:hover{transform:translateY(-4px)}
-  .qc .qi{font-size:26px}
-  .qc .qt{font-weight:800;font-size:15.5px;margin:11px 0 6px}
+  .qc.done{border-color:color-mix(in srgb,var(--ok) 36%,transparent);
+    box-shadow:0 10px 28px color-mix(in srgb,var(--ok) 15%,transparent)}
+  .qc .qi{font-size:24px;line-height:1}
+  .qc .qt{font-weight:800;font-size:15.5px;margin:10px 0 5px;
+    transition:color .3s,text-decoration-color .3s}
+  .qc.done .qt{text-decoration:line-through;
+    text-decoration-color:color-mix(in srgb,var(--ok) 55%,transparent);color:var(--soft)}
   .qc .qd{font-size:13.5px;color:var(--soft);line-height:1.5}
   .qc .qp{display:inline-block;margin-top:12px;font-weight:800;font-size:12.5px;
     background:var(--grad);color:#fff;border-radius:999px;padding:4px 12px}
+  .qc .qstamp{position:absolute;top:15px;right:16px;width:31px;height:31px;border-radius:50%;
+    display:grid;place-items:center;background:var(--ok);color:#fff;font-weight:900;font-size:15px;
+    opacity:0;transform:scale(.35) rotate(-28deg);
+    transition:opacity .3s ease,transform .5s cubic-bezier(.3,1.55,.5,1)}
+  .qc.done .qstamp{opacity:1;transform:none}
+  /* who ticked it — replaces the points pill once it is won, because the pill
+     answers "what is it worth" and this answers the more interesting question */
+  .qby{margin-top:12px;display:flex;align-items:center;gap:7px;font-size:12.5px;
+    font-weight:800;color:var(--ok);height:0;overflow:hidden;opacity:0;
+    transition:opacity .3s .1s,height .3s}
+  .qc.done .qby{opacity:1;height:20px}
+  .qc.done .qp{display:none}
 
   /* ============ dark wallet band ============ */
   .dark{background:
@@ -335,17 +437,69 @@
   .wallet-copy .flist span{color:#DCCEE4;line-height:1.5}
   .wallet-copy .flist b{color:#fff}
 
-  /* ============ big sample CTA ============ */
-  .cta-band{text-align:center}
-  .cta-card{background:var(--grad);border-radius:32px;padding:clamp(44px,7vw,76px) 28px;
-    color:#fff;box-shadow:0 26px 70px color-mix(in srgb,var(--orc) 34%,transparent);
-    position:relative;overflow:hidden;isolation:isolate}
-  .cta-card::after{content:"";position:absolute;inset:0;z-index:-1;
-    background:radial-gradient(40vw 40vw at 20% 0%,rgba(255,255,255,.28),transparent 60%),
-      radial-gradient(40vw 40vw at 90% 120%,rgba(255,214,160,.34),transparent 60%)}
-  .cta-card h2{color:#fff;font-size:clamp(28px,4.8vw,46px);max-width:18ch;margin:0 auto}
-  .cta-card p{margin:18px auto 0;max-width:30em;font-size:clamp(16px,2.2vw,19px);opacity:.96}
-  .cta-card .btn{margin-top:34px}
+  /* ============ the memory band ============
+     Photos fly into the stop they were taken at. THE ANIMATION IS PURELY LOCAL
+     TRANSFORMS: each photo already lives inside its destination slot and merely
+     starts displaced (--fx/--fy/--fr per photo), so adding .in flies it home.
+     Nothing measures a rectangle, so it cannot drift on resize, in a different
+     font, or at any zoom — the failure mode of the obvious getBoundingClientRect
+     version is a photo that lands somewhere in the margin. */
+  .memband{background:linear-gradient(180deg,var(--paper),#fff 62%)}
+  .mem-wrap{display:grid;grid-template-columns:1fr 1.02fr;gap:clamp(30px,5vw,64px);
+    align-items:center;margin-top:44px}
+  .memstage{position:relative}
+  .mphone{background:var(--ink);border-radius:36px;padding:10px;box-shadow:var(--shadow);
+    max-width:340px;margin:0 auto}
+  .mscreen{background:var(--paper);border-radius:28px;overflow:hidden}
+  .mhead{background:var(--grad);color:#fff;padding:18px 17px 15px}
+  .mhead .k{font:800 10px/1 var(--body);letter-spacing:.13em;text-transform:uppercase;opacity:.92}
+  .mhead h4{color:#fff;font-family:var(--disp);font-size:19px;margin-top:6px;font-weight:600}
+  .mbody{padding:13px 14px 16px}
+  .mstop{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:11px 12px 12px;margin-bottom:10px;box-shadow:0 1px 2px rgba(36,26,46,.04)}
+  .mstop .mt{font:800 10.5px/1 var(--body);color:var(--orc);letter-spacing:.03em}
+  .mstop .mn{font-weight:800;font-size:13.5px;margin:5px 0 9px}
+  .mstrip{display:flex;gap:6px}
+  .mslot{position:relative;flex:1;aspect-ratio:1;border-radius:9px;overflow:hidden;
+    background:color-mix(in srgb,var(--orc) 6%,var(--paper));
+    border:1px dashed color-mix(in srgb,var(--orc) 18%,var(--line))}
+  /* The RESTING state is landed, and the script is what displaces them — so a
+     page with no JS shows the finished strip rather than six empty slots. Same
+     rule as the reveal above: motion is the enhancement, never the gate. */
+  .mshot{position:absolute;inset:0;margin:0;border-radius:9px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(36,26,46,.14);
+    transition:opacity .42s ease,transform .8s cubic-bezier(.22,.92,.28,1),box-shadow .5s ease .3s}
+  html.js .mshot{opacity:0;box-shadow:0 8px 22px rgba(36,26,46,.26);
+    transform:translate(var(--fx,60px),var(--fy,-70px)) rotate(var(--fr,10deg)) scale(1.55)}
+  html.js .mshot.in{opacity:1;transform:none;box-shadow:0 1px 3px rgba(36,26,46,.14)}
+  .mshot svg{display:block;width:100%;height:100%}
+  .mcount{margin-top:9px;font-size:11.5px;font-weight:800;color:var(--soft);
+    font-variant-numeric:tabular-nums}
+  /* the shutter cue — it fires as each photo is taken, so the sequence reads as
+     "you took this" rather than "the app produced this" */
+  .mcam{position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;align-items:center;gap:8px;background:var(--ink);color:#fff;
+    border-radius:999px;padding:9px 16px;font:800 12.5px/1 var(--body);
+    box-shadow:0 12px 30px rgba(36,26,46,.32);opacity:0;transition:opacity .3s}
+  .mcam.on{opacity:1}
+  .mcam .lens{width:9px;height:9px;border-radius:50%;background:#4A3A55}
+  .mcam.flash .lens{background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.34)}
+  /* the payoff card — the reason any of it matters */
+  .mstory{margin-top:14px;display:flex;align-items:center;gap:12px;
+    background:var(--grad);color:#fff;border-radius:16px;padding:14px 15px;
+    box-shadow:0 14px 34px color-mix(in srgb,var(--orc) 30%,transparent);
+    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+  html.js .mstory{opacity:0;transform:translateY(14px)}
+  html.js .mstory.on{opacity:1;transform:none}
+  .mstory .si{font-size:22px;line-height:1}
+  .mstory b{display:block;font-size:14px}
+  .mstory span{font-size:12px;opacity:.94}
+  .memcopy .flist{margin:24px 0 0;padding:0;list-style:none}
+  .memcopy .flist li{display:flex;gap:12px;align-items:flex-start;margin:15px 0;font-size:15.5px}
+  .memcopy .flist .k{flex:none;width:24px;height:24px;border-radius:7px;display:grid;
+    place-items:center;background:var(--grad);color:#fff;font-weight:900;font-size:13px;margin-top:1px}
+  .memcopy .flist span{color:var(--soft);line-height:1.55}
+  .memcopy .flist b{color:var(--ink)}
 
   /* ============ coming soon ============ */
   .soon .store{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:36px}
@@ -372,16 +526,23 @@
 
   /* ============ responsive ============ */
   @media (max-width:860px){
-    .pitch-grid,.qcards{grid-template-columns:1fr}
-    .crew-wrap,.wallet-wrap{grid-template-columns:1fr}
-    .phones{grid-template-columns:1fr;max-width:340px;margin-left:auto;margin-right:auto}
-    .phone.mid{transform:none}.phone.mid:hover{transform:translateY(-8px)}
+    .pitch-grid{grid-template-columns:1fr}
+    .crew-wrap,.wallet-wrap,.qgrid,.mem-wrap{grid-template-columns:1fr}
     .qrow{grid-template-columns:92px 1fr 40px}
+    .memstage{order:-1}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
     .r{opacity:1;transform:none}
     .adapt{opacity:1;max-height:120px;transform:none}
+    /* every animated sequence resolves to its FINISHED state, never its first
+       frame — reduced motion means no movement, not no content. Each override
+       matches the html.js selector it has to beat; a bare .mshot here is
+       (0,1,0) against a (0,2,0) rule and would silently lose. */
+    html.js .qc{opacity:1;transform:none}
+    html.js .mshot{opacity:1;transform:none;box-shadow:0 1px 3px rgba(36,26,46,.14)}
+    html.js .mstory,html.js .qfeed .fx{opacity:1;transform:none}
+    .dayrail{scroll-snap-type:none}
   }
 </style>
 </head>
@@ -393,8 +554,8 @@
   <h1><span class="b1">Plan nothing.</span><span class="b2">Know everything.</span></h1>
   <p class="hero-sub">Our <b>specialized travel AI</b> learns what you and your crew actually like and need — then crafts a living, interactive guide that walks you through every day and books the whole trip from one place.</p>
   <div class="hero-cta">
-    <a class="btn btn-white" href="/example">See a real guide&nbsp;→</a>
-    <a class="btn btn-ghost" href="#how">How it works</a>
+    <a class="btn btn-white" href="#how">See how it works&nbsp;→</a>
+    <a class="btn btn-ghost" href="#soon">Get it on your phone</a>
   </div>
   <div class="scrollcue" aria-hidden="true">Scroll<span>↓</span></div>
 </header>
@@ -442,7 +603,7 @@
     <h2 class="big r d1">Everyone hands you a list of links. We hand you a guide.</h2>
     <p class="lead sec-sub r d2">Tell vacayi where you're going and who's coming. It builds one personal guide for that trip — the plan, the local knowledge, the bookings, and a little bit of a game — and it comes with you the whole way.</p>
     <div class="pitch-grid">
-      <div class="pcard r d1"><span class="ico">🧭</span><h3>Built around your crew</h3><p>A toddler, a peanut allergy, a grandparent who'd rather not do stairs, the dog. The guide plans for the people actually on the trip, not a generic tourist.</p></div>
+      <div class="pcard r d1"><span class="ico">🧭</span><h3>Built around your crew</h3><p>Teach it your interests, constraints, and preferences — a toddler, a peanut allergy, a grandparent who'd rather not do stairs, the dog. The guide plans for the people actually on the trip, not a generic tourist.</p></div>
       <div class="pcard r d2"><span class="ico">📖</span><h3>It walks you through it</h3><p>Every day, hour by hour — where to go, why it's worth it, the insider move most people miss, and what to do if it rains.</p></div>
       <div class="pcard r d3"><span class="ico">🎯</span><h3>And makes it fun</h3><p>Quests and a running scoreboard turn the trip into a game the whole crew plays — the part the kids remember for years.</p></div>
     </div>
@@ -456,7 +617,7 @@
       <div class="crew-left">
         <p class="eyebrow r">Try it</p>
         <h2 class="big r d1">Watch the guide change as your crew does.</h2>
-        <p class="lead r d2">Tap to add someone to the trip. This is a taste of what happens across every page of a real vacayi guide.</p>
+        <p class="lead r d2">Watch it add the crew one at a time — or tap them yourself. This is a taste of what happens across every page of your own guide.</p>
         <div class="chips r d3" id="chips">
           <button class="chip" aria-pressed="false" data-adapt="allergy"><span class="dot"></span>🥜 A peanut allergy</button>
           <button class="chip" aria-pressed="false" data-adapt="stairs"><span class="dot"></span>🎩 Fewer stairs</button>
@@ -464,7 +625,7 @@
           <button class="chip" aria-pressed="false" data-adapt="kid"><span class="dot"></span>⭐ A 7-year-old</button>
           <button class="chip" aria-pressed="false" data-adapt="anniv"><span class="dot"></span>🎉 An anniversary</button>
         </div>
-        <p class="chip-note r d4">Nothing to install — this is just a preview.</p>
+        <p class="chip-note r d4">Nothing to install — this is just a preview. Tap any of them and it stops playing.</p>
       </div>
       <div class="demo-card r d2">
         <div class="demo-top">
@@ -485,45 +646,134 @@
   </div>
 </section>
 
-<!-- ============ PHONE MOCKUPS ============ -->
+<!-- ============ THE DAY RAIL ============
+     Full-bleed on purpose: .railwrap is a direct child of the section so a card
+     can be centred on a phone, and the rail pads itself back to the wrap's own
+     gutter so it still lines up under the headline on a wide screen. -->
 <section class="band center">
   <div class="wrap">
     <p class="eyebrow r">The guide itself</p>
     <h2 class="big r d1">Your trip, one day at a time.</h2>
-    <p class="lead sec-sub r d2">Not a spreadsheet of times. A guide that tells you what's worth your while, and the thing the locals know.</p>
-    <div class="phones">
-      <div class="phone r d1">
+    <p class="lead sec-sub r d2">Not a spreadsheet of times. A guide that tells you what's worth your while, the thing the locals know, and what it means for each person you brought.</p>
+  </div>
+  <div class="railwrap r d2">
+    <button class="railnav prev" type="button" aria-label="Previous day" data-rail="-1">‹</button>
+    <div class="dayrail" id="dayrail" tabindex="0" role="region" aria-label="Days from a vacayi guide">
+
+      <div class="phone">
         <div class="screen">
           <div class="ph-head"><div class="k">Day 1 · Alfama</div><h4>Landing soft</h4><div class="sub">One hill, one viewpoint, an early night.</div></div>
           <div class="ph-body">
-            <div class="st"><div class="time">4:30 PM</div><div class="nm">🌅 Miradouro de Santa Luzia</div><div class="bl">Five minutes flat from the hotel — it explains the whole city in a glance.</div></div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">The tiles most people miss</div><div class="bl">The panels behind you show Lisbon before the 1755 earthquake.</div></div>
-            <div class="st"><div class="time">6:00 PM</div><div class="nm">🎶 Free fado, drifting from a doorway</div><div class="bl">Follow your ears downhill.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD089"/><stop offset=".5" stop-color="#FBA05F"/><stop offset="1" stop-color="#E96A8C"/></linearGradient></defs><rect width="200" height="70" fill="url(#g1)"/><circle cx="150" cy="28" r="12" fill="#FFF4CE" opacity=".92"/><path d="M0 44h200v10H0z" fill="#B85A86" opacity=".35"/><g fill="#94406B" opacity=".62"><path d="M4 54l14-9 14 9v16H4z"/><path d="M38 58l12-7 12 7v12H38z"/><path d="M68 50l16-10 16 10v20H68z"/><path d="M106 59l11-6 11 6v11h-22z"/><path d="M134 55l15-9 15 9v15h-30z"/><path d="M170 60l13-7 13 7v10h-26z"/></g><g fill="#FFE7BE" opacity=".55"><rect x="12" y="58" width="4" height="5"/><rect x="76" y="55" width="4" height="6"/><rect x="88" y="55" width="4" height="6"/><rect x="144" y="62" width="4" height="5"/></g><path d="M0 66h200v4H0z" fill="#6B2E52" opacity=".45"/></svg></span>
+              <div class="time">4:30 PM</div><div class="nm">🌅 Miradouro de Santa Luzia</div>
+              <div class="bl">Five minutes flat from the hotel — it explains the whole city in a glance.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>No stairs on this route, and there's a bench in the shade at the top.</span></div>
+            </div>
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">The tiles most people miss</div><div class="bl">The blue panels behind you show Lisbon before the 1755 earthquake — most people photograph the view and never turn around.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2350"/><stop offset="1" stop-color="#6B3560"/></linearGradient><radialGradient id="g2b" cx=".5" cy=".5"><stop offset="0" stop-color="#FFD79A" stop-opacity=".95"/><stop offset="1" stop-color="#FFD79A" stop-opacity="0"/></radialGradient></defs><rect width="200" height="70" fill="url(#g2)"/><rect x="78" y="18" width="44" height="52" rx="3" fill="#FFC97A"/><ellipse cx="100" cy="44" rx="64" ry="34" fill="url(#g2b)"/><path d="M94 36c-4 0-7 3-7 7s3 7 7 7 7-3 7-7V28h8" fill="none" stroke="#7A4020" stroke-width="2.4" opacity=".85"/><g fill="#2A1738" opacity=".6"><rect x="0" y="8" width="66" height="62"/><rect x="134" y="4" width="66" height="66"/></g><g fill="#FFE0A8" opacity=".38"><rect x="20" y="20" width="8" height="10" rx="1"/><rect x="44" y="32" width="8" height="10" rx="1"/><rect x="152" y="18" width="8" height="10" rx="1"/><rect x="176" y="34" width="8" height="10" rx="1"/></g></svg></span>
+              <div class="time">6:00 PM</div><div class="nm">🎶 Free fado, drifting from a doorway</div>
+              <div class="bl">Follow your ears downhill. No cover, no booking — it either happens or it doesn't, and it usually does.</div>
+              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Her first quest of the trip is hiding on this street.</span></div>
+              <span class="badge q">🎯 Quest here · +15</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="phone mid r d2">
+
+      <div class="phone">
+        <div class="screen">
+          <div class="ph-head"><div class="k">Day 2 · Belém</div><h4>The tarts and the monastery</h4><div class="sub">Stone lace, then the best thing you'll eat.</div></div>
+          <div class="ph-body">
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE3F2"/><stop offset="1" stop-color="#EADFC9"/></linearGradient></defs><rect width="200" height="70" fill="url(#g7)"/><rect x="0" y="34" width="200" height="36" fill="#E8DAB9"/><rect x="0" y="30" width="200" height="6" fill="#D6C4A0"/><g fill="#F5ECD9" stroke="#C9B78F" stroke-width="1.2"><path d="M14 66V47a9 9 0 0 1 18 0v19z"/><path d="M46 66V47a9 9 0 0 1 18 0v19z"/><path d="M78 66V47a9 9 0 0 1 18 0v19z"/><path d="M110 66V47a9 9 0 0 1 18 0v19z"/><path d="M142 66V47a9 9 0 0 1 18 0v19z"/><path d="M174 66V47a9 9 0 0 1 18 0v19z"/></g><rect x="0" y="66" width="200" height="4" fill="#C9B78F" opacity=".55"/><g fill="#fff" opacity=".55"><ellipse cx="40" cy="13" rx="30" ry="6"/><ellipse cx="152" cy="9" rx="34" ry="5"/></g></svg></span>
+              <div class="time">9:30 AM</div><div class="nm">🏛️ Mosteiro dos Jerónimos</div>
+              <div class="bl">Stone carved like rope and seaweed, by people who had just worked out the sea went somewhere.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>There's a lift to the upper cloister — ask at the desk, it isn't signed.</span></div>
+            </div>
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Skip the line that eats the morning</div><div class="bl">Buy the combined ticket at the Archaeology Museum door next door. Same ticket, a fraction of the queue.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><radialGradient id="g8" cx=".45" cy=".38"><stop offset="0" stop-color="#FFF6E4"/><stop offset="1" stop-color="#D9A55F"/></radialGradient></defs><rect width="200" height="70" fill="url(#g8)"/><g><ellipse cx="68" cy="40" rx="27" ry="17" fill="#E8B96F" stroke="#B9822F" stroke-width="2"/><ellipse cx="68" cy="38" rx="19" ry="12" fill="#F9DEA6"/><ellipse cx="63" cy="35" rx="6" ry="4" fill="#8A5220" opacity=".62"/><ellipse cx="75" cy="41" rx="5" ry="3" fill="#8A5220" opacity=".48"/></g><g opacity=".9"><ellipse cx="136" cy="49" rx="24" ry="15" fill="#E8B96F" stroke="#B9822F" stroke-width="2"/><ellipse cx="136" cy="47" rx="17" ry="11" fill="#F9DEA6"/><ellipse cx="132" cy="44" rx="5" ry="3.4" fill="#8A5220" opacity=".58"/></g><g fill="#fff" opacity=".55"><circle cx="158" cy="17" r="2.2"/><circle cx="170" cy="24" r="1.5"/><circle cx="148" cy="26" r="1.4"/></g></svg></span>
+              <div class="time">11:15 AM</div><div class="nm">🥮 Pastéis de Belém</div>
+              <div class="bl">The original recipe, unchanged since 1837, still made behind a door nobody is allowed through. Eat them hot, standing up.</div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>No nuts on the premises — confirmed. Ask for them straight from the oven.</span></div>
+              <span class="badge q">🎯 Quest here · +10</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="screen">
+          <div class="ph-head"><div class="k">Day 3 · Alcântara</div><h4>Street art and the dog</h4><div class="sub">A slow one. Pixel comes too.</div></div>
+          <div class="ph-body">
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F26D5B"/><stop offset=".5" stop-color="#F7941D"/><stop offset="1" stop-color="#7E52A8"/></linearGradient></defs><rect width="200" height="70" fill="url(#g9)"/><g fill="#2A1A33" opacity=".26"><rect x="0" y="0" width="200" height="7"/></g><g fill="#fff" opacity=".3"><circle cx="40" cy="28" r="14"/><rect x="84" y="14" width="28" height="28" rx="6"/><path d="M138 42l16-27 16 27z"/></g><rect x="0" y="47" width="200" height="23" fill="#2A1A33" opacity=".42"/><g fill="#20142A"><ellipse cx="150" cy="60" rx="11" ry="5.5"/><circle cx="161" cy="54" r="4.6"/><path d="M164 50l3-5 2 5z"/><path d="M140 62l-2 6M158 63l2 6" stroke="#20142A" stroke-width="2.4"/></g></svg></span>
+              <div class="time">11:00 AM</div><div class="nm">🎨 LX Factory</div>
+              <div class="bl">An old thread factory turned into a street of studios, murals and a bookshop with a bicycle hanging from the ceiling.</div>
+              <div class="crew"><span class="cw">🐾 Pixel</span><span>Dogs welcome throughout, water bowls out front, and every table here is outside anyway.</span></div>
+            </div>
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Go all the way to the back</div><div class="bl">Ler Devagar is at the far end past the car park — two storeys of books and the bicycle. Most people turn around before it.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D2A46"/><stop offset="1" stop-color="#6E4257"/></linearGradient></defs><rect width="200" height="70" fill="url(#ga)"/><g fill="#FFD79A" opacity=".9"><rect x="10" y="12" width="34" height="4" rx="2"/><rect x="58" y="8" width="34" height="4" rx="2"/><rect x="106" y="12" width="34" height="4" rx="2"/><rect x="154" y="8" width="36" height="4" rx="2"/></g><g fill="#FFB65C" opacity=".24"><path d="M27 16l-15 23h30z"/><path d="M75 12l-15 25h30z"/><path d="M123 16l-15 23h30z"/><path d="M172 12l-15 25h30z"/></g><rect x="0" y="44" width="200" height="26" fill="#241730" opacity=".55"/><g fill="#F5EDE0" opacity=".82"><ellipse cx="38" cy="53" rx="11" ry="4"/><ellipse cx="100" cy="56" rx="11" ry="4"/><ellipse cx="162" cy="53" rx="11" ry="4"/></g></svg></span>
+              <div class="time">1:00 PM</div><div class="nm">🍽️ Time Out Market</div>
+              <div class="bl">Twenty-odd of the city's best kitchens under one roof, so nobody has to agree on anything.</div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>Three stalls confirmed peanut-free and marked in your guide — you don't have to ask twenty times.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone">
         <div class="screen">
           <div class="ph-head"><div class="k">Day 4 · Sintra</div><h4>Into the fairy tale</h4><div class="sub">A misty mountain of palaces.</div></div>
           <div class="ph-body">
-            <div class="st"><div class="time">10:00 AM</div><div class="nm">🗝️ Quinta da Regaleira</div><div class="bl">A mystical garden of towers, tunnels and a well you walk down into the earth.</div><span class="badge">🎯 Quest here</span></div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Climb the well the right way</div><div class="bl">Enter from the bottom via the tunnels — half the crowd goes down the wrong way.</div></div>
-            <div class="st"><div class="time">2:00 PM</div><div class="nm">🏰 Palácio da Pena</div><div class="bl">Take the shuttle up — the walk wrecks the afternoon.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><radialGradient id="g3" cx=".5" cy=".16"><stop offset="0" stop-color="#EEF7DC"/><stop offset=".45" stop-color="#5E8A4E"/><stop offset="1" stop-color="#223B26"/></radialGradient></defs><rect width="200" height="70" fill="url(#g3)"/><g fill="none" stroke="#9DC088" opacity=".6"><ellipse cx="100" cy="28" rx="54" ry="17" stroke-width="3"/><ellipse cx="100" cy="37" rx="42" ry="13" stroke-width="3"/><ellipse cx="100" cy="46" rx="31" ry="10" stroke-width="2.6"/><ellipse cx="100" cy="54" rx="20" ry="7" stroke-width="2.2"/></g><ellipse cx="100" cy="61" rx="11" ry="4" fill="#132116"/><g fill="#3E6640" opacity=".72"><path d="M0 70V32c11 5 17 13 21 38z"/><path d="M200 70V28c-13 6-20 15-24 42z"/></g></svg></span>
+              <div class="time">10:00 AM</div><div class="nm">🗝️ Quinta da Regaleira</div>
+              <div class="bl">A garden of towers, tunnels and a well you walk down into the earth on a spiral staircase.</div>
+              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Escape the well and she takes the lead on the board.</span></div>
+              <span class="badge q">🎯 Quest here · +20</span>
+            </div>
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Climb the well the right way</div><div class="bl">Enter from the bottom through the tunnels and come up into the light. Half the crowd walks down and misses the whole trick.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CCDFEC"/><stop offset="1" stop-color="#8CA6BC"/></linearGradient></defs><rect width="200" height="70" fill="url(#g4)"/><path d="M0 60q40-30 78-22t122-14v46H0z" fill="#6E8AA0" opacity=".5"/><g><rect x="72" y="28" width="26" height="34" fill="#E4B23C"/><rect x="98" y="34" width="22" height="28" fill="#D2453F"/><rect x="120" y="24" width="14" height="38" fill="#E4B23C"/><path d="M72 28h26l-13-11z" fill="#B8862A"/><path d="M120 24h14l-7-9z" fill="#B8862A"/><path d="M98 34h22l-11-8z" fill="#A8322D"/></g><g fill="#7B5218" opacity=".55"><rect x="80" y="42" width="5" height="8" rx="2"/><rect x="106" y="46" width="5" height="8" rx="2"/><rect x="125" y="38" width="4" height="7" rx="2"/></g><path d="M0 70v-9q52 11 100 0t100-4v13z" fill="#4C6478" opacity=".55"/><g fill="#fff" opacity=".4"><ellipse cx="42" cy="46" rx="40" ry="7"/><ellipse cx="166" cy="55" rx="44" ry="6"/></g></svg></span>
+              <div class="time">2:00 PM</div><div class="nm">🏰 Palácio da Pena</div>
+              <div class="bl">The yellow-and-red palace on the ridge, usually with cloud pouring over the wall behind it.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>Take the shuttle from the gate — the walk up is twenty minutes of steps.</span></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="phone r d3">
+
+      <div class="phone">
         <div class="screen">
           <div class="ph-head"><div class="k">Day 5 · The river</div><h4>Slow day, big night</h4><div class="sub">Ten years, one very good table.</div></div>
           <div class="ph-body">
-            <div class="st"><div class="time">6:30 PM</div><div class="nm">⛵ Sunset cruise on the Tejo</div><div class="bl">The one thing just for the two of you.</div></div>
-            <div class="st tip"><div class="tp">🔭 Plan B</div><div class="nm">If the weather turns</div><div class="bl">The rooftop at Park gives you the same light without leaving dry land.</div></div>
-            <div class="st"><div class="time">8:30 PM</div><div class="nm">✨ Alma — two stars</div><div class="bl">Booked six weeks out. Worth every minute of the wait.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB765"/><stop offset=".48" stop-color="#F2718A"/><stop offset="1" stop-color="#7C4A96"/></linearGradient></defs><rect width="200" height="70" fill="url(#g5)"/><circle cx="64" cy="32" r="13" fill="#FFF1C4" opacity=".92"/><g stroke="#C0392B" stroke-width="2.6" fill="none" opacity=".82"><path d="M118 46V14M172 46V14"/><path d="M108 20h74"/><path d="M118 20q27 15 54 0"/></g><path d="M0 46h200v24H0z" fill="#6A3E86" opacity=".45"/><g fill="#FFEFC6" opacity=".42"><rect x="56" y="50" width="16" height="2" rx="1"/><rect x="58" y="56" width="12" height="2" rx="1"/><rect x="60" y="62" width="8" height="2" rx="1"/></g><g fill="#33203F"><path d="M20 52h36l-5 9H25z"/><rect x="31" y="44" width="15" height="8" rx="1.5"/></g></svg></span>
+              <div class="time">6:30 PM</div><div class="nm">⛵ Sunset cruise on the Tejo</div>
+              <div class="bl">Out under the bridge as the light goes. The one thing on this trip that's just for the two of you.</div>
+              <div class="crew"><span class="cw">🎉 Ten years</span><span>Held for tonight because it's the only clear evening in the forecast.</span></div>
+            </div>
+            <div class="st tip"><div class="tp">🔭 Plan B</div><div class="nm">If the weather turns</div><div class="bl">The rooftop at Park gives you the same light over the river without leaving dry land — and no booking needed.</div></div>
+            <div class="st">
+              <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A2C3E"/><stop offset="1" stop-color="#231523"/></linearGradient><radialGradient id="g6b" cx=".5" cy=".34"><stop offset="0" stop-color="#FFD79A" stop-opacity=".82"/><stop offset="1" stop-color="#FFD79A" stop-opacity="0"/></radialGradient></defs><rect width="200" height="70" fill="url(#g6)"/><ellipse cx="100" cy="32" rx="68" ry="30" fill="url(#g6b)"/><path d="M96 22c0-5 4-6 4-10 0 4 4 5 4 10a4 4 0 0 1-8 0z" fill="#FFC978"/><rect x="97" y="30" width="6" height="13" rx="1.5" fill="#F0E3D0"/><ellipse cx="100" cy="53" rx="78" ry="12" fill="#6B4433" opacity=".85"/><g fill="#F5EDE0"><ellipse cx="68" cy="51" rx="13" ry="5"/><ellipse cx="132" cy="51" rx="13" ry="5"/></g><g stroke="#D8CDBC" stroke-width="1.6" opacity=".8"><path d="M46 47v9M50 47v9M150 47v9M154 47v9"/></g></svg></span>
+              <div class="time">8:30 PM</div><div class="nm">✨ Alma — two stars</div>
+              <div class="bl">Booked six weeks out. Worth every minute of the wait.</div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>Kitchen confirmed peanut-free by phone. Your card in Portuguese is on the phrase list.</span></div>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
-    <p class="ph-cap r d2">Real pages from the sample guide. <a href="/example" style="color:var(--orc);font-weight:800">Open the whole thing →</a></p>
+    <button class="railnav next" type="button" aria-label="Next day" data-rail="1">›</button>
+  </div>
+  <div class="wrap">
+    <div class="raildots" id="raildots" aria-hidden="true"></div>
+    <p class="ph-cap r">Swipe through the days&nbsp;→</p>
   </div>
 </section>
 
@@ -533,18 +783,22 @@
     <p class="eyebrow r">The fun part</p>
     <h2 class="big r d1">A trip the whole crew is playing.</h2>
     <p class="lead sec-sub r d2">Every guide comes with quests, points and a live scoreboard — matched to who's on the trip and where you're actually going. It's the reason a seven-year-old asks to see the guide.</p>
-    <div class="board r d2" id="board">
-      <h3>The Lisbon Quest 🏆</h3>
-      <div class="sub">Five days, one champion. Grandpa Sal is refereeing (and secretly winning).</div>
-      <div class="qrow lead"><div class="who">⭐ Nina <span class="crown">👑</span></div><div class="track"><i data-w="88"></i></div><div class="pts">45</div></div>
-      <div class="qrow"><div class="who">📷 Theo</div><div class="track"><i data-w="78"></i></div><div class="pts">40</div></div>
-      <div class="qrow"><div class="who">🧭 Maya</div><div class="track"><i data-w="58"></i></div><div class="pts">30</div></div>
-      <div class="qrow"><div class="who">🎩 Grandpa Sal</div><div class="track"><i data-w="48"></i></div><div class="pts">25</div></div>
-    </div>
-    <div class="qcards">
-      <div class="qc r d1"><div class="qi">📸</div><div class="qt">Find five tile patterns</div><div class="qd">Photograph each one — bonus point for the oldest.</div><span class="qp">+15 pts</span></div>
-      <div class="qc r d2"><div class="qi">🗝️</div><div class="qt">Escape the Initiation Well</div><div class="qd">Up the spiral staircase, into the light.</div><span class="qp">+20 pts</span></div>
-      <div class="qc r d3"><div class="qi">📷</div><div class="qt">Land the bridge shot</div><div class="qd">The 25 de Abril, from the water, at blue hour.</div><span class="qp">+20 pts</span></div>
+    <div class="qgrid">
+      <div class="board r d2" id="board">
+        <h3>The Lisbon Quest 🏆</h3>
+        <div class="sub">Five days, one champion. Grandpa Sal is refereeing (and secretly winning).</div>
+        <div class="qrow" data-p="nina"><div class="who">⭐ Nina <span class="crown">👑</span></div><div class="track"><i data-w="90"></i></div><div class="pts" data-pts="45">0</div></div>
+        <div class="qrow" data-p="theo"><div class="who">📷 Theo <span class="crown">👑</span></div><div class="track"><i data-w="80"></i></div><div class="pts" data-pts="40">0</div></div>
+        <div class="qrow" data-p="maya"><div class="who">🧭 Maya <span class="crown">👑</span></div><div class="track"><i data-w="60"></i></div><div class="pts" data-pts="30">0</div></div>
+        <div class="qrow" data-p="sal"><div class="who">🎩 Grandpa Sal <span class="crown">👑</span></div><div class="track"><i data-w="50"></i></div><div class="pts" data-pts="25">0</div></div>
+        <div class="qfeed" id="qfeed"><span class="fx"><span class="fp">LIVE</span><span class="fw">Ticked off as you go — everyone sees it move.</span></span></div>
+      </div>
+      <div class="qcards" id="qcards">
+        <div class="qc" data-q="tiles"><span class="qstamp">✓</span><div class="qi">📸</div><div class="qt">Find five tile patterns</div><div class="qd">Photograph each one — bonus point for the oldest.</div><span class="qp">+15 pts</span><div class="qby"><span>✓ Nina got this one</span></div></div>
+        <div class="qc" data-q="well"><span class="qstamp">✓</span><div class="qi">🗝️</div><div class="qt">Escape the Initiation Well</div><div class="qd">Up the spiral staircase, into the light.</div><span class="qp">+20 pts</span><div class="qby"><span>✓ Nina got this one</span></div></div>
+        <div class="qc" data-q="bridge"><span class="qstamp">✓</span><div class="qi">📷</div><div class="qt">Land the bridge shot</div><div class="qd">The 25 de Abril, from the water, at blue hour.</div><span class="qp">+20 pts</span><div class="qby"><span>✓ Theo got this one</span></div></div>
+        <div class="qc" data-q="nata"><span class="qstamp">✓</span><div class="qi">🥮</div><div class="qt">Rate every pastel de nata</div><div class="qd">Out of ten. Grandpa Sal is a harsh judge.</div><span class="qp">+10 pts</span><div class="qby"><span>✓ Grandpa Sal got this one</span></div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -560,9 +814,9 @@
         </div>
         <div class="wrow done"><div class="ic">✈️</div><div class="wl"><b>Boston → Lisbon</b><span>TAP Air · confirmed</span></div><div class="got">✓ Booked</div></div>
         <div class="wrow done"><div class="ic">🏨</div><div class="wl"><b>Memmo Alfama Hotel</b><span>5 nights · confirmed</span></div><div class="got">✓ Booked</div></div>
-        <div class="wrow"><div class="ic">🎟️</div><div class="wl"><b>Sintra: Pena Palace</b><span>Book the timed slot ahead</span></div><a class="book" href="/example">Book now ↗</a></div>
-        <div class="wrow"><div class="ic">🚐</div><div class="wl"><b>Airport transfer</b><span>Five people and a dog, arriving early</span></div><a class="book" href="/example">Book now ↗</a></div>
-        <div class="wrow"><div class="ic">📶</div><div class="wl"><b>Phone data for Portugal</b><span>Sort it before you fly</span></div><a class="book" href="/example">Book now ↗</a></div>
+        <div class="wrow"><div class="ic">🎟️</div><div class="wl"><b>Sintra: Pena Palace</b><span>Book the timed slot ahead</span></div><span class="book">Book now ↗</span></div>
+        <div class="wrow"><div class="ic">🚐</div><div class="wl"><b>Airport transfer</b><span>Five people and a dog, arriving early</span></div><span class="book">Book now ↗</span></div>
+        <div class="wrow"><div class="ic">📶</div><div class="wl"><b>Phone data for Portugal</b><span>Sort it before you fly</span></div><span class="book">Book now ↗</span></div>
       </div>
       <div class="wallet-copy">
         <p class="eyebrow r">One guide, everything booked</p>
@@ -578,19 +832,61 @@
   </div>
 </section>
 
-<!-- ============ BIG SAMPLE CTA ============ -->
-<section class="band cta-band">
+<!-- ============ THE MEMORY BAND ============
+     Every claim here is something the app actually does: the matcher keys on the
+     DAY first, then the place within 250 m, and time is only ever a tie-break —
+     which is exactly why turning up two hours late still works. Nothing is
+     uploaded; the photos never leave the phone. Do not let this copy drift into
+     promising a shared album — that is a different feature with a different
+     consent conversation. -->
+<section class="band memband" id="memories">
   <div class="wrap">
-    <div class="cta-card r">
-      <h2>This isn't a mockup. It's a guide we made.</h2>
-      <p>Five days in Lisbon for a family of five and a dog — the real thing, every page, exactly as vacayi builds them.</p>
-      <a class="btn btn-white" href="/example">Open the sample guide&nbsp;→</a>
+    <div class="mem-wrap">
+      <div class="memstage r">
+        <div class="mcam" id="mcam"><span class="lens"></span>Taking photos…</div>
+        <div class="mphone">
+          <div class="mscreen">
+            <div class="mhead"><div class="k">Day 1 · Alfama</div><h4>Landing soft</h4></div>
+            <div class="mbody">
+              <div class="mstop">
+                <div class="mt">4:30 PM</div><div class="mn">🌅 Miradouro de Santa Luzia</div>
+                <div class="mstrip">
+                  <span class="mslot"><figure class="mshot" data-shot="1" style="--fx:-96px;--fy:-104px;--fr:-13deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="p1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD089"/><stop offset="1" stop-color="#E96A8C"/></linearGradient></defs><rect width="60" height="60" fill="url(#p1)"/><circle cx="43" cy="18" r="8" fill="#FFF4CE"/><g fill="#8E3D66" opacity=".7"><path d="M2 46l9-7 9 7v14H2z"/><path d="M24 50l8-6 8 6v10H24z"/><path d="M44 44l8-6 8 6v16H44z"/></g></svg></figure></span>
+                  <span class="mslot"><figure class="mshot" data-shot="2" style="--fx:12px;--fy:-124px;--fr:9deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="p2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DCEAF6"/><stop offset="1" stop-color="#7FA8CE"/></linearGradient></defs><rect width="60" height="60" fill="url(#p2)"/><g fill="#2F5F92" opacity=".55"><rect x="6" y="6" width="20" height="20" rx="2"/><rect x="34" y="6" width="20" height="20" rx="2"/><rect x="6" y="34" width="20" height="20" rx="2"/><rect x="34" y="34" width="20" height="20" rx="2"/></g><g fill="#fff" opacity=".65"><circle cx="16" cy="16" r="5"/><circle cx="44" cy="44" r="5"/></g></svg></figure></span>
+                  <span class="mslot"><figure class="mshot" data-shot="3" style="--fx:104px;--fy:-96px;--fr:15deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="p3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC46B"/><stop offset="1" stop-color="#B0399F"/></linearGradient></defs><rect width="60" height="60" fill="url(#p3)"/><circle cx="30" cy="24" r="11" fill="#FFF1C4" opacity=".85"/><path d="M0 40h60v20H0z" fill="#5E2A67" opacity=".45"/><g fill="#2C1330"><path d="M14 44h20l-3 6H17z"/></g></svg></figure></span>
+                </div>
+                <div class="mcount" data-count="3">3 photos · yours</div>
+              </div>
+              <div class="mstop">
+                <div class="mt">6:00 PM</div><div class="mn">🎶 Free fado, drifting from a doorway</div>
+                <div class="mstrip">
+                  <span class="mslot"><figure class="mshot" data-shot="4" style="--fx:-110px;--fy:-64px;--fr:12deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><radialGradient id="p4" cx=".5" cy=".45"><stop offset="0" stop-color="#FFD79A"/><stop offset="1" stop-color="#3A2350"/></radialGradient></defs><rect width="60" height="60" fill="url(#p4)"/><rect x="22" y="14" width="16" height="46" rx="2" fill="#FFC97A" opacity=".9"/><path d="M27 34c-3 0-5 2-5 5s2 5 5 5 5-2 5-5V26h6" fill="none" stroke="#5E2E14" stroke-width="2"/></svg></figure></span>
+                  <span class="mslot"><figure class="mshot" data-shot="5" style="--fx:10px;--fy:-92px;--fr:-11deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="p5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4E3C8"/><stop offset="1" stop-color="#C98A4B"/></linearGradient></defs><rect width="60" height="60" fill="url(#p5)"/><circle cx="30" cy="32" r="17" fill="#F7D9A0" stroke="#B4762F" stroke-width="2.5"/><circle cx="30" cy="32" r="8" fill="#8F5320" opacity=".55"/></svg></figure></span>
+                  <span class="mslot"><figure class="mshot" data-shot="6" style="--fx:112px;--fy:-58px;--fr:-16deg"><svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="p6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5A3A6E"/><stop offset="1" stop-color="#1F1229"/></linearGradient></defs><rect width="60" height="60" fill="url(#p6)"/><g fill="#FFD79A" opacity=".85"><circle cx="18" cy="20" r="2.5"/><circle cx="34" cy="14" r="2"/><circle cx="46" cy="26" r="2.5"/><circle cx="26" cy="34" r="1.8"/></g><path d="M0 44h60v16H0z" fill="#120A18" opacity=".6"/></svg></figure></span>
+                </div>
+                <div class="mcount" data-count="3">3 photos · yours</div>
+              </div>
+              <div class="mstory" id="mstory"><span class="si">📖</span><span><b>Day 1 is written</b><span>6 photos, placed by themselves</span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="memcopy">
+        <p class="eyebrow r">While you're there, and long after</p>
+        <h2 class="big r d1">The photos find their own way home.</h2>
+        <p class="lead r d2">Take pictures the way you always do. vacayi reads where and when each one was taken and drops it onto the right stop, on the right day — no tagging, no sorting, no album to build afterwards. By the time you land home the trip has written itself back into the guide.</p>
+        <ul class="flist r d3">
+          <li><span class="k">✓</span><span><b>It happens by itself.</b> A photo taken at the viewpoint lands on the viewpoint. The day comes first and the place second, so turning up two hours late — or on a completely different afternoon — still finds the right stop.</span></li>
+          <li><span class="k">✓</span><span><b>Nothing leaves your phone.</b> No upload, no copy on our servers, nothing to sign away. Delete a picture and it's gone from the guide with it.</span></li>
+          <li><span class="k">✓</span><span><b>And the guide becomes the keepsake.</b> Every day, every stop, every quest somebody won — with your own photos already sitting where they happened. Not a camera roll of four hundred pictures. The trip, in order, the way you lived it.</span></li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ============ COMING SOON ============ -->
-<section class="band-tight soon center">
+<section class="band-tight soon center" id="soon">
   <div class="wrap">
     <p class="eyebrow r">Almost here</p>
     <h2 class="big r d1">Coming soon to your pocket.</h2>
@@ -643,49 +939,296 @@
     setTimeout(revealAll, 2500);
   }
 
-  // ---- interactive crew demo ----
-  var demoWho = document.getElementById("demoWho");
-  var empty = document.getElementById("adaptEmpty");
+  // ---- ONE way to say "when this scrolls into view" ---------------------------
+  //
+  // Three sequences on this page play themselves, and every one of them is
+  // failsafed the SAME way: if the observer never speaks, `finish()` runs and
+  // the section shows its FINISHED state. A half-played animation is worse
+  // than no animation; a section stuck on its first frame — an empty
+  // scoreboard, blank photo slots — is worst of all.
+  //
+  // THE FAILSAFE POLLS RATHER THAN COUNTING DOWN FROM PAGE LOAD. A plain
+  // setTimeout would fire for a section nobody has scrolled to yet, so the
+  // animation would already be over by the time they arrived. This only gives
+  // up once the element is genuinely ON SCREEN and the observer has still said
+  // nothing.
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var $$ = function(s, r){ return [].slice.call((r || document).querySelectorAll(s)); };
+
+  function whenSeen(el, play, finish, repeat){
+    if (!el) return;
+    if (reduce || !("IntersectionObserver" in window)) { finish(); return; }
+    var busy = false, away = true, ever = false, seenFor = 0;
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) { away = true; return; }
+        if (busy || !away) return;
+        away = false; busy = true; ever = true;
+        if (!repeat) io.disconnect();
+        play(function(){ busy = false; });
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -12% 0px" });
+    io.observe(el);
+    var guard = setInterval(function(){
+      if (ever) { clearInterval(guard); return; }
+      var b = el.getBoundingClientRect();
+      if (b.top < innerHeight && b.bottom > 0) {
+        if (++seenFor >= 3) { clearInterval(guard); ever = true; io.disconnect(); finish(); }
+      } else seenFor = 0;
+    }, 700);
+  }
+
+  // ---- the day rail: dots, arrows, and which card you are on ------------------
+  var rail = $("#dayrail"), dots = $("#raildots");
+  if (rail && dots) {
+    var cards = $$(".phone", rail);
+    var navs = $$(".railnav");
+    // offsetLeft on both is measured against .railwrap (the one positioned
+    // ancestor), so subtracting the rail's own offset gives a distance in the
+    // same space as scrollLeft.
+    var at = function(c){ return c.offsetLeft - rail.offsetLeft; };
+    // A plain assignment, deliberately: CSS owns the easing (scroll-behavior on
+    // .dayrail), so the reduced-motion block turns the animation off without
+    // this code knowing anything about it.
+    //
+    // AND IT HEALS ITSELF. Smooth scrolling needs animation frames, and there
+    // are environments that never deliver any — measured, in one, doing
+    // precisely nothing however it was asked. If the rail has not begun to move
+    // shortly after being told to, jump instantly instead. A page-forward
+    // button that answers no tap is worse than one that doesn't glide.
+    function goTo(i){
+      i = Math.max(0, Math.min(cards.length - 1, i));
+      var c = cards[i]; if (!c) return;
+      // PAINT THE INDICATOR FROM WHAT WE ASKED FOR, not from a scroll event we
+      // are hoping for. Measured: a programmatic scroll delivered no `scroll`
+      // event in one renderer, so the dots sat on their first value forever and
+      // the arrows kept the wrong disabled state — the rail moved and every
+      // control lied about where it was. The listener below still corrects this
+      // for a real swipe.
+      paint(i);
+      var to = at(c) - (rail.clientWidth - c.offsetWidth) / 2;
+      var from = rail.scrollLeft;
+      rail.scrollLeft = to;
+      setTimeout(function(){
+        if (Math.abs(rail.scrollLeft - from) < 2 && Math.abs(to - from) > 4) {
+          var prev = rail.style.scrollBehavior;
+          rail.style.scrollBehavior = "auto";
+          rail.scrollLeft = to;
+          rail.style.scrollBehavior = prev;
+        }
+      }, 260);
+    }
+    // NEAREST-TO-CENTRE IS WRONG AT THE ENDS, and silently. On a wide screen
+    // three cards are visible at once, so at full scroll the LAST card's centre
+    // is never the closest to the viewport's — measured: the fifth dot could
+    // never light and the next arrow could never disable. The two extremes are
+    // not a judgement call, so they are answered outright.
+    function nearest(){
+      var max = rail.scrollWidth - rail.clientWidth;
+      if (rail.scrollLeft <= 2) return 0;
+      if (rail.scrollLeft >= max - 2) return cards.length - 1;
+      var mid = rail.scrollLeft + rail.clientWidth / 2, best = 0, bd = Infinity;
+      cards.forEach(function(c, i){
+        var d = Math.abs(at(c) + c.offsetWidth / 2 - mid);
+        if (d < bd) { bd = d; best = i; }
+      });
+      return best;
+    }
+    cards.forEach(function(c, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.setAttribute("aria-label", "Day " + (i + 1) + " of " + cards.length);
+      b.addEventListener("click", function(){ goTo(i); });
+      dots.appendChild(b);
+    });
+    dots.removeAttribute("aria-hidden");
+    function paint(i){
+      // A CONTROL THAT CANNOT DO ANYTHING MUST NOT BE ON SCREEN. If every card
+      // already fits, there is nothing to page through — arrows and dots would
+      // sit there looking live and answer no tap. Re-checked on resize, so it
+      // is the current width that decides, never an assumption about one.
+      var can = rail.scrollWidth > rail.clientWidth + 4;
+      dots.style.display = can ? "" : "none";
+      navs.forEach(function(n){ n.hidden = !can; });
+      if (!can) return;
+      $$("button", dots).forEach(function(b, j){ b.setAttribute("aria-current", j === i ? "true" : "false"); });
+      navs.forEach(function(n){
+        var d = +n.getAttribute("data-rail");
+        n.disabled = (d < 0 && i === 0) || (d > 0 && i === cards.length - 1);
+      });
+    }
+    function syncRail(){ paint(nearest()); }
+    navs.forEach(function(n){
+      n.addEventListener("click", function(){ goTo(nearest() + (+n.getAttribute("data-rail"))); });
+    });
+    var tick;
+    rail.addEventListener("scroll", function(){ clearTimeout(tick); tick = setTimeout(syncRail, 90); }, { passive: true });
+    addEventListener("resize", syncRail);
+    syncRail();
+  }
+
+  // ---- the crew demo, which plays itself --------------------------------------
+  //
+  // It adds the crew one at a time so the point lands without anyone having to
+  // guess that the chips are tappable. THE MOMENT A HUMAN TOUCHES IT, IT STANDS
+  // DOWN — an autoplay that keeps switching things on under the user's finger
+  // is the demo fighting the person it is for.
+  var demoWho = $("#demoWho"), empty = $("#adaptEmpty"), chips = $$(".chip");
   var extraWho = { kid:"Nina", stairs:"Grandpa Sal", dog:"Pixel" };
   function syncWho(){
     var names = ["Maya","Theo"];
-    document.querySelectorAll('.chip[aria-pressed="true"]').forEach(function(c){
-      var n = extraWho[c.dataset.adapt]; if(n && names.indexOf(n)<0) names.push(n);
+    $$('.chip[aria-pressed="true"]').forEach(function(c){
+      var n = extraWho[c.getAttribute("data-adapt")]; if (n && names.indexOf(n) < 0) names.push(n);
     });
-    demoWho.innerHTML = names.map(function(n){ return "<span>"+n+"</span>"; }).join("");
+    demoWho.innerHTML = names.map(function(n){ return "<span>" + n + "</span>"; }).join("");
   }
   function refresh(){
     var any = false;
-    document.querySelectorAll(".chip").forEach(function(c){
+    chips.forEach(function(c){
       var on = c.getAttribute("aria-pressed") === "true";
-      var row = document.querySelector('.adapt[data-for="'+c.dataset.adapt+'"]');
-      if(row) row.classList.toggle("on", on);
-      if(on) any = true;
+      var row = $('.adapt[data-for="' + c.getAttribute("data-adapt") + '"]');
+      if (row) row.classList.toggle("on", on);
+      if (on) any = true;
     });
     empty.classList.toggle("hide", any);
     syncWho();
   }
-  document.querySelectorAll(".chip").forEach(function(c){
+  var demoTaken = false, demoTimer = null;
+  chips.forEach(function(c){
     c.addEventListener("click", function(){
-      c.setAttribute("aria-pressed", c.getAttribute("aria-pressed")==="true" ? "false" : "true");
+      demoTaken = true; clearTimeout(demoTimer);
+      c.setAttribute("aria-pressed", c.getAttribute("aria-pressed") === "true" ? "false" : "true");
       refresh();
     });
   });
+  whenSeen($("#chips"), function(done){
+    var i = 0;
+    (function step(){
+      if (demoTaken || i >= chips.length) { done(); return; }
+      chips[i].setAttribute("aria-pressed", "true"); refresh(); i++;
+      demoTimer = setTimeout(step, 1150);
+    })();
+  }, function(){
+    chips.forEach(function(c){ c.setAttribute("aria-pressed", "true"); }); refresh();
+  });
 
-  // ---- animated scoreboard, also failsafed ----
-  var board = document.getElementById("board");
-  function fillBoard(){ board.querySelectorAll(".track i").forEach(function(i){ i.style.width = i.dataset.w + "%"; }); }
-  if (reduce || !("IntersectionObserver" in window)) {
-    fillBoard();
-  } else {
-    var bio = new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ setTimeout(fillBoard, 180); bio.disconnect(); } });
-    }, { threshold: .3 });
-    bio.observe(board);
-    setTimeout(fillBoard, 2600); // never leave the bars empty
+  // ---- the scoreboard, which plays the game -----------------------------------
+  //
+  // BASE + STEPS must land exactly on each row's data-pts, and the run ends by
+  // SNAPPING to the data attributes regardless — so if the arithmetic here ever
+  // drifts, the board still finishes correct rather than subtly wrong.
+  var board = $("#board"), qcards = $("#qcards"), qfeed = $("#qfeed");
+  if (board && qcards && qfeed) {
+    var NAME = { nina:"Nina", theo:"Theo", maya:"Maya", sal:"Grandpa Sal" };
+    var BASE = { nina:10, theo:20, maya:30, sal:15 };
+    // Bars are drawn as a share of TOP. It is 50 rather than the winning 45 so
+    // the leader's bar is not pegged full — and because every data-w in the
+    // markup must equal round(pts/TOP*100) EXACTLY. They disagreed once: the
+    // bars animated to one set of widths and then snapped to another the
+    // instant the run finished, a visible jerk at the end of the sequence.
+    // check-legal-html.mjs now asserts the arithmetic so it cannot drift again.
+    var TOP = 50;
+    var STEPS = [
+      { q:"tiles",  who:"nina", pts:15, what:"found five tile patterns" },
+      { q:"bridge", who:"theo", pts:20, what:"landed the bridge shot" },
+      { q:"nata",   who:"sal",  pts:10, what:"rated every pastel de nata" },
+      { q:"well",   who:"nina", pts:20, what:"escaped the Initiation Well" }
+    ];
+    var rows = {};
+    $$(".qrow", board).forEach(function(r){ rows[r.getAttribute("data-p")] = r; });
+    function setRow(k, pts){
+      var r = rows[k]; if (!r) return;
+      $(".pts", r).textContent = String(pts);
+      $(".track i", r).style.width = Math.round(pts / TOP * 100) + "%";
+    }
+    function crown(){
+      var best = null, bp = -1;
+      Object.keys(rows).forEach(function(k){
+        var v = +$(".pts", rows[k]).textContent;
+        if (v > bp) { bp = v; best = k; }
+      });
+      Object.keys(rows).forEach(function(k){ rows[k].classList.toggle("lead", k === best); });
+    }
+    function say(html){
+      var fx = $(".fx", qfeed); if (!fx) return;
+      fx.classList.remove("on");
+      setTimeout(function(){ fx.innerHTML = html; fx.classList.add("on"); }, 200);
+    }
+    function finishQuests(){
+      $$(".qc", qcards).forEach(function(c){ c.classList.add("pop", "done"); });
+      Object.keys(rows).forEach(function(k){
+        var p = $(".pts", rows[k]), i = $(".track i", rows[k]);
+        p.textContent = p.getAttribute("data-pts");
+        i.style.width = i.getAttribute("data-w") + "%";
+      });
+      crown();
+      var fx = $(".fx", qfeed); if (fx) fx.classList.add("on");
+    }
+    whenSeen(board, function(done){
+      var qs = $$(".qc", qcards);
+      qs.forEach(function(c, i){ setTimeout(function(){ c.classList.add("pop"); }, i * 110); });
+      var score = {};
+      Object.keys(BASE).forEach(function(k){ score[k] = BASE[k]; setRow(k, BASE[k]); });
+      crown();
+      STEPS.forEach(function(s, i){
+        setTimeout(function(){
+          var card = $('.qc[data-q="' + s.q + '"]', qcards);
+          if (card) card.classList.add("done");
+          score[s.who] += s.pts;
+          setRow(s.who, score[s.who]);
+          var row = rows[s.who];
+          if (row) { row.classList.add("hit"); setTimeout(function(){ row.classList.remove("hit"); }, 640); }
+          crown();
+          say('<span class="fp">+' + s.pts + '</span><span>' + NAME[s.who] + '</span>' +
+              '<span class="fw">' + s.what + '</span>');
+        }, 820 + i * 1250);
+      });
+      setTimeout(function(){ finishQuests(); done(); }, 820 + STEPS.length * 1250 + 700);
+    }, finishQuests);
   }
 
-  document.getElementById("yr").textContent = String(new Date().getFullYear());
+  // ---- the photos flying home -------------------------------------------------
+  //
+  // Each photo already SITS in its destination slot and merely starts displaced
+  // by its own --fx/--fy/--fr, so "landing" is just removing a transform. No
+  // rectangle is measured anywhere, which is why it cannot drift on resize, at
+  // a different zoom, or when the font falls back.
+  var memstage = $(".memstage");
+  if (memstage) {
+    var shots = $$(".mshot", memstage), cam = $("#mcam"), story = $("#mstory");
+    var counts = $$(".mcount", memstage);
+    function label(n){ return n === 1 ? "1 photo · yours" : n + " photos · yours"; }
+    function finishMem(){
+      shots.forEach(function(s){ s.classList.add("in"); });
+      counts.forEach(function(c){ c.textContent = label(+c.getAttribute("data-count")); });
+      if (cam) cam.classList.remove("on", "flash");
+      if (story) story.classList.add("on");
+    }
+    whenSeen(memstage, function(done){
+      shots.forEach(function(s){ s.classList.remove("in"); });
+      counts.forEach(function(c){ c.textContent = "No photos yet"; });
+      if (story) story.classList.remove("on");
+      if (cam) cam.classList.add("on");
+      shots.forEach(function(s, i){
+        setTimeout(function(){
+          if (cam) { cam.classList.add("flash"); setTimeout(function(){ cam.classList.remove("flash"); }, 150); }
+          s.classList.add("in");
+          var stop = s.closest ? s.closest(".mstop") : null;
+          if (stop) {
+            var c = $(".mcount", stop);
+            if (c) c.textContent = label($$(".mshot.in", stop).length);
+          }
+        }, 420 + i * 500);
+      });
+      setTimeout(function(){
+        if (cam) cam.classList.remove("on");
+        if (story) story.classList.add("on");
+        done();
+      }, 420 + shots.length * 500 + 550);
+    }, finishMem, true);
+  }
+
+  $("#yr").textContent = String(new Date().getFullYear());
 })();
 </script>
 </body>
