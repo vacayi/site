@@ -231,8 +231,8 @@
   .adapt{display:flex;gap:12px;align-items:flex-start;padding:15px 0;
     border-bottom:1px solid var(--line);
     opacity:0;max-height:0;overflow:hidden;transform:translateY(-6px);
-    transition:opacity .4s ease,max-height .45s ease,transform .4s ease,padding .3s ease}
-  .adapt.on{opacity:1;max-height:120px;transform:none}
+    transition:opacity .65s ease,max-height .7s ease,transform .65s ease,padding .5s ease}
+  .adapt.on{opacity:1;max-height:140px;transform:none}
   .adapt:last-child{border-bottom:0}
   .adapt .tick{flex:none;width:26px;height:26px;border-radius:8px;display:grid;
     place-items:center;background:var(--grad);color:#fff;font-weight:900;font-size:14px;margin-top:1px}
@@ -271,40 +271,55 @@
      3*card + 2*gap > 1120px at ANY wide viewport — the vw terms cancel. At the
      320px this first shipped as, that sum was 1020 and the rail was measured
      NOT SCROLLABLE on desktop: three cards fitting exactly, arrows and dots
-     present and doing nothing. 372 puts the sum at 1176, so a slice of the
-     third card always shows and the controls always mean something. */
-  .phone{flex:0 0 clamp(272px,78vw,372px);scroll-snap-align:center;
+     present and doing nothing. 324 across five cards puts the sum at 1740, so a
+     slice of the next card always shows and the controls always mean
+     something. The max is ALSO what keeps the card phone-SHAPED: the height is
+     content-driven, so a wider cap made a 372x623 card that reads as squat
+     (1.67) where a real phone is about 2.16. */
+  .phone{flex:0 0 clamp(272px,86vw,324px);scroll-snap-align:center;
     background:var(--ink);border-radius:38px;padding:11px;box-shadow:var(--shadow);
     transition:transform .5s cubic-bezier(.2,.7,.2,1)}
   .phone:hover{transform:translateY(-8px)}
   .screen{background:var(--paper);border-radius:29px;overflow:hidden;position:relative}
-  .ph-head{background:var(--grad);color:#fff;padding:20px 18px 16px;text-align:left}
+  .ph-head{background:var(--grad);color:#fff;padding:16px 16px 14px;text-align:left}
   .ph-head .k{font:800 10px/1 var(--body);letter-spacing:.13em;text-transform:uppercase;opacity:.92}
-  .ph-head h4{color:#fff;font-family:var(--disp);font-size:20px;margin-top:6px;font-weight:600}
-  .ph-head .sub{font-size:12.5px;opacity:.94;margin-top:5px}
-  .ph-body{padding:14px 15px 18px}
+  .ph-head h4{color:#fff;font-family:var(--disp);font-size:19px;margin-top:5px;font-weight:600;line-height:1.15}
+  .ph-head .sub{font-size:12px;opacity:.94;margin-top:4px;line-height:1.35}
+  .ph-body{padding:11px 12px 14px}
   .st{background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:11px 12px 12px;margin-bottom:10px;box-shadow:0 1px 2px rgba(36,26,46,.04);text-align:left}
+    padding:9px 10px 10px;margin-bottom:8px;box-shadow:0 1px 2px rgba(36,26,46,.04);text-align:left}
   /* The scene tiles are hand-drawn SVG, not photography. We licence no stock, and
      an honest illustration in the brand's own light beats a stand-in photograph
      of somewhere the guide never went. */
-  .stthumb{display:block;width:100%;height:70px;border-radius:10px;overflow:hidden;
-    margin:-2px 0 10px;background:color-mix(in srgb,var(--orc) 8%,var(--paper))}
+  .stthumb{display:block;width:100%;height:52px;border-radius:9px;overflow:hidden;
+    margin:-1px 0 8px;background:color-mix(in srgb,var(--orc) 8%,var(--paper))}
   .stthumb svg{display:block;width:100%;height:100%}
   .st .time{font:800 11px/1 var(--body);color:var(--orc);letter-spacing:.03em}
-  .st .nm{font-weight:800;font-size:14px;margin:5px 0 3px;line-height:1.3}
-  .st .bl{font-size:12.5px;color:var(--soft);line-height:1.45}
+  .st .nm{font-weight:800;font-size:13.5px;margin:4px 0 2px;line-height:1.28}
+  .st .bl{font-size:12px;color:var(--soft);line-height:1.42}
+  /* The SECOND stop on each card lays its picture BESIDE the text instead of
+     above it. Measured: two stacked thumbnails made a card 769px tall at 293px
+     wide — a 2.63 ratio, which reads as a stretched phone rather than a phone.
+     Beside the text the thumb costs nothing extra in height, so the picture
+     survives and ~60px does not. Grid rather than flex so the existing markup
+     is untouched: the thumb spans the first three rows of column one and
+     time/name/blurb fall into column two. */
+  .st.wide{display:grid;grid-template-columns:66px 1fr;column-gap:10px;align-items:start}
+  .st.wide .stthumb{grid-row:1 / span 3;grid-column:1;width:66px;height:66px;margin:2px 0 0}
+  .st.wide .time,.st.wide .nm,.st.wide .bl{grid-column:2;min-width:0}
+  .st.wide .nm{margin-top:3px}
+  .st.wide .crew,.st.wide .badge{grid-column:1 / -1}
   .st.tip{border-left:3px solid var(--sun);background:#FFF6EA}
   .st.tip .tp{font-size:11px;font-weight:800;color:var(--sun);letter-spacing:.05em;text-transform:uppercase}
   /* THE CREW LINE IS THE PRODUCT. A stop with a time and a blurb is any travel
      blog; the line that names a person and what changed for them is the only
      thing on the card no one else can write. */
-  .st .crew{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding-top:9px;
-    border-top:1px dashed var(--line);font-size:12px;line-height:1.45;color:var(--soft)}
+  .st .crew{display:flex;gap:7px;align-items:flex-start;margin-top:8px;padding-top:7px;
+    border-top:1px dashed var(--line);font-size:11.5px;line-height:1.4;color:var(--soft)}
   .st .crew .cw{flex:none;font-weight:800;color:var(--orc);white-space:nowrap}
-  .st .badge{display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;
+  .st .badge{display:inline-block;margin-top:7px;font-size:10px;font-weight:800;
     background:color-mix(in srgb,var(--orc) 12%,#fff);color:var(--orc);
-    border:1px solid color-mix(in srgb,var(--orc) 26%,transparent);border-radius:999px;padding:3px 9px}
+    border:1px solid color-mix(in srgb,var(--orc) 26%,transparent);border-radius:999px;padding:2px 8px}
   .st .badge.q{background:color-mix(in srgb,var(--sun) 14%,#fff);color:#B36B08;
     border-color:color-mix(in srgb,var(--sun) 34%,transparent)}
   /* rail controls — arrows where there is room to hover, dots everywhere */
@@ -328,73 +343,88 @@
      {display:grid}` here would quietly put them back. */
   @media (hover:hover) and (min-width:1000px){ .railnav:not([hidden]){display:grid} }
 
-  /* ============ quests ============
-     THE BOARD PLAYS ITSELF when it scrolls into view: quests arrive one by one,
-     a named crew member ticks each one off, and that person's bar and score move
-     in the same beat. A static leaderboard is a picture of a game; this is the
-     game. Every step is failsafed to its finished state (see the script), so a
-     browser that never fires the observer shows the final board rather than an
-     empty one. */
+  /* ============ quests — A RACE, NOT A DASHBOARD ============
+     The first version was a bar chart beside a grid of cards with "+15 pts"
+     pills, and it read as a stats page: bars filling look like something
+     LOADING, four names with no context mean nothing, and the relationship
+     between the cards and the bars was never stated.
+
+     So it is one narrative in one phone, in the same visual language as the day
+     rail: a quest gets ticked by a named person, and THE BOARD REORDERS. Rank
+     is the information — you can see somebody overtake at a glance, where a bar
+     two pixels longer than its neighbour says nothing. Nina goes last to first
+     on the final quest, which is the whole point of playing.
+
+     THE ROWS ARE ABSOLUTELY POSITIONED and moved with translateY, because a
+     flex `order` change cannot animate — the swap would teleport, which is
+     exactly the not-a-game feeling being fixed. */
   .quests{background:linear-gradient(180deg,#fff,var(--paper))}
-  .qgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(26px,4vw,52px);
-    align-items:start;margin-top:44px}
-  .board{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    padding:26px 26px 22px;box-shadow:var(--shadow-sm)}
-  .board h3{font-size:18px;margin-bottom:4px}
-  .board .sub{color:var(--soft);font-size:14px;margin-bottom:20px}
-  .qrow{display:grid;grid-template-columns:104px 1fr 44px;align-items:center;gap:12px;margin:13px 0}
-  .qrow .who{font-weight:800;font-size:14px;display:flex;align-items:center;gap:7px}
-  .qrow .who .crown{opacity:0;transform:scale(.5);
-    transition:opacity .45s,transform .45s cubic-bezier(.3,1.6,.5,1)}
-  .qrow.lead .who .crown{opacity:1;transform:none}
-  .track{height:12px;border-radius:99px;background:color-mix(in srgb,var(--orc) 8%,var(--paper));
-    border:1px solid var(--line);overflow:hidden}
-  .track i{display:block;height:100%;width:0;border-radius:99px;background:var(--grad);
-    transition:width .9s cubic-bezier(.2,.8,.2,1)}
-  .qrow .pts{font-weight:800;font-size:14px;text-align:right;font-variant-numeric:tabular-nums;color:var(--orc)}
-  /* the row that just scored gets a beat of attention, then hands it back */
-  .qrow.hit .pts{animation:bump .55s cubic-bezier(.3,1.5,.5,1)}
-  @keyframes bump{0%{transform:scale(1)}38%{transform:scale(1.32);color:var(--ok)}100%{transform:scale(1)}}
-  /* the live feed — what a scoreboard cannot say on its own: WHO, and just now */
-  .qfeed{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
-    min-height:44px;display:flex;align-items:center}
-  .qfeed .fx{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;
-    color:var(--ink);transition:opacity .32s ease,transform .32s ease}
-  html.js .qfeed .fx{opacity:0;transform:translateY(7px)}
-  html.js .qfeed .fx.on{opacity:1;transform:none}
-  .qfeed .fp{flex:none;font-weight:900;font-size:12px;color:#fff;background:var(--ok);
-    border-radius:999px;padding:4px 9px}
-  .qfeed .fw{color:var(--soft);font-weight:600}
-  .qcards{display:grid;gap:14px}
-  .qc{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;
-    padding:18px 20px;box-shadow:var(--shadow-sm);
-    transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s ease,
-      border-color .35s ease,box-shadow .35s ease}
-  html.js .qc{opacity:0;transform:translateY(16px) scale(.97)}
-  html.js .qc.pop{opacity:1;transform:none}
-  .qc:hover{transform:translateY(-4px)}
-  .qc.done{border-color:color-mix(in srgb,var(--ok) 36%,transparent);
-    box-shadow:0 10px 28px color-mix(in srgb,var(--ok) 15%,transparent)}
-  .qc .qi{font-size:24px;line-height:1}
-  .qc .qt{font-weight:800;font-size:15.5px;margin:10px 0 5px;
-    transition:color .3s,text-decoration-color .3s}
-  .qc.done .qt{text-decoration:line-through;
-    text-decoration-color:color-mix(in srgb,var(--ok) 55%,transparent);color:var(--soft)}
-  .qc .qd{font-size:13.5px;color:var(--soft);line-height:1.5}
-  .qc .qp{display:inline-block;margin-top:12px;font-weight:800;font-size:12.5px;
-    background:var(--grad);color:#fff;border-radius:999px;padding:4px 12px}
-  .qc .qstamp{position:absolute;top:15px;right:16px;width:31px;height:31px;border-radius:50%;
-    display:grid;place-items:center;background:var(--ok);color:#fff;font-weight:900;font-size:15px;
-    opacity:0;transform:scale(.35) rotate(-28deg);
-    transition:opacity .3s ease,transform .5s cubic-bezier(.3,1.55,.5,1)}
-  .qc.done .qstamp{opacity:1;transform:none}
-  /* who ticked it — replaces the points pill once it is won, because the pill
-     answers "what is it worth" and this answers the more interesting question */
-  .qby{margin-top:12px;display:flex;align-items:center;gap:7px;font-size:12.5px;
-    font-weight:800;color:var(--ok);height:0;overflow:hidden;opacity:0;
-    transition:opacity .3s .1s,height .3s}
-  .qc.done .qby{opacity:1;height:20px}
-  .qc.done .qp{display:none}
+  .qgrid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(28px,5vw,60px);
+    align-items:center;margin-top:44px}
+  .qphone{background:var(--ink);border-radius:36px;padding:10px;box-shadow:var(--shadow);
+    max-width:330px;margin:0 auto;width:100%}
+  .qscreen{background:var(--paper);border-radius:28px;overflow:hidden}
+  .qhead{background:var(--grad);color:#fff;padding:17px 17px 15px}
+  .qhead h3{color:#fff;font-size:19px;font-weight:600}
+  .qhead .qsub{font-size:12px;opacity:.94;margin-top:4px}
+  .qbody{padding:14px 13px 15px}
+
+  /* the board. --rowh drives BOTH the container height and every row's offset,
+     so they cannot drift apart. */
+  .qboard{position:relative;--rowh:48px;height:calc(4 * var(--rowh));margin-bottom:13px}
+  .qrow{position:absolute;left:0;right:0;top:0;height:calc(var(--rowh) - 7px);
+    display:flex;align-items:center;gap:10px;padding:0 11px;
+    background:var(--card);border:1px solid var(--line);border-radius:13px;
+    box-shadow:0 1px 2px rgba(36,26,46,.05);overflow:hidden;
+    transform:translateY(calc(var(--r,0) * var(--rowh)));
+    transition:transform .85s cubic-bezier(.3,.9,.25,1),
+      border-color .5s ease,box-shadow .5s ease}
+  /* the row IS the bar — a fill behind the content, so the score is legible
+     without a separate track competing for the eye */
+  .qrow::before{content:"";position:absolute;left:0;top:0;bottom:0;z-index:0;
+    width:var(--w,0%);background:var(--grad);opacity:.13;
+    transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+  .qrow > *{position:relative;z-index:1}
+  .qrow.lead{border-color:color-mix(in srgb,var(--sun) 55%,transparent);
+    box-shadow:0 8px 22px color-mix(in srgb,var(--sun) 26%,transparent)}
+  .qmed{flex:none;width:24px;text-align:center;font-size:15px;line-height:1;
+    font-weight:900;color:var(--soft)}
+  .qnm{flex:1;min-width:0;font-weight:800;font-size:13.5px;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
+  .qsc{flex:none;font-weight:900;font-size:14px;color:var(--orc);
+    font-variant-numeric:tabular-nums}
+  .qrow.hit .qsc{animation:bump .8s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes bump{0%{transform:scale(1)}34%{transform:scale(1.34);color:var(--ok)}100%{transform:scale(1)}}
+
+  /* THE QUEST LIST — what a quest actually IS.
+     The board alone was the "confusing" half: four names and four numbers, with
+     nothing on screen saying what anybody had done to earn them. The list is
+     the cause and the board is the effect, both visible at once, and one quest
+     is left UNWON on purpose — the game is still running when you look away. */
+  .qlist{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .qlab{font:800 10px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;
+    color:var(--soft);margin-bottom:8px}
+  .qq{display:flex;align-items:center;gap:10px;padding:7px 0;
+    border-bottom:1px solid var(--line);
+    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+  .qq:last-child{border-bottom:0}
+  html.js .qq{opacity:0;transform:translateY(8px)}
+  html.js .qq.pop{opacity:1;transform:none}
+  .qqi{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+    font-size:14px;background:color-mix(in srgb,var(--orc) 8%,var(--paper));
+    border:1px solid var(--line);
+    transition:background .45s ease,border-color .45s ease,transform .5s cubic-bezier(.3,1.5,.5,1)}
+  .qq.done .qqi{background:var(--ok);border-color:var(--ok);color:#fff;font-weight:900;font-size:15px}
+  .qqx{flex:1;min-width:0}
+  .qqt{display:block;font-weight:800;font-size:12.5px;line-height:1.3;
+    transition:color .45s ease,text-decoration-color .45s ease}
+  .qq.done .qqt{color:var(--soft);text-decoration:line-through;
+    text-decoration-color:color-mix(in srgb,var(--ok) 55%,transparent)}
+  .qqw{display:block;font-size:11px;color:var(--soft);margin-top:2px;transition:color .45s}
+  .qq.done .qqw{color:var(--ok);font-weight:800}
+  .qqp{flex:none;font-weight:900;font-size:12px;color:var(--orc);
+    font-variant-numeric:tabular-nums}
+  .qq.open .qqp{color:var(--sun)}
 
   /* ============ dark wallet band ============ */
   .dark{background:
@@ -445,7 +475,12 @@
      font, or at any zoom — the failure mode of the obvious getBoundingClientRect
      version is a photo that lands somewhere in the margin. */
   .memband{background:linear-gradient(180deg,var(--paper),#fff 62%)}
-  .mem-wrap{display:grid;grid-template-columns:1fr 1.02fr;gap:clamp(30px,5vw,64px);
+  /* THE WORDS COME FIRST, then the thing they describe. An animation you meet
+     before you have been told what it is reads as decoration; the same
+     animation one paragraph later reads as proof. Copy is the first column on
+     a wide screen and the first block on a narrow one — no `order` anywhere,
+     so the DOM order is the reading order in both. */
+  .mem-wrap{display:grid;grid-template-columns:1.02fr 1fr;gap:clamp(30px,5vw,64px);
     align-items:center;margin-top:44px}
   .memstage{position:relative}
   .mphone{background:var(--ink);border-radius:36px;padding:10px;box-shadow:var(--shadow);
@@ -468,7 +503,7 @@
      rule as the reveal above: motion is the enhancement, never the gate. */
   .mshot{position:absolute;inset:0;margin:0;border-radius:9px;overflow:hidden;
     box-shadow:0 1px 3px rgba(36,26,46,.14);
-    transition:opacity .42s ease,transform .8s cubic-bezier(.22,.92,.28,1),box-shadow .5s ease .3s}
+    transition:opacity .7s ease,transform 1.25s cubic-bezier(.22,.92,.28,1),box-shadow .8s ease .5s}
   html.js .mshot{opacity:0;box-shadow:0 8px 22px rgba(36,26,46,.26);
     transform:translate(var(--fx,60px),var(--fy,-70px)) rotate(var(--fr,10deg)) scale(1.55)}
   html.js .mshot.in{opacity:1;transform:none;box-shadow:0 1px 3px rgba(36,26,46,.14)}
@@ -485,15 +520,26 @@
   .mcam .lens{width:9px;height:9px;border-radius:50%;background:#4A3A55}
   .mcam.flash .lens{background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.34)}
   /* the payoff card — the reason any of it matters */
-  .mstory{margin-top:14px;display:flex;align-items:center;gap:12px;
-    background:var(--grad);color:#fff;border-radius:16px;padding:14px 15px;
+  .mstory{margin-top:14px;background:var(--grad);color:#fff;border-radius:16px;
+    padding:14px 15px 13px;
     box-shadow:0 14px 34px color-mix(in srgb,var(--orc) 30%,transparent);
-    transition:opacity .5s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
-  html.js .mstory{opacity:0;transform:translateY(14px)}
+    transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  html.js .mstory{opacity:0;transform:translateY(16px)}
   html.js .mstory.on{opacity:1;transform:none}
+  .mstory .msh{display:flex;align-items:center;gap:11px}
   .mstory .si{font-size:22px;line-height:1}
-  .mstory b{display:block;font-size:14px}
-  .mstory span{font-size:12px;opacity:.94}
+  .mstory .mst b{display:block;font-size:14px}
+  .mstory .mst span{font-size:11.5px;opacity:.94}
+  /* the trip as one page — five days you can flick through, which is the
+     difference between a keepsake and a folder of photographs */
+  .mdays{display:flex;gap:6px;margin:12px 0 11px}
+  .mday{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;
+    font:800 9.5px/1 var(--body);letter-spacing:.04em;opacity:.95}
+  .mday i{display:block;width:100%;height:22px;border-radius:6px;
+    border:1px solid rgba(255,255,255,.45)}
+  .mgo{display:inline-flex;align-items:center;font:800 12px/1 var(--body);
+    background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);
+    border-radius:999px;padding:7px 13px}
   .memcopy .flist{margin:24px 0 0;padding:0;list-style:none}
   .memcopy .flist li{display:flex;gap:12px;align-items:flex-start;margin:15px 0;font-size:15.5px}
   .memcopy .flist .k{flex:none;width:24px;height:24px;border-radius:7px;display:grid;
@@ -529,7 +575,6 @@
     .pitch-grid{grid-template-columns:1fr}
     .crew-wrap,.wallet-wrap,.qgrid,.mem-wrap{grid-template-columns:1fr}
     .qrow{grid-template-columns:92px 1fr 40px}
-    .memstage{order:-1}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -667,15 +712,15 @@
             <div class="st">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD089"/><stop offset=".5" stop-color="#FBA05F"/><stop offset="1" stop-color="#E96A8C"/></linearGradient></defs><rect width="200" height="70" fill="url(#g1)"/><circle cx="150" cy="28" r="12" fill="#FFF4CE" opacity=".92"/><path d="M0 44h200v10H0z" fill="#B85A86" opacity=".35"/><g fill="#94406B" opacity=".62"><path d="M4 54l14-9 14 9v16H4z"/><path d="M38 58l12-7 12 7v12H38z"/><path d="M68 50l16-10 16 10v20H68z"/><path d="M106 59l11-6 11 6v11h-22z"/><path d="M134 55l15-9 15 9v15h-30z"/><path d="M170 60l13-7 13 7v10h-26z"/></g><g fill="#FFE7BE" opacity=".55"><rect x="12" y="58" width="4" height="5"/><rect x="76" y="55" width="4" height="6"/><rect x="88" y="55" width="4" height="6"/><rect x="144" y="62" width="4" height="5"/></g><path d="M0 66h200v4H0z" fill="#6B2E52" opacity=".45"/></svg></span>
               <div class="time">4:30 PM</div><div class="nm">🌅 Miradouro de Santa Luzia</div>
-              <div class="bl">Five minutes flat from the hotel — it explains the whole city in a glance.</div>
-              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>No stairs on this route, and there's a bench in the shade at the top.</span></div>
+              <div class="bl">Five flat minutes from the hotel, and the whole city in one glance.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>Step-free, and a bench in the shade at the top.</span></div>
             </div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">The tiles most people miss</div><div class="bl">The blue panels behind you show Lisbon before the 1755 earthquake — most people photograph the view and never turn around.</div></div>
-            <div class="st">
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">The tiles most people miss</div><div class="bl">The blue panels behind you show Lisbon before the 1755 earthquake.</div></div>
+            <div class="st wide">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A2350"/><stop offset="1" stop-color="#6B3560"/></linearGradient><radialGradient id="g2b" cx=".5" cy=".5"><stop offset="0" stop-color="#FFD79A" stop-opacity=".95"/><stop offset="1" stop-color="#FFD79A" stop-opacity="0"/></radialGradient></defs><rect width="200" height="70" fill="url(#g2)"/><rect x="78" y="18" width="44" height="52" rx="3" fill="#FFC97A"/><ellipse cx="100" cy="44" rx="64" ry="34" fill="url(#g2b)"/><path d="M94 36c-4 0-7 3-7 7s3 7 7 7 7-3 7-7V28h8" fill="none" stroke="#7A4020" stroke-width="2.4" opacity=".85"/><g fill="#2A1738" opacity=".6"><rect x="0" y="8" width="66" height="62"/><rect x="134" y="4" width="66" height="66"/></g><g fill="#FFE0A8" opacity=".38"><rect x="20" y="20" width="8" height="10" rx="1"/><rect x="44" y="32" width="8" height="10" rx="1"/><rect x="152" y="18" width="8" height="10" rx="1"/><rect x="176" y="34" width="8" height="10" rx="1"/></g></svg></span>
-              <div class="time">6:00 PM</div><div class="nm">🎶 Free fado, drifting from a doorway</div>
-              <div class="bl">Follow your ears downhill. No cover, no booking — it either happens or it doesn't, and it usually does.</div>
-              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Her first quest of the trip is hiding on this street.</span></div>
+              <div class="time">6:00 PM</div><div class="nm">🎶 Free fado, from a doorway</div>
+              <div class="bl">Follow your ears downhill. No cover, no booking.</div>
+              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Her first quest is hiding on this street.</span></div>
               <span class="badge q">🎯 Quest here · +15</span>
             </div>
           </div>
@@ -689,15 +734,15 @@
             <div class="st">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CFE3F2"/><stop offset="1" stop-color="#EADFC9"/></linearGradient></defs><rect width="200" height="70" fill="url(#g7)"/><rect x="0" y="34" width="200" height="36" fill="#E8DAB9"/><rect x="0" y="30" width="200" height="6" fill="#D6C4A0"/><g fill="#F5ECD9" stroke="#C9B78F" stroke-width="1.2"><path d="M14 66V47a9 9 0 0 1 18 0v19z"/><path d="M46 66V47a9 9 0 0 1 18 0v19z"/><path d="M78 66V47a9 9 0 0 1 18 0v19z"/><path d="M110 66V47a9 9 0 0 1 18 0v19z"/><path d="M142 66V47a9 9 0 0 1 18 0v19z"/><path d="M174 66V47a9 9 0 0 1 18 0v19z"/></g><rect x="0" y="66" width="200" height="4" fill="#C9B78F" opacity=".55"/><g fill="#fff" opacity=".55"><ellipse cx="40" cy="13" rx="30" ry="6"/><ellipse cx="152" cy="9" rx="34" ry="5"/></g></svg></span>
               <div class="time">9:30 AM</div><div class="nm">🏛️ Mosteiro dos Jerónimos</div>
-              <div class="bl">Stone carved like rope and seaweed, by people who had just worked out the sea went somewhere.</div>
-              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>There's a lift to the upper cloister — ask at the desk, it isn't signed.</span></div>
+              <div class="bl">Stone carved like rope and seaweed by people who had just found the sea.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>A lift to the upper cloister — ask at the desk.</span></div>
             </div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Skip the line that eats the morning</div><div class="bl">Buy the combined ticket at the Archaeology Museum door next door. Same ticket, a fraction of the queue.</div></div>
-            <div class="st">
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Skip the line that eats the morning</div><div class="bl">Buy the combined ticket next door at the Archaeology Museum. Same ticket, no queue.</div></div>
+            <div class="st wide">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><radialGradient id="g8" cx=".45" cy=".38"><stop offset="0" stop-color="#FFF6E4"/><stop offset="1" stop-color="#D9A55F"/></radialGradient></defs><rect width="200" height="70" fill="url(#g8)"/><g><ellipse cx="68" cy="40" rx="27" ry="17" fill="#E8B96F" stroke="#B9822F" stroke-width="2"/><ellipse cx="68" cy="38" rx="19" ry="12" fill="#F9DEA6"/><ellipse cx="63" cy="35" rx="6" ry="4" fill="#8A5220" opacity=".62"/><ellipse cx="75" cy="41" rx="5" ry="3" fill="#8A5220" opacity=".48"/></g><g opacity=".9"><ellipse cx="136" cy="49" rx="24" ry="15" fill="#E8B96F" stroke="#B9822F" stroke-width="2"/><ellipse cx="136" cy="47" rx="17" ry="11" fill="#F9DEA6"/><ellipse cx="132" cy="44" rx="5" ry="3.4" fill="#8A5220" opacity=".58"/></g><g fill="#fff" opacity=".55"><circle cx="158" cy="17" r="2.2"/><circle cx="170" cy="24" r="1.5"/><circle cx="148" cy="26" r="1.4"/></g></svg></span>
               <div class="time">11:15 AM</div><div class="nm">🥮 Pastéis de Belém</div>
-              <div class="bl">The original recipe, unchanged since 1837, still made behind a door nobody is allowed through. Eat them hot, standing up.</div>
-              <div class="crew"><span class="cw">🥜 The allergy</span><span>No nuts on the premises — confirmed. Ask for them straight from the oven.</span></div>
+              <div class="bl">The 1837 recipe, still made behind a door nobody gets through. Eat them hot.</div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>No nuts on the premises, confirmed.</span></div>
               <span class="badge q">🎯 Quest here · +10</span>
             </div>
           </div>
@@ -711,15 +756,15 @@
             <div class="st">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g9" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F26D5B"/><stop offset=".5" stop-color="#F7941D"/><stop offset="1" stop-color="#7E52A8"/></linearGradient></defs><rect width="200" height="70" fill="url(#g9)"/><g fill="#2A1A33" opacity=".26"><rect x="0" y="0" width="200" height="7"/></g><g fill="#fff" opacity=".3"><circle cx="40" cy="28" r="14"/><rect x="84" y="14" width="28" height="28" rx="6"/><path d="M138 42l16-27 16 27z"/></g><rect x="0" y="47" width="200" height="23" fill="#2A1A33" opacity=".42"/><g fill="#20142A"><ellipse cx="150" cy="60" rx="11" ry="5.5"/><circle cx="161" cy="54" r="4.6"/><path d="M164 50l3-5 2 5z"/><path d="M140 62l-2 6M158 63l2 6" stroke="#20142A" stroke-width="2.4"/></g></svg></span>
               <div class="time">11:00 AM</div><div class="nm">🎨 LX Factory</div>
-              <div class="bl">An old thread factory turned into a street of studios, murals and a bookshop with a bicycle hanging from the ceiling.</div>
-              <div class="crew"><span class="cw">🐾 Pixel</span><span>Dogs welcome throughout, water bowls out front, and every table here is outside anyway.</span></div>
+              <div class="bl">An old thread factory, now a street of studios and murals.</div>
+              <div class="crew"><span class="cw">🐾 Pixel</span><span>Dogs welcome, water bowls out front, tables outside.</span></div>
             </div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Go all the way to the back</div><div class="bl">Ler Devagar is at the far end past the car park — two storeys of books and the bicycle. Most people turn around before it.</div></div>
-            <div class="st">
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Go all the way to the back</div><div class="bl">Ler Devagar is past the car park — two storeys of books and a flying bicycle.</div></div>
+            <div class="st wide">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D2A46"/><stop offset="1" stop-color="#6E4257"/></linearGradient></defs><rect width="200" height="70" fill="url(#ga)"/><g fill="#FFD79A" opacity=".9"><rect x="10" y="12" width="34" height="4" rx="2"/><rect x="58" y="8" width="34" height="4" rx="2"/><rect x="106" y="12" width="34" height="4" rx="2"/><rect x="154" y="8" width="36" height="4" rx="2"/></g><g fill="#FFB65C" opacity=".24"><path d="M27 16l-15 23h30z"/><path d="M75 12l-15 25h30z"/><path d="M123 16l-15 23h30z"/><path d="M172 12l-15 25h30z"/></g><rect x="0" y="44" width="200" height="26" fill="#241730" opacity=".55"/><g fill="#F5EDE0" opacity=".82"><ellipse cx="38" cy="53" rx="11" ry="4"/><ellipse cx="100" cy="56" rx="11" ry="4"/><ellipse cx="162" cy="53" rx="11" ry="4"/></g></svg></span>
               <div class="time">1:00 PM</div><div class="nm">🍽️ Time Out Market</div>
-              <div class="bl">Twenty-odd of the city's best kitchens under one roof, so nobody has to agree on anything.</div>
-              <div class="crew"><span class="cw">🥜 The allergy</span><span>Three stalls confirmed peanut-free and marked in your guide — you don't have to ask twenty times.</span></div>
+              <div class="bl">Twenty of the city's best kitchens under one roof. Nobody has to agree.</div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>Three stalls confirmed peanut-free.</span></div>
             </div>
           </div>
         </div>
@@ -732,16 +777,16 @@
             <div class="st">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><radialGradient id="g3" cx=".5" cy=".16"><stop offset="0" stop-color="#EEF7DC"/><stop offset=".45" stop-color="#5E8A4E"/><stop offset="1" stop-color="#223B26"/></radialGradient></defs><rect width="200" height="70" fill="url(#g3)"/><g fill="none" stroke="#9DC088" opacity=".6"><ellipse cx="100" cy="28" rx="54" ry="17" stroke-width="3"/><ellipse cx="100" cy="37" rx="42" ry="13" stroke-width="3"/><ellipse cx="100" cy="46" rx="31" ry="10" stroke-width="2.6"/><ellipse cx="100" cy="54" rx="20" ry="7" stroke-width="2.2"/></g><ellipse cx="100" cy="61" rx="11" ry="4" fill="#132116"/><g fill="#3E6640" opacity=".72"><path d="M0 70V32c11 5 17 13 21 38z"/><path d="M200 70V28c-13 6-20 15-24 42z"/></g></svg></span>
               <div class="time">10:00 AM</div><div class="nm">🗝️ Quinta da Regaleira</div>
-              <div class="bl">A garden of towers, tunnels and a well you walk down into the earth on a spiral staircase.</div>
-              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Escape the well and she takes the lead on the board.</span></div>
+              <div class="bl">Towers, tunnels, and a well you walk down into the earth.</div>
+              <div class="crew"><span class="cw">⭐ Nina, 7</span><span>Escape the well and she takes the lead.</span></div>
               <span class="badge q">🎯 Quest here · +20</span>
             </div>
-            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Climb the well the right way</div><div class="bl">Enter from the bottom through the tunnels and come up into the light. Half the crowd walks down and misses the whole trick.</div></div>
-            <div class="st">
+            <div class="st tip"><div class="tp">🔭 Insider</div><div class="nm">Climb the well the right way</div><div class="bl">Enter from the bottom and come up into the light. Most people do it backwards.</div></div>
+            <div class="st wide">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#CCDFEC"/><stop offset="1" stop-color="#8CA6BC"/></linearGradient></defs><rect width="200" height="70" fill="url(#g4)"/><path d="M0 60q40-30 78-22t122-14v46H0z" fill="#6E8AA0" opacity=".5"/><g><rect x="72" y="28" width="26" height="34" fill="#E4B23C"/><rect x="98" y="34" width="22" height="28" fill="#D2453F"/><rect x="120" y="24" width="14" height="38" fill="#E4B23C"/><path d="M72 28h26l-13-11z" fill="#B8862A"/><path d="M120 24h14l-7-9z" fill="#B8862A"/><path d="M98 34h22l-11-8z" fill="#A8322D"/></g><g fill="#7B5218" opacity=".55"><rect x="80" y="42" width="5" height="8" rx="2"/><rect x="106" y="46" width="5" height="8" rx="2"/><rect x="125" y="38" width="4" height="7" rx="2"/></g><path d="M0 70v-9q52 11 100 0t100-4v13z" fill="#4C6478" opacity=".55"/><g fill="#fff" opacity=".4"><ellipse cx="42" cy="46" rx="40" ry="7"/><ellipse cx="166" cy="55" rx="44" ry="6"/></g></svg></span>
               <div class="time">2:00 PM</div><div class="nm">🏰 Palácio da Pena</div>
-              <div class="bl">The yellow-and-red palace on the ridge, usually with cloud pouring over the wall behind it.</div>
-              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>Take the shuttle from the gate — the walk up is twenty minutes of steps.</span></div>
+              <div class="bl">The yellow-and-red palace on the ridge, usually wearing a cloud.</div>
+              <div class="crew"><span class="cw">🎩 Grandpa Sal</span><span>Take the shuttle; the walk is twenty minutes of steps.</span></div>
             </div>
           </div>
         </div>
@@ -754,15 +799,15 @@
             <div class="st">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB765"/><stop offset=".48" stop-color="#F2718A"/><stop offset="1" stop-color="#7C4A96"/></linearGradient></defs><rect width="200" height="70" fill="url(#g5)"/><circle cx="64" cy="32" r="13" fill="#FFF1C4" opacity=".92"/><g stroke="#C0392B" stroke-width="2.6" fill="none" opacity=".82"><path d="M118 46V14M172 46V14"/><path d="M108 20h74"/><path d="M118 20q27 15 54 0"/></g><path d="M0 46h200v24H0z" fill="#6A3E86" opacity=".45"/><g fill="#FFEFC6" opacity=".42"><rect x="56" y="50" width="16" height="2" rx="1"/><rect x="58" y="56" width="12" height="2" rx="1"/><rect x="60" y="62" width="8" height="2" rx="1"/></g><g fill="#33203F"><path d="M20 52h36l-5 9H25z"/><rect x="31" y="44" width="15" height="8" rx="1.5"/></g></svg></span>
               <div class="time">6:30 PM</div><div class="nm">⛵ Sunset cruise on the Tejo</div>
-              <div class="bl">Out under the bridge as the light goes. The one thing on this trip that's just for the two of you.</div>
-              <div class="crew"><span class="cw">🎉 Ten years</span><span>Held for tonight because it's the only clear evening in the forecast.</span></div>
+              <div class="bl">Out under the bridge as the light goes — just the two of you.</div>
+              <div class="crew"><span class="cw">🎉 Ten years</span><span>Held for tonight — the only clear evening forecast.</span></div>
             </div>
-            <div class="st tip"><div class="tp">🔭 Plan B</div><div class="nm">If the weather turns</div><div class="bl">The rooftop at Park gives you the same light over the river without leaving dry land — and no booking needed.</div></div>
-            <div class="st">
+            <div class="st tip"><div class="tp">🔭 Plan B</div><div class="nm">If the weather turns</div><div class="bl">The rooftop at Park: same light over the river, no booking, dry land.</div></div>
+            <div class="st wide">
               <span class="stthumb"><svg viewBox="0 0 200 70" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A2C3E"/><stop offset="1" stop-color="#231523"/></linearGradient><radialGradient id="g6b" cx=".5" cy=".34"><stop offset="0" stop-color="#FFD79A" stop-opacity=".82"/><stop offset="1" stop-color="#FFD79A" stop-opacity="0"/></radialGradient></defs><rect width="200" height="70" fill="url(#g6)"/><ellipse cx="100" cy="32" rx="68" ry="30" fill="url(#g6b)"/><path d="M96 22c0-5 4-6 4-10 0 4 4 5 4 10a4 4 0 0 1-8 0z" fill="#FFC978"/><rect x="97" y="30" width="6" height="13" rx="1.5" fill="#F0E3D0"/><ellipse cx="100" cy="53" rx="78" ry="12" fill="#6B4433" opacity=".85"/><g fill="#F5EDE0"><ellipse cx="68" cy="51" rx="13" ry="5"/><ellipse cx="132" cy="51" rx="13" ry="5"/></g><g stroke="#D8CDBC" stroke-width="1.6" opacity=".8"><path d="M46 47v9M50 47v9M150 47v9M154 47v9"/></g></svg></span>
               <div class="time">8:30 PM</div><div class="nm">✨ Alma — two stars</div>
               <div class="bl">Booked six weeks out. Worth every minute of the wait.</div>
-              <div class="crew"><span class="cw">🥜 The allergy</span><span>Kitchen confirmed peanut-free by phone. Your card in Portuguese is on the phrase list.</span></div>
+              <div class="crew"><span class="cw">🥜 The allergy</span><span>Peanut-free kitchen, confirmed by phone.</span></div>
             </div>
           </div>
         </div>
@@ -777,27 +822,46 @@
   </div>
 </section>
 
-<!-- ============ QUESTS ============ -->
+<!-- ============ QUESTS ============
+     ONE story, not a chart beside a grid: a quest is ticked by a named person
+     and the board reorders under it. Ranks are absolute-positioned so a swap
+     can be SEEN happening — see the CSS note. -->
 <section class="band quests">
   <div class="wrap">
     <p class="eyebrow r">The fun part</p>
     <h2 class="big r d1">A trip the whole crew is playing.</h2>
-    <p class="lead sec-sub r d2">Every guide comes with quests, points and a live scoreboard — matched to who's on the trip and where you're actually going. It's the reason a seven-year-old asks to see the guide.</p>
+    <p class="lead sec-sub r d2">Every guide comes with quests — small, real things to go and do, built from the places already on your plan. Tick one off and the board moves on everyone's phone.</p>
     <div class="qgrid">
-      <div class="board r d2" id="board">
-        <h3>The Lisbon Quest 🏆</h3>
-        <div class="sub">Five days, one champion. Grandpa Sal is refereeing (and secretly winning).</div>
-        <div class="qrow" data-p="nina"><div class="who">⭐ Nina <span class="crown">👑</span></div><div class="track"><i data-w="90"></i></div><div class="pts" data-pts="45">0</div></div>
-        <div class="qrow" data-p="theo"><div class="who">📷 Theo <span class="crown">👑</span></div><div class="track"><i data-w="80"></i></div><div class="pts" data-pts="40">0</div></div>
-        <div class="qrow" data-p="maya"><div class="who">🧭 Maya <span class="crown">👑</span></div><div class="track"><i data-w="60"></i></div><div class="pts" data-pts="30">0</div></div>
-        <div class="qrow" data-p="sal"><div class="who">🎩 Grandpa Sal <span class="crown">👑</span></div><div class="track"><i data-w="50"></i></div><div class="pts" data-pts="25">0</div></div>
-        <div class="qfeed" id="qfeed"><span class="fx"><span class="fp">LIVE</span><span class="fw">Ticked off as you go — everyone sees it move.</span></span></div>
+      <div class="qphone r d2" id="qphone">
+        <div class="qscreen">
+          <div class="qhead">
+            <h3>The Lisbon Quest 🏆</h3>
+            <div class="qsub">Day 3 of 5 · five players, one trophy</div>
+          </div>
+          <div class="qbody">
+            <div class="qboard" id="qboard">
+              <div class="qrow" data-p="maya" style="--r:0"><span class="qmed">🥇</span><span class="qnm">🧭 Maya</span><span class="qsc" data-pts="30">30</span></div>
+              <div class="qrow" data-p="theo" style="--r:1"><span class="qmed">🥈</span><span class="qnm">📷 Theo</span><span class="qsc" data-pts="40">20</span></div>
+              <div class="qrow" data-p="sal"  style="--r:2"><span class="qmed">🥉</span><span class="qnm">🎩 Grandpa Sal</span><span class="qsc" data-pts="27">17</span></div>
+              <div class="qrow" data-p="nina" style="--r:3"><span class="qmed">4</span><span class="qnm">⭐ Nina, 7</span><span class="qsc" data-pts="45">10</span></div>
+            </div>
+            <div class="qlist" id="qlist">
+              <div class="qlab">The quests</div>
+              <div class="qq" data-q="tiles"><span class="qqi" data-i="📸">📸</span><span class="qqx"><span class="qqt">Find five tile patterns</span><span class="qqw" data-w="Nina · anywhere in Alfama">Nina · anywhere in Alfama</span></span><span class="qqp">15</span></div>
+              <div class="qq" data-q="bridge"><span class="qqi" data-i="🌉">🌉</span><span class="qqx"><span class="qqt">Land the bridge shot</span><span class="qqw" data-w="Theo · from the water, blue hour">Theo · from the water, blue hour</span></span><span class="qqp">20</span></div>
+              <div class="qq" data-q="nata"><span class="qqi" data-i="🥮">🥮</span><span class="qqx"><span class="qqt">Rate every pastel de nata</span><span class="qqw" data-w="Grandpa Sal · out of ten, no mercy">Grandpa Sal · out of ten, no mercy</span></span><span class="qqp">10</span></div>
+              <div class="qq" data-q="well"><span class="qqi" data-i="🗝️">🗝️</span><span class="qqx"><span class="qqt">Escape the Initiation Well</span><span class="qqw" data-w="Nina · up the spiral, into the light">Nina · up the spiral, into the light</span></span><span class="qqp">20</span></div>
+              <div class="qq open" data-q="ship"><span class="qqi" data-i="⛵">⛵</span><span class="qqx"><span class="qqt">Spot the ship hidden in the tiles</span><span class="qqw" data-w="Maya · still nobody has found it">Maya · still nobody has found it</span></span><span class="qqp">15</span></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="qcards" id="qcards">
-        <div class="qc" data-q="tiles"><span class="qstamp">✓</span><div class="qi">📸</div><div class="qt">Find five tile patterns</div><div class="qd">Photograph each one — bonus point for the oldest.</div><span class="qp">+15 pts</span><div class="qby"><span>✓ Nina got this one</span></div></div>
-        <div class="qc" data-q="well"><span class="qstamp">✓</span><div class="qi">🗝️</div><div class="qt">Escape the Initiation Well</div><div class="qd">Up the spiral staircase, into the light.</div><span class="qp">+20 pts</span><div class="qby"><span>✓ Nina got this one</span></div></div>
-        <div class="qc" data-q="bridge"><span class="qstamp">✓</span><div class="qi">📷</div><div class="qt">Land the bridge shot</div><div class="qd">The 25 de Abril, from the water, at blue hour.</div><span class="qp">+20 pts</span><div class="qby"><span>✓ Theo got this one</span></div></div>
-        <div class="qc" data-q="nata"><span class="qstamp">✓</span><div class="qi">🥮</div><div class="qt">Rate every pastel de nata</div><div class="qd">Out of ten. Grandpa Sal is a harsh judge.</div><span class="qp">+10 pts</span><div class="qby"><span>✓ Grandpa Sal got this one</span></div></div>
+      <div class="qcopy">
+        <ul class="flist r d3">
+          <li><span class="k">✓</span><span><b>Built from your actual trip.</b> Every quest is a real thing at a real place already on your plan — the well you're walking down on Thursday, the bridge you're sailing under on Friday. Never generic holiday bingo.</span></li>
+          <li><span class="k">✓</span><span><b>Matched to who's playing.</b> A seven-year-old gets things a seven-year-old can win. Grandpa Sal gets to judge every custard tart in Lisbon out of ten. Nobody is handed a quest they can't do.</span></li>
+          <li><span class="k">✓</span><span><b>Everyone sees it move.</b> Tick one off at the top of the hill and the board updates on every phone on the trip. It's the reason a child asks to look at the guide.</span></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -842,7 +906,17 @@
 <section class="band memband" id="memories">
   <div class="wrap">
     <div class="mem-wrap">
-      <div class="memstage r">
+      <div class="memcopy">
+        <p class="eyebrow r">While you're there, and long after</p>
+        <h2 class="big r d1">The photos find their own way home.</h2>
+        <p class="lead r d2">Take pictures the way you always do. vacayi reads where and when each one was taken and drops it onto the right stop, on the right day — no tagging, no sorting, no album to build afterwards. By the time you land home the trip has written itself back into the guide.</p>
+        <ul class="flist r d3">
+          <li><span class="k">✓</span><span><b>It happens by itself.</b> A photo taken at the viewpoint lands on the viewpoint. The day comes first and the place second, so turning up two hours late — or on a completely different afternoon — still finds the right stop.</span></li>
+          <li><span class="k">✓</span><span><b>Nothing leaves your phone.</b> No upload, no copy on our servers, nothing to sign away. Delete a picture and it's gone from the guide with it.</span></li>
+          <li><span class="k">✓</span><span><b>You end up with something to show people.</b> Not a camera roll of four hundred pictures — the whole trip in order, day by day, with your photos already sitting where they happened and every quest somebody won. Open it at the table and walk them through it.</span></li>
+        </ul>
+      </div>
+      <div class="memstage r d2">
         <div class="mcam" id="mcam"><span class="lens"></span>Taking photos…</div>
         <div class="mphone">
           <div class="mscreen">
@@ -866,20 +940,25 @@
                 </div>
                 <div class="mcount" data-count="3">3 photos · yours</div>
               </div>
-              <div class="mstory" id="mstory"><span class="si">📖</span><span><b>Day 1 is written</b><span>6 photos, placed by themselves</span></span></div>
+              <!-- THE PAYOFF, and it is a KEEPSAKE rather than a spinner. The
+                   photos landing is the mechanism; this is the thing you are
+                   left holding. "Show someone" is deliberate and honest — the
+                   photos live on this phone, so the way you share them is to
+                   open it and hand it over, not to upload anything. -->
+              <div class="mstory" id="mstory">
+                <div class="msh"><span class="si">📖</span><span class="mst"><b>Your Lisbon story</b><span>5 days · 47 photos · 12 quests won</span></span></div>
+                <div class="mdays">
+                  <span class="mday"><i style="background:linear-gradient(160deg,#FFD089,#E96A8C)"></i>D1</span>
+                  <span class="mday"><i style="background:linear-gradient(160deg,#CFE3F2,#D9A55F)"></i>D2</span>
+                  <span class="mday"><i style="background:linear-gradient(160deg,#F26D5B,#7E52A8)"></i>D3</span>
+                  <span class="mday"><i style="background:linear-gradient(160deg,#EEF7DC,#5E8A4E)"></i>D4</span>
+                  <span class="mday"><i style="background:linear-gradient(160deg,#FFB765,#7C4A96)"></i>D5</span>
+                </div>
+                <span class="mgo">Show someone ↗</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="memcopy">
-        <p class="eyebrow r">While you're there, and long after</p>
-        <h2 class="big r d1">The photos find their own way home.</h2>
-        <p class="lead r d2">Take pictures the way you always do. vacayi reads where and when each one was taken and drops it onto the right stop, on the right day — no tagging, no sorting, no album to build afterwards. By the time you land home the trip has written itself back into the guide.</p>
-        <ul class="flist r d3">
-          <li><span class="k">✓</span><span><b>It happens by itself.</b> A photo taken at the viewpoint lands on the viewpoint. The day comes first and the place second, so turning up two hours late — or on a completely different afternoon — still finds the right stop.</span></li>
-          <li><span class="k">✓</span><span><b>Nothing leaves your phone.</b> No upload, no copy on our servers, nothing to sign away. Delete a picture and it's gone from the guide with it.</span></li>
-          <li><span class="k">✓</span><span><b>And the guide becomes the keepsake.</b> Every day, every stop, every quest somebody won — with your own photos already sitting where they happened. Not a camera roll of four hundred pictures. The trip, in order, the way you lived it.</span></li>
-        </ul>
       </div>
     </div>
   </div>
@@ -1106,7 +1185,7 @@
     (function step(){
       if (demoTaken || i >= chips.length) { done(); return; }
       chips[i].setAttribute("aria-pressed", "true"); refresh(); i++;
-      demoTimer = setTimeout(step, 1150);
+      demoTimer = setTimeout(step, 2000);
     })();
   }, function(){
     chips.forEach(function(c){ c.setAttribute("aria-pressed", "true"); }); refresh();
@@ -1117,73 +1196,83 @@
   // BASE + STEPS must land exactly on each row's data-pts, and the run ends by
   // SNAPPING to the data attributes regardless — so if the arithmetic here ever
   // drifts, the board still finishes correct rather than subtly wrong.
-  var board = $("#board"), qcards = $("#qcards"), qfeed = $("#qfeed");
-  if (board && qcards && qfeed) {
-    var NAME = { nina:"Nina", theo:"Theo", maya:"Maya", sal:"Grandpa Sal" };
-    var BASE = { nina:10, theo:20, maya:30, sal:15 };
-    // Bars are drawn as a share of TOP. It is 50 rather than the winning 45 so
-    // the leader's bar is not pegged full — and because every data-w in the
-    // markup must equal round(pts/TOP*100) EXACTLY. They disagreed once: the
-    // bars animated to one set of widths and then snapped to another the
-    // instant the run finished, a visible jerk at the end of the sequence.
-    // check-legal-html.mjs now asserts the arithmetic so it cannot drift again.
-    var TOP = 50;
+  //
+  // RANK is the story. Positions are recomputed after every step and written to
+  // --r, and the rows transition their transform, so an overtake is a thing you
+  // watch rather than a number you compare. Nina is deliberately last until the
+  // final quest.
+  var qboard = $("#qboard"), qlist = $("#qlist");
+  if (qboard && qlist) {
+    var NAME = { nina: "Nina", theo: "Theo", maya: "Maya", sal: "Grandpa Sal" };
+    var BASE = { nina: 10, theo: 20, maya: 30, sal: 17 };
+    var TOP = 50; // the bar behind each row is its score as a share of this
+    var MEDAL = ["🥇", "🥈", "🥉", "4"];
     var STEPS = [
-      { q:"tiles",  who:"nina", pts:15, what:"found five tile patterns" },
-      { q:"bridge", who:"theo", pts:20, what:"landed the bridge shot" },
-      { q:"nata",   who:"sal",  pts:10, what:"rated every pastel de nata" },
-      { q:"well",   who:"nina", pts:20, what:"escaped the Initiation Well" }
+      { q: "tiles",  who: "nina", pts: 15 },
+      { q: "bridge", who: "theo", pts: 20 },
+      { q: "nata",   who: "sal",  pts: 10 },
+      { q: "well",   who: "nina", pts: 20 }
     ];
     var rows = {};
-    $$(".qrow", board).forEach(function(r){ rows[r.getAttribute("data-p")] = r; });
-    function setRow(k, pts){
-      var r = rows[k]; if (!r) return;
-      $(".pts", r).textContent = String(pts);
-      $(".track i", r).style.width = Math.round(pts / TOP * 100) + "%";
-    }
-    function crown(){
-      var best = null, bp = -1;
-      Object.keys(rows).forEach(function(k){
-        var v = +$(".pts", rows[k]).textContent;
-        if (v > bp) { bp = v; best = k; }
+    $$(".qrow", qboard).forEach(function(r){ rows[r.getAttribute("data-p")] = r; });
+
+    /** Rank every row by score and move it there. Ties keep their order. */
+    function rank(score){
+      var order = Object.keys(rows).sort(function(a, b){ return score[b] - score[a]; });
+      order.forEach(function(k, i){
+        rows[k].style.setProperty("--r", String(i));
+        rows[k].classList.toggle("lead", i === 0);
+        $(".qmed", rows[k]).textContent = MEDAL[i];
       });
-      Object.keys(rows).forEach(function(k){ rows[k].classList.toggle("lead", k === best); });
     }
-    function say(html){
-      var fx = $(".fx", qfeed); if (!fx) return;
-      fx.classList.remove("on");
-      setTimeout(function(){ fx.innerHTML = html; fx.classList.add("on"); }, 200);
+    function paintScores(score){
+      Object.keys(rows).forEach(function(k){
+        $(".qsc", rows[k]).textContent = String(score[k]);
+        rows[k].style.setProperty("--w", Math.round(score[k] / TOP * 100) + "%");
+      });
+    }
+    /** Tick a quest off in the list. The icon becomes the tick, the subtitle
+        becomes who won it — the cause, right above the board that moves. */
+    function win(q, who){
+      var el = $('.qq[data-q="' + q + '"]', qlist); if (!el) return;
+      el.classList.add("done");
+      $(".qqi", el).textContent = "✓";
+      $(".qqw", el).textContent = NAME[who] + " got this one";
+    }
+    function resetQuest(el){
+      el.classList.remove("done", "pop");
+      $(".qqi", el).textContent = $(".qqi", el).getAttribute("data-i");
+      $(".qqw", el).textContent = $(".qqw", el).getAttribute("data-w");
     }
     function finishQuests(){
-      $$(".qc", qcards).forEach(function(c){ c.classList.add("pop", "done"); });
-      Object.keys(rows).forEach(function(k){
-        var p = $(".pts", rows[k]), i = $(".track i", rows[k]);
-        p.textContent = p.getAttribute("data-pts");
-        i.style.width = i.getAttribute("data-w") + "%";
-      });
-      crown();
-      var fx = $(".fx", qfeed); if (fx) fx.classList.add("on");
+      var end = {};
+      Object.keys(rows).forEach(function(k){ end[k] = +$(".qsc", rows[k]).getAttribute("data-pts"); });
+      paintScores(end); rank(end);
+      $$(".qq", qlist).forEach(function(el){ el.classList.add("pop"); });
+      STEPS.forEach(function(s){ win(s.q, s.who); });
     }
-    whenSeen(board, function(done){
-      var qs = $$(".qc", qcards);
-      qs.forEach(function(c, i){ setTimeout(function(){ c.classList.add("pop"); }, i * 110); });
+    whenSeen(qboard, function(done){
       var score = {};
-      Object.keys(BASE).forEach(function(k){ score[k] = BASE[k]; setRow(k, BASE[k]); });
-      crown();
+      Object.keys(BASE).forEach(function(k){ score[k] = BASE[k]; });
+      paintScores(score); rank(score);
+      var qs = $$(".qq", qlist);
+      qs.forEach(resetQuest);
+      qs.forEach(function(el, i){ setTimeout(function(){ el.classList.add("pop"); }, 300 + i * 190); });
+
       STEPS.forEach(function(s, i){
         setTimeout(function(){
-          var card = $('.qc[data-q="' + s.q + '"]', qcards);
-          if (card) card.classList.add("done");
-          score[s.who] += s.pts;
-          setRow(s.who, score[s.who]);
-          var row = rows[s.who];
-          if (row) { row.classList.add("hit"); setTimeout(function(){ row.classList.remove("hit"); }, 640); }
-          crown();
-          say('<span class="fp">+' + s.pts + '</span><span>' + NAME[s.who] + '</span>' +
-              '<span class="fw">' + s.what + '</span>');
-        }, 820 + i * 1250);
+          // the quest is ticked FIRST, then the board moves — cause before
+          // effect, or the ranks reorder for no reason anyone can see
+          win(s.q, s.who);
+          setTimeout(function(){
+            score[s.who] += s.pts;
+            paintScores(score); rank(score);
+            var row = rows[s.who];
+            if (row) { row.classList.add("hit"); setTimeout(function(){ row.classList.remove("hit"); }, 820); }
+          }, 420);
+        }, 1500 + i * 2400);
       });
-      setTimeout(function(){ finishQuests(); done(); }, 820 + STEPS.length * 1250 + 700);
+      setTimeout(function(){ finishQuests(); done(); }, 1500 + STEPS.length * 2400 + 900);
     }, finishQuests);
   }
 
@@ -1218,13 +1307,13 @@
             var c = $(".mcount", stop);
             if (c) c.textContent = label($$(".mshot.in", stop).length);
           }
-        }, 420 + i * 500);
+        }, 800 + i * 950);
       });
       setTimeout(function(){
         if (cam) cam.classList.remove("on");
         if (story) story.classList.add("on");
         done();
-      }, 420 + shots.length * 500 + 550);
+      }, 800 + shots.length * 950 + 900);
     }, finishMem, true);
   }
 
