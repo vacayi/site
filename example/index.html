@@ -224,6 +224,29 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
   background:var(--mist);color:var(--soft);border:1px solid var(--line);
 }
 .tag.cost{background:var(--okbg);color:var(--ok);border-color:transparent}
+.tag.cost.freepill{background:#E7F5EE;color:#1C7150;font-weight:800}
+/* ---------- the cost picture ----------
+   Word-pills for the price bands and the day chip. Cards are white in every
+   theme, so these pairs are chosen for ≥4.5:1 on white and asserted by
+   check-render's contrast pass — the word carries the meaning, the colour
+   only reinforces it (never colour alone). */
+.pricepill{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;
+  padding:3px 10px;flex:none}
+.pb-budget{background:#E7F5EE;color:#1C7150}
+.pb-moderate{background:#E3F1F4;color:#0E6473}
+.pb-pricey{background:#FBF1DC;color:#7A5A06}
+.pb-splurge{background:#FBE9E7;color:#B03042}
+.costchip{display:flex;align-items:center;gap:8px;margin:8px 0 2px;flex-wrap:wrap}
+.costhead{font-size:13px;font-weight:800;color:var(--ink);background:var(--okbg);
+  border-radius:999px;padding:4px 12px}
+.costwhy{font-size:12.5px;color:var(--soft);background:var(--paper2,#faf7f2);
+  border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:6px;
+  flex-basis:100%}
+.costrow{display:flex;justify-content:space-between;gap:14px;padding:3px 0}
+.costrow b{white-space:nowrap}
+.costquiet{color:var(--soft);opacity:.85}
+.costwarn{color:#7A5A06;font-weight:600}
+.costsum b{display:block;margin-bottom:2px}
 .tag.time{background:var(--warnbg);color:var(--warn);border-color:transparent}
 .forwho{background:var(--mist);border-radius:12px;padding:10px 12px;margin:10px 0;font-size:13px}
 .forwho div{margin-bottom:5px}
@@ -411,6 +434,26 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
 .eatgh{font-family:var(--display);font-weight:700;font-size:14px;margin:0 0 7px;
   display:flex;align-items:center;gap:7px;color:var(--accent)}
 /* grounded place photo — a little square thumbnail (self-contained data URI) */
+
+.expwrap{margin:10px 0 4px;padding-top:10px;border-top:1px dashed var(--line)}
+.exphd{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px}
+.expcard{display:flex;align-items:center;gap:10px;padding:8px;margin-bottom:6px;
+  border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit;
+  background:var(--card);transition:border-color .15s ease,transform .15s ease}
+.expcard:hover{border-color:var(--accent);transform:translateY(-1px)}
+.expimg{width:56px;height:56px;flex:0 0 56px;object-fit:cover;border-radius:10px;display:block}
+.expbody{flex:1 1 auto;min-width:0}
+.expname{display:block;font-weight:600;font-size:13px;line-height:1.3;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.expmeta{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+
+.expprice{flex:0 0 auto;text-align:right;font-weight:700;font-size:13px;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.expfrom{display:block;font-size:10px;font-weight:500;color:var(--muted);
+  text-transform:lowercase}
+.expaff{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 7px;margin-right:6px;vertical-align:1px}
+.expnote{font-size:10.5px;color:var(--muted);line-height:1.45;margin-top:2px}
 .pphoto{margin:2px 0 10px}
 .pphoto img{width:112px;height:112px;object-fit:cover;border-radius:14px;display:block;
   box-shadow:0 1px 8px color-mix(in srgb,var(--ink) 16%,transparent)}
@@ -723,9 +766,13 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
 .bkhide{display:none}
 .bkattrow{margin-top:9px}
 .bkattachbtn{border-style:dashed}
-.bkatt.has{display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;padding:7px;border:1px solid var(--line);border-radius:12px;background:var(--mist);font:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
-.bkatt.has img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:none}
-.bkatt.has span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bkatt.has{display:flex;align-items:center;gap:6px;width:100%;margin-top:10px;padding:6px 7px;border:1px solid var(--line);border-radius:12px;background:var(--mist)}
+.bkattopen{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:0;border:0;background:none;font:inherit;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.bkattopen img{width:44px;height:44px;object-fit:cover;border-radius:8px;flex:none}
+.bkattph{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:8px;background:var(--paper);border:1px solid var(--line);font-style:normal;font-size:20px}
+.bkattopen span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bkattx{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--paper);color:var(--dim);font:inherit;font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center}
+.bkattx:hover{background:#F7E2E6;border-color:#E4A7B2;color:#B03A50}
 
 /* ---------- service rows (health, transport, money, docs) ---------- */
 .svc{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
@@ -894,6 +941,8 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="wxstatus" id="wxstatus"></div>
   </div>
 
+  <div class="callout fact reveal costsum"><b>What the days add up to</b>On-the-ground spend ≈ €272–€272 for 4 of you, plus what you've booked. 2 places have no listed price.</div>
+
   <div class="card reveal">
     <h3>Who's going</h3>
     <div class="person">
@@ -941,14 +990,14 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 
   <div class="card stcard reveal">
     <h3>💬 Straight talk</h3>
-    <p class="stlead">Everything we know is imperfect about this plan, in one place: the calls we made for you, the things worth checking yourself, and anything we could not confirm. Each one says what to do about it.</p>
-    <p class="stclean">This plan passed every check we run — no clashing times, no stop you cannot reach, nothing stated that we could not verify. Hours and prices still move, so call ahead for anything you are counting on.</p>
+    <p class="stlead">The calls we made for you, what's worth checking yourself, and what we could not confirm — with a fix for each.</p>
+    <p class="stclean">This plan passed every check we run. Hours and prices still move — call ahead for anything you are counting on.</p>
     
   </div>
 </section>
 <section class="panel" data-panel="bookings" role="tabpanel">
   <h2 class="reveal">Your booking wallet</h2>
-  <p class="reveal bklead">Everything this trip needs, in one place — what's booked, what still needs doing, and one tap to book it. Tick things off as you go.</p>
+  <p class="reveal bklead">Everything to book, in one place. Tick things off as you go.</p>
   <div class="bkbar reveal">
     <div class="wring" id="wring" style="--p:20" role="img" aria-label="2 of 10 sorted"><b id="wringpct">20%</b></div>
     <div class="wsum">
@@ -983,13 +1032,25 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Boston Logan (BOS) &rarr; Lisbon (LIS)</div>
     <p class="rdet">Overnight, arriving morning of Day 1.</p>
     
+    
     <div class="acts wtear">
       
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lisbon%20Airport">Directions →</a>
+      
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lisbon%20(LIS)">Arrival →</a>
       
-      
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="0">📎 Attach confirmation</button></div>
     <div class="callout warn"><b>Verify</b>Check the terminal the day before — TAP has moved gates at BOS.</div>
   </div>
@@ -1007,13 +1068,25 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Memmo Alfama Hotel</div>
     <p class="rdet">Family room, 5 nights. Dog-friendly confirmed.</p>
     <p class="rdet">Tv. das Merceeiras 27, 1100-348 Lisboa</p>
+    
     <div class="acts wtear">
       
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Memmo%20Alfama%20Hotel%20Lisboa">Directions →</a>
       
-      <a class="btn" href="tel:+351210495660">Call</a>
       
+      <a class="btn" href="tel:+351210495660">Call</a>
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="1">📎 Attach confirmation</button></div>
     
   </div>
@@ -1032,6 +1105,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Lisbon, Portugal</div>
     <p class="rdet">Metro red line to the centre in 20 minutes (~€1.80), or a €15 Bolt straight to the hotel with five people and a dog — worth it on arrival day.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=transfer&amp;city=Lisbon%2C%20Portugal&amp;from=2026-09-12&amp;lang=en">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lisbon%2C%20Portugal">Directions →</a>
@@ -1039,6 +1113,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="2">📎 Attach confirmation</button></div>
     
   </div>
@@ -1056,6 +1141,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Lisbon, Portugal</div>
     <p class="rdet">Set up data before you travel — roaming is easiest to arrange while you still have signal at home.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=esim&amp;city=Lisbon%2C%20Portugal&amp;from=2026-09-12&amp;lang=en">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Lisbon%2C%20Portugal">Directions →</a>
@@ -1063,6 +1149,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="3">📎 Attach confirmation</button></div>
     
   </div>
@@ -1080,6 +1177,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Memmo Alfama Terrace</div>
     <p class="rdet">You asked us to check what&#39;s included. Confirm the meal plan with the property directly — a rate code is the only thing that settles it.</p>
     
+    
     <div class="acts wtear">
       
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Memmo%20Alfama%20Hotel%20Lisboa">Directions →</a>
@@ -1087,6 +1185,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="9">📎 Attach confirmation</button></div>
     
   </div>
@@ -1105,6 +1214,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Castelo de São Jorge</div>
     <p class="rdet">Buy tickets online to skip the box-office queue.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://castelodesaojorge.pt">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Castelo%20de%20S%C3%A3o%20Jorge%20Lisboa">Directions →</a>
@@ -1112,6 +1222,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="4">📎 Attach confirmation</button></div>
     
   </div>
@@ -1129,6 +1250,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Mosteiro dos Jerónimos</div>
     <p class="rdet">Combined ticket with Belém Tower online saves the second queue.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://www.mosteirojeronimos.gov.pt">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Mosteiro%20dos%20Jer%C3%B3nimos%20Lisboa">Directions →</a>
@@ -1136,6 +1258,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="5">📎 Attach confirmation</button></div>
     
   </div>
@@ -1153,6 +1286,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Palácio da Pena</div>
     <p class="rdet">Timed entry sells out — book the slot before you leave Lisbon.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=tour&amp;city=Pal%C3%A1cio%20da%20Pena&amp;near=Lisbon%2C%20Portugal&amp;from=2026-09-15&amp;lang=en">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Pal%C3%A1cio%20Nacional%20da%20Pena%20Sintra">Directions →</a>
@@ -1160,6 +1294,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="6">📎 Attach confirmation</button></div>
     
   </div>
@@ -1177,6 +1322,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Cais das Colunas sunset cruise</div>
     <p class="rdet">Sunset slots sell out days ahead in September — book now.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=tour&amp;city=Cais%20das%20Colunas%20sunset%20cruise&amp;near=Lisbon%2C%20Portugal&amp;from=2026-09-16&amp;lang=en">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Cais%20das%20Colunas%20Lisboa">Directions →</a>
@@ -1184,6 +1330,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="7">📎 Attach confirmation</button></div>
     
   </div>
@@ -1201,6 +1358,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="rroute">Alma</div>
     <p class="rdet">Reserve well ahead — this is the hardest table in Lisbon.</p>
     
+    
     <div class="acts wtear">
       <a class="btn bkgo" target="_blank" rel="noopener" href="https://www.almalisboa.pt">Book now ↗</a>
       <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Alma%20Henrique%20S%C3%A1%20Pessoa%20Lisboa">Directions →</a>
@@ -1208,6 +1366,17 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
+    
+    <!-- THE WHOLE LIST, INCLUDING THE ONE THE BUTTON POINTS AT.
+         It used to slice(1) on the reasoning that repeating the Book-now
+         target is noise. But the button is an ACTION and the card is the
+         INFORMATION that decides whether to take it - the photograph, the
+         rating and its count, the duration, the price, free cancellation. The
+         wallet row was asking somebody to commit to a ticket while showing
+         none of it, on the one screen whose whole job is what still needs
+         arranging. The affiliate disclosure rides with the block, so it is
+         disclosed wherever it earns. -->
+    
     <div class="bkattrow"><button class="btn bkattachbtn" data-bkattach="8">📎 Attach confirmation</button></div>
     
   </div>
@@ -1243,6 +1412,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   <div class="dayhead reveal">
     <h2>Landing soft in Alfama</h2>
     <div class="meta">Saturday, September 12 · old town</div>
+    
     
     <div class="dayfc" id="dayfc1" data-date="2026-09-12"></div>
     <p style="font-size:14px;color:var(--soft)">Ease in gently after the flight — one hill, one viewpoint, an early dinner steps from the hotel, and everyone in bed before the jet lag bites.</p>
@@ -1300,6 +1470,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="0:0" data-sname="Memmo Alfama Terrace">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="memmo alfama terrace">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1359,6 +1530,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="0:1" data-sname="Miradouro de Santa Luzia">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="miradouro de santa luzia">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1410,6 +1582,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="0:2" data-sname="Fado in the square">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="fado in the square">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1429,6 +1602,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <h2>The castle, the tram, the tarts</h2>
     <div class="meta">Sunday, September 13 · the greatest hits, done right</div>
     
+    <div class="costchip">
+    <span class="costhead">≈ €60</span>
+    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
+    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€60</b></div><div class="costrow"><span>Day 2 lunch</span><b></b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+  </div>
     <div class="dayfc" id="dayfc2" data-date="2026-09-13"></div>
     <p style="font-size:14px;color:var(--soft)">Up to the castle before the heat and the crowds, down through Alfama&#39;s tangle, a ride on the famous 28, and an afternoon reward that Nina will remember longer than any of it.</p>
     <div class="planb">
@@ -1489,6 +1667,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="1:0" data-sname="Castelo de São Jorge">✏️ Edit</button>
       <a class="btn" target="_blank" rel="noopener" href="https://castelodesaojorge.pt">Official tickets ↗</a>
     </div>
+    
     <div class="notes" data-notes="castelo de sao jorge">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1548,6 +1727,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="1:1" data-sname="Tram 28">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="tram 28">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1607,6 +1787,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="1:2" data-sname="Manteigaria">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="manteigaria">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1626,6 +1807,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <h2>Belém, by the water</h2>
     <div class="meta">Monday, September 14 · monuments and monastery</div>
     
+    <div class="costchip">
+    <span class="costhead">≈ €72</span>
+    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
+    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€72</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+  </div>
     <div class="dayfc" id="dayfc3" data-date="2026-09-14"></div>
     <p style="font-size:14px;color:var(--soft)">The grand, flat, riverside day — perfect after two on the hills. Monastery, tower, the original tarts, and an afternoon that&#39;s all downhill and sea air.</p>
     <div class="planb">
@@ -1686,6 +1872,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="2:0" data-sname="Mosteiro dos Jerónimos">✏️ Edit</button>
       <a class="btn" target="_blank" rel="noopener" href="https://www.mosteirojeronimos.gov.pt">Tickets ↗</a>
     </div>
+    
     <div class="notes" data-notes="mosteiro dos jeronimos">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1743,6 +1930,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="2:1" data-sname="Pastéis de Belém">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="pasteis de belem">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1800,6 +1988,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="2:2" data-sname="Torre de Belém">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="torre de belem">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1859,6 +2048,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="2:3" data-sname="LX Factory">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="lx factory">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1878,6 +2068,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <h2>Sintra, into the fairy tale</h2>
     <div class="meta">Tuesday, September 15 · day trip</div>
     
+    <div class="costchip">
+    <span class="costhead">≈ €140</span>
+    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
+    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€140</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+  </div>
     <div class="dayfc" id="dayfc4" data-date="2026-09-15"></div>
     <p style="font-size:14px;color:var(--soft)">The one big excursion: a misty mountain of palaces half an hour from the city. Pick two, not five, keep it slow, and be back for the anniversary dinner.</p>
     <div class="planb">
@@ -1940,6 +2135,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="3:0" data-sname="Quinta da Regaleira">✏️ Edit</button>
       <a class="btn" target="_blank" rel="noopener" href="https://www.regaleira.pt">Tickets ↗</a>
     </div>
+    
     <div class="notes" data-notes="quinta da regaleira">
       <div class="nlist"></div>
       <div class="nadd">
@@ -1997,6 +2193,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="3:1" data-sname="Palácio da Pena">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="palacio da pena">
       <div class="nlist"></div>
       <div class="nadd">
@@ -2016,6 +2213,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <h2>Slow morning, big night</h2>
     <div class="meta">Wednesday, September 16 · anniversary</div>
     
+    <div class="costchip">
+    <span class="costhead">2 unpriced</span>
+    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
+    <div class="pwhy costwhy" hidden><div class="costrow"><span>Day 5 lunch<br>Day 5 dinner</span><b></b></div><div class="costrow"><span>Not priced anywhere: 2 — counted, not guessed</span><b>—</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+  </div>
     <div class="dayfc" id="dayfc5" data-date="2026-09-16"></div>
     <p style="font-size:14px;color:var(--soft)">A deliberately gentle day — a market, a park, a river cruise at golden hour — wrapped around the evening that matters. Ten years, one very good table.</p>
     <div class="planb">
@@ -2076,6 +2278,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="4:0" data-sname="Time Out Market">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="time out market">
       <div class="nlist"></div>
       <div class="nadd">
@@ -2135,6 +2338,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="4:1" data-sname="Cais das Colunas sunset cruise">✏️ Edit</button>
       
     </div>
+    
     <div class="notes" data-notes="cais das colunas sunset cruise">
       <div class="nlist"></div>
       <div class="nadd">
@@ -2192,6 +2396,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <button class="btn stedit" type="button" data-stedit="4:2" data-sname="Alma">✏️ Edit</button>
       <a class="btn" target="_blank" rel="noopener" href="https://www.almalisboa.pt">Reservations ↗</a>
     </div>
+    
     <div class="notes" data-notes="alma">
       <div class="nlist"></div>
       <div class="nadd">
@@ -2208,7 +2413,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 </section>
 <section class="panel" data-panel="eats" role="tabpanel">
   <h2 class="reveal">Where to eat</h2>
-  <p class="eatlead reveal">Your meal picks are highlighted — those are the ones on your map. Below them, more real spots nearby, grouped by type, if anyone wants to swap.</p>
+  <p class="eatlead reveal">Your picks are highlighted — they are the ones on your map. Below: more spots nearby, by type.</p>
   <div class="reveal"><div class="eat sel" data-date="2026-09-13" data-w0="720" data-w1="870" data-eat-pick="1" data-eat-when="Day 2 lunch">
     <span class="selpill">✓ Currently selected</span>
     <div class="r"><b>🥧 Manteigaria</b>
@@ -2527,7 +2732,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   
   <div class="evstatus" id="evstatus" data-api="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/events" data-lat="38.72" data-lng="-9.16"></div>
   <div id="evlist">
-  <p class="evlead">Real events happening on your dates, near where you're staying. Nothing here is in your day plan — it's yours to add if you fancy it.</p>
+  <p class="evlead">Real events on your dates, near where you're staying — add any you like.</p>
   <div>
     <h3 class="evday">Day 1 · Saturday, September 12</h3>
     <article class="evcard reveal" id="ev-ev1">
@@ -2740,11 +2945,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   <div class="bldln">Build sample</div>
 </footer>
 
-<script>window.__VACAYI__={"meta":{"title":"Lisbon, five days with the whole crew","destination":"Lisbon, Portugal","subtitle":"","start_date":"2026-09-12","end_date":"2026-09-17","occasion":"family_vacation","occasion_thread":"Maya & Theo's tenth anniversary, quietly threaded through the week.","party_line":"Maya, Theo, Nina, Grandpa Sal & Pixel","timezone":"","trip_mode":"city","fun_level":"playful","time_format":"12h","language":"en","pace":"","pipeline_version":"sample","agent":"voyager","trip_id":"","built_at":""},"days":[{"date":"2026-09-12"},{"date":"2026-09-13"},{"date":"2026-09-14"},{"date":"2026-09-15"},{"date":"2026-09-16"}],"map":{"points":[{"id":"p0","label":"Memmo Alfama Hotel","lat":38.7108,"lng":-9.13,"day":0,"type":"lodging","note":"","place_id":""},{"id":"p1","label":"Miradouro de Santa Luzia","lat":38.7118,"lng":-9.1305,"day":1,"type":"stop","note":"","place_id":""},{"id":"p2","label":"Castelo de São Jorge","lat":38.7139,"lng":-9.1335,"day":2,"type":"stop","note":"","place_id":""},{"id":"p3","label":"Manteigaria","lat":38.7107,"lng":-9.1435,"day":2,"type":"eat","note":"","place_id":""},{"id":"p4","label":"Mosteiro dos Jerónimos","lat":38.6979,"lng":-9.2065,"day":3,"type":"stop","note":"","place_id":""},{"id":"p5","label":"Pastéis de Belém","lat":38.6975,"lng":-9.2033,"day":3,"type":"eat","note":"","place_id":""},{"id":"p6","label":"Torre de Belém","lat":38.6916,"lng":-9.2159,"day":3,"type":"stop","note":"","place_id":""},{"id":"p7","label":"Quinta da Regaleira","lat":38.7962,"lng":-9.3963,"day":4,"type":"stop","note":"","place_id":""},{"id":"p8","label":"Palácio da Pena","lat":38.7876,"lng":-9.3906,"day":4,"type":"stop","note":"","place_id":""},{"id":"p9","label":"Time Out Market","lat":38.7067,"lng":-9.1458,"day":5,"type":"eat","note":"","place_id":""},{"id":"p10","label":"Alma","lat":38.7104,"lng":-9.142,"day":5,"type":"eat","note":"","place_id":""}],"routes":[],"tiles_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/tiles","basemap":null},"events":[{"id":"ev1","name":"Fado Vadio at Tasca do Chico","date":"2026-09-12","time":"","time_tba":false,"category":"Music","emoji":"🎶","genre":"Fado","venue":"Tasca do Chico","address":"R. do Diário de Notícias 39, Bairro Alto","maps_query":"Tasca do Chico Bairro Alto Lisboa","url":"","image":"","price":"Free (buy a drink)","day":1,"clashes_with":""},{"id":"ev2","name":"Sunset jazz at Park","date":"2026-09-14","time":"","time_tba":false,"category":"Music","emoji":"🎷","genre":"Live jazz","venue":"Park Rooftop Bar","address":"Calçada do Combro 58 (top of the car park)","maps_query":"Park Bar Lisboa","url":"","image":"","price":"€","day":3,"clashes_with":""}],"events_api":{"url":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/events","lat":38.72,"lng":-9.16},"weather_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/weather","theme":{"accent":"#EE4D77","accent2":"#F7941D","ink":"#241A2E","deep":"#3A2233"},"lang_name":"Portuguese","feature":{"ranks":[{"name":"Just landed","at":0},{"name":"Getting the hang of it","at":25},{"name":"Basically a local","at":55},{"name":"Lisboeta for life","at":85}],"items":[{"points":15},{"points":10},{"points":20},{"points":20},{"points":15},{"points":10},{"points":10}]}};</script>
+<script>window.__VACAYI__={"meta":{"title":"Lisbon, five days with the whole crew","destination":"Lisbon, Portugal","subtitle":"","start_date":"2026-09-12","end_date":"2026-09-17","occasion":"family_vacation","occasion_thread":"Maya & Theo's tenth anniversary, quietly threaded through the week.","party_line":"Maya, Theo, Nina, Grandpa Sal & Pixel","timezone":"","trip_mode":"city","fun_level":"playful","time_format":"12h","language":"en","pace":"","pipeline_version":"sample","agent":"voyager","trip_id":"","built_at":"","arrival":"","departure":"","budget":"","party_adults":0,"generation":1},"days":[{"date":"2026-09-12"},{"date":"2026-09-13"},{"date":"2026-09-14"},{"date":"2026-09-15"},{"date":"2026-09-16"}],"map":{"points":[{"id":"p0","label":"Memmo Alfama Hotel","lat":38.7108,"lng":-9.13,"day":0,"type":"lodging","note":"","place_id":"","confirmed":false},{"id":"p1","label":"Miradouro de Santa Luzia","lat":38.7118,"lng":-9.1305,"day":1,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p2","label":"Castelo de São Jorge","lat":38.7139,"lng":-9.1335,"day":2,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p3","label":"Manteigaria","lat":38.7107,"lng":-9.1435,"day":2,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p4","label":"Mosteiro dos Jerónimos","lat":38.6979,"lng":-9.2065,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p5","label":"Pastéis de Belém","lat":38.6975,"lng":-9.2033,"day":3,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p6","label":"Torre de Belém","lat":38.6916,"lng":-9.2159,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p7","label":"Quinta da Regaleira","lat":38.7962,"lng":-9.3963,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p8","label":"Palácio da Pena","lat":38.7876,"lng":-9.3906,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p9","label":"Time Out Market","lat":38.7067,"lng":-9.1458,"day":5,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p10","label":"Alma","lat":38.7104,"lng":-9.142,"day":5,"type":"eat","note":"","place_id":"","confirmed":false}],"routes":[],"tiles_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/tiles","basemap":null},"events":[{"id":"ev1","name":"Fado Vadio at Tasca do Chico","date":"2026-09-12","time":"","time_tba":false,"category":"Music","emoji":"🎶","genre":"Fado","venue":"Tasca do Chico","address":"R. do Diário de Notícias 39, Bairro Alto","maps_query":"Tasca do Chico Bairro Alto Lisboa","url":"","image":"","price":"Free (buy a drink)","day":1,"clashes_with":""},{"id":"ev2","name":"Sunset jazz at Park","date":"2026-09-14","time":"","time_tba":false,"category":"Music","emoji":"🎷","genre":"Live jazz","venue":"Park Rooftop Bar","address":"Calçada do Combro 58 (top of the car park)","maps_query":"Park Bar Lisboa","url":"","image":"","price":"€","day":3,"clashes_with":""}],"events_api":{"url":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/events","lat":38.72,"lng":-9.16},"weather_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/weather","theme":{"accent":"#EE4D77","accent2":"#F7941D","ink":"#241A2E","deep":"#3A2233"},"lang_name":"Portuguese","feature":{"ranks":[{"name":"Just landed","at":0},{"name":"Getting the hang of it","at":25},{"name":"Basically a local","at":55},{"name":"Lisboeta for life","at":85}],"items":[{"points":15},{"points":10},{"points":20},{"points":20},{"points":15},{"points":10},{"points":10}]}};</script>
 <script>(function(){
 "use strict";
 /* Labels + date locale for THIS guide's language (content.meta.language). */
-var LBL={"noteDelete":"Delete note","optTitle":"A tighter order for this day","optSave":"Saves about {km} km and {mins} min of travelling","optKept":"Your meals, bookings and the start and end of the day stay exactly where they are.","optApply":"Use the tighter order","optWorking":"Reordering…","optDone":"Done — this day has been reordered","optFailed":"Couldn't reorder this day","optOffline":"Open the guide in the app to use this","tripComplete":"Trip complete","tomorrow":"Tomorrow!","tminus":"T-minus {n} days","dayOf":"Day {n} of {total}","stopOne":"{n} stop","stopMany":"{n} stops","onFoot":"~{d} on foot","routeWalk":"{d} walking · {t}","routeDrive":"{d} driving · {t}","routeTransit":"{d} by train · {t}","minShort":"{n} min","mapLive":"Interactive map — pinch to zoom","hrShort":"{h} h","hrMinShort":"{h} h {m} min","navRoute":"Navigate this route →","pinHint":"Tap a pin for details. Distances are straight-line.","blueDot":"The blue dot is you. Straight-line distance.","locNoMap":"Can’t place you on this map.","staying":"where you’re staying","food":"food","allStops":"All stops","day":"Day {n}","navigate":"Navigate →","happeningNow":"Happening now","doneOf":"{done} of {total} done","bkSorted":"{done} of {total} sorted","wToday":"Today","wTomorrow":"Tomorrow","wInDays":"In {n} days","editStop":"this stop","dayN":"Day {n}","editTime":"Change the time","editUp":"Move earlier in the day","editDown":"Move later in the day","editDay":"Move to another day","editRemove":"Remove from the plan","editReplace":"Replace with something new","editPreview":"Preview the change","editWhatHappens":"What this will do:","editNoImpact":"No knock-on effects that this guide can see.","editClash":"Overlaps {name} ({start}–{end}) — the shorter of the two will be trimmed.","editReorder":"It will sit past {name}, so the day re-orders to read by the clock.","editHours":"Listed hours: {hours} — check your new time falls inside them.","editBooked":"This stop carries a booking — check the time against it: {note}","editTimeTo":"Move {name} to {time}","editMovedUp":"Move {name} earlier","editMovedDown":"Move {name} later","editSlots":"The day keeps its time slots — stops swap places, no hour changes.","editTakesSlot":"It takes the {time} slot.","editToDay":"Move {name} to Day {n}","editDayMoves":"Its map pin and route move to Day {n}, and it slots into that day by its time.","editRemoveT":"Remove {name}","editGone":"Its pin comes off the map and the day's route re-measures.","editQuests":"{n} quest(s) point here and will lose their location.","editApply":"Apply","editBack":"Back","editApplying":"Applying — the guide will refresh…","editCaution":"This day was planned as one piece — times, travel gaps and opening hours were balanced against each other. A hand edit skips that judgement, so give the day a once-over after you apply. Undo is in the assistant if it reads worse.","bookingLbl":"Booking","everyStop":"Every stop, in order","copy":"Copy","copied":"Copied","select":"Select","copyAddress":"Copy address","youAreHere":"You’re here","nearestStop":"nearest stop","locate":"📍 Where am I?","locating":"📍 Locating…","locDenied":"Location permission was denied.","locFailed":"Couldn’t get your location.","locUnavailable":"Location isn’t available here.","wxNoPlace":"Typical climate shown (no map location to fetch a live forecast).","wxUnsupported":"Typical climate shown (live forecast not supported here).","wxOffline":"⚠ Not live — no connection to update. Showing typical climate.","wxLive":"🟢 Live forecast · updated {time}","wxHorizon":"⚪ Live forecast opens ~10 days out — showing typical climate for now.","wxHorizonSlot":"Forecast opens ~10 days out — showing typical climate for now.","wxStale":"⚪ Showing typical climate — no connection to update.","wxLowVal":"low {t}°","wxRainChance":"{n}% rain","wxWindy":"Windy","wxSleet":"Rain and snow","wxHail":"Hail","wx0":"Clear","wx1":"Mainly clear","wx2":"Partly cloudy","wx3":"Overcast","wx45":"Fog","wx48":"Rime fog","wx51":"Light drizzle","wx53":"Drizzle","wx55":"Heavy drizzle","wx56":"Freezing drizzle","wx57":"Freezing drizzle","wx61":"Light rain","wx63":"Rain","wx65":"Heavy rain","wx66":"Freezing rain","wx67":"Freezing rain","wx71":"Light snow","wx73":"Snow","wx75":"Heavy snow","wx77":"Snow grains","wx80":"Showers","wx81":"Showers","wx82":"Violent showers","wx85":"Snow showers","wx86":"Snow showers","wx95":"Thunderstorm","wx96":"Storm + hail","wx99":"Storm + hail","evOffline":"Offline — showing the copy saved with your guide","evChecking":"Checking for updates…","evSaved":"Showing the copy saved with your guide","evFresh":"Live · checked just now","evNone":"Checked just now — nothing listed","evNothingNow":"Nothing listed near here for your dates right now.","evLead":"Real events happening on your dates, near where you are staying. Nothing here is in your day plan — it is yours to add if you fancy it.","evClash":"Overlaps \u003cb>{what}\u003c/b> in your plan","evTickets":"Book now ↗","evDirections":"Directions →","evSwap":"Swap into my plan","evBadge":"Something is on","evBadgeAt":"Something is on at {time}","evTba":"time to be announced","swapThisOne":"this one","swapAskEat":"Make \"{name}\"{when} one of my restaurant picks. Choose the meal it suits best, swap out whichever current pick makes sense there, and keep everything else as it is.","swapAskReplace":"Swap \"{clash}\" out of my plan and put \"{name}\"{when} in its place. Keep everything else as it is.","swapAskAdd":"Add \"{name}\"{when} to my plan, fitting it around what is already booked that day.","swapSent":"Sent — opening your planner…","swapSentShort":"Sent to your planner ✓","swapNoApp":"Open in the vacayi app to swap","pickWhich":"Which meal should {name} take over?","pickCancel":"Cancel","pickApplying":"Updating your plan…","pickNoSlots":"No meals to swap yet","pickSummary":"Made {name} the pick for {when}","uvLow":"Low","uvModerate":"Moderate","uvHigh":"High","uvVeryHigh":"Very High","uvExtreme":"Extreme","uv":"UV","sunrise":"sunrise","sunset":"sunset"},LOC="en-US";
+var LBL={"noteDelete":"Delete note","optTitle":"A tighter order for this day","optSave":"Saves about {km} km and {mins} min of travelling","optKept":"Your meals, bookings and the start and end of the day stay exactly where they are.","optApply":"Use the tighter order","optWorking":"Reordering…","optDone":"Done — this day has been reordered","optFailed":"Couldn't reorder this day","optOffline":"Open the guide in the app to use this","tripComplete":"Trip complete","tomorrow":"Tomorrow!","tminus":"T-minus {n} days","dayOf":"Day {n} of {total}","stopOne":"{n} stop","stopMany":"{n} stops","onFoot":"~{d} on foot","routeWalk":"{d} walking · {t}","routeDrive":"{d} driving · {t}","routeTransit":"{d} by train · {t}","minShort":"{n} min","mapLive":"Interactive map — pinch to zoom","hrShort":"{h} h","hrMinShort":"{h} h {m} min","navRoute":"Navigate this route →","pinHint":"Tap a pin for details. Distances are straight-line.","blueDot":"The blue dot is you. Straight-line distance.","locNoMap":"Can’t place you on this map.","staying":"where you’re staying","food":"food","allStops":"All stops","day":"Day {n}","navigate":"Navigate →","happeningNow":"Happening now","doneOf":"{done} of {total} done","bkSorted":"{done} of {total} sorted","wToday":"Today","wTomorrow":"Tomorrow","wInDays":"In {n} days","editStop":"this stop","dayN":"Day {n}","editTime":"Change the time","editUp":"Move earlier in the day","editDown":"Move later in the day","editDay":"Move to another day","editRemove":"Remove from the plan","editReplace":"Replace with something new","editPreview":"Preview the change","editWhatHappens":"What this will do:","editNoImpact":"No knock-on effects that this guide can see.","editClash":"Overlaps {name} ({start}–{end}) — the shorter of the two will be trimmed.","editReorder":"It will sit past {name}, so the day re-orders to read by the clock.","editHours":"Listed hours: {hours} — check your new time falls inside them.","editBooked":"This stop carries a booking — check the time against it: {note}","editTimeTo":"Move {name} to {time}","editMovedUp":"Move {name} earlier","editMovedDown":"Move {name} later","editSlots":"The day keeps its time slots — stops swap places, no hour changes.","editTakesSlot":"It takes the {time} slot.","editToDay":"Move {name} to Day {n}","editDayMoves":"Its map pin and route move to Day {n}, and it slots into that day by its time.","editRemoveT":"Remove {name}","editGone":"Its pin comes off the map and the day's route re-measures.","editQuests":"{n} quest(s) point here and will lose their location.","editApply":"Apply","editBack":"Back","editApplying":"Applying — the guide will refresh…","editCaution":"Hand edits skip the planner's checks — give the day a once-over after you apply. Undo is in the assistant.","bookingLbl":"Booking","everyStop":"Every stop, in order","copy":"Copy","copied":"Copied","select":"Select","copyAddress":"Copy address","youAreHere":"You’re here","nearestStop":"nearest stop","locate":"📍 Where am I?","locating":"📍 Locating…","locDenied":"Location permission was denied.","locFailed":"Couldn’t get your location.","locUnavailable":"Location isn’t available here.","wxNoPlace":"Typical climate shown (no map location to fetch a live forecast).","wxUnsupported":"Typical climate shown (live forecast not supported here).","wxOffline":"⚠ Not live — no connection to update. Showing typical climate.","wxLive":"🟢 Live forecast · updated {time}","wxHorizon":"⚪ Live forecast opens ~10 days out — showing typical climate for now.","wxHorizonSlot":"Forecast opens ~10 days out — showing typical climate for now.","wxStale":"⚪ Showing typical climate — no connection to update.","wxLowVal":"low {t}°","wxRainChance":"{n}% rain","wxWindy":"Windy","wxSleet":"Rain and snow","wxHail":"Hail","wx0":"Clear","wx1":"Mainly clear","wx2":"Partly cloudy","wx3":"Overcast","wx45":"Fog","wx48":"Rime fog","wx51":"Light drizzle","wx53":"Drizzle","wx55":"Heavy drizzle","wx56":"Freezing drizzle","wx57":"Freezing drizzle","wx61":"Light rain","wx63":"Rain","wx65":"Heavy rain","wx66":"Freezing rain","wx67":"Freezing rain","wx71":"Light snow","wx73":"Snow","wx75":"Heavy snow","wx77":"Snow grains","wx80":"Showers","wx81":"Showers","wx82":"Violent showers","wx85":"Snow showers","wx86":"Snow showers","wx95":"Thunderstorm","wx96":"Storm + hail","wx99":"Storm + hail","evOffline":"Offline — showing the copy saved with your guide","evChecking":"Checking for updates…","evSaved":"Showing the copy saved with your guide","evFresh":"Live · checked just now","evNone":"Checked just now — nothing listed","evNothingNow":"Nothing listed near here for your dates right now.","evLead":"Real events on your dates, near where you are staying — add any you like.","evClash":"Overlaps \u003cb>{what}\u003c/b> in your plan","evTickets":"Book now ↗","evDirections":"Directions →","evSwap":"Swap into my plan","evBadge":"Something is on","evBadgeAt":"Something is on at {time}","evTba":"time to be announced","swapThisOne":"this one","swapAskEat":"Make \"{name}\"{when} one of my restaurant picks. Choose the meal it suits best, swap out whichever current pick makes sense there, and keep everything else as it is.","swapAskReplace":"Swap \"{clash}\" out of my plan and put \"{name}\"{when} in its place. Keep everything else as it is.","swapAskAdd":"Add \"{name}\"{when} to my plan, fitting it around what is already booked that day.","swapSent":"Sent — opening your planner…","swapSentShort":"Sent to your planner ✓","swapNoApp":"Open in the vacayi app to swap","pickWhich":"Which meal should {name} take over?","pickCancel":"Cancel","pickApplying":"Updating your plan…","pickNoSlots":"No meals to swap yet","pickSummary":"Made {name} the pick for {when}","uvLow":"Low","uvModerate":"Moderate","uvHigh":"High","uvVeryHigh":"Very High","uvExtreme":"Extreme","uv":"UV","sunrise":"sunrise","sunset":"sunset"},LOC="en-US";
 function L(k,v){var s=LBL[k]||k;return v?s.replace(/\{(\w+)\}/g,function(m,n){return n in v?String(v[n]):m}):s}
 /* THE LABEL TABLE, REACHABLE FROM OUTSIDE — the one thing a shared guide's
    translator cannot get at any other way.
@@ -2762,7 +2967,7 @@ window.__VACAYI_LBL__ = LBL;
 window.__VACAYI_RELABEL__ = function(){ try{ tick(); }catch(e){} };
 /* Bump this whenever the runtime changes so a guide can be identified.
    Visible in the guide via window.VACAYI_RUNTIME. */
-window.VACAYI_RUNTIME = "2.22.0";
+window.VACAYI_RUNTIME = "2.23.0";
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var DATA=window.__VACAYI__;
@@ -3319,6 +3524,10 @@ document.addEventListener("click",function(ev){
       {type:"bkattach",index:Number(add.dataset.bkattach)}))}catch(e){}
     return;
   }
+  var det=ev.target.closest("[data-bkdetach]");
+  if(det&&INAPP){ev.preventDefault();ev.stopPropagation();try{window.ReactNativeWebView.postMessage(JSON.stringify(
+      {type:"bkdetach",index:Number(det.dataset.bkdetach),at:Number(det.dataset.bkatti)}))}catch(e){}
+    return}
   var open=ev.target.closest("[data-bkopen]");
   if(open&&INAPP){
     try{window.ReactNativeWebView.postMessage(JSON.stringify(
@@ -4407,6 +4616,7 @@ function boot(){
      so the attach affordances go rather than sit dead. The baked thumbnail
      itself stays: the document is still worth SEEING offline. */
   if(!INAPP){ $$(".bkattachbtn").forEach(function(b){var r=b.closest(".bkattrow")||b;r.style.display="none"});
+    $$(".bkattx").forEach(function(b){b.style.display="none"});
     /* $$, the array helper -- this line shipped as the single-element $() and
        an Element has no forEach, so on any guide carrying a pencil the whole
        rest of boot() (including opening today's day) died on a shared link or
