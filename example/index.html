@@ -194,7 +194,12 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
   margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow);
 }
 .stop.now{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
-.stop.done .sh h3{text-decoration:line-through;opacity:.55}
+/* DONE, NOT CANCELLED. A crossed-out name reads as "this is off" — the
+   same signal the Booking wallet had to stop sending when a SORTED row
+   wore a strikethrough. The tick box is the state; the place you went
+   keeps its name at full strength. Packing items keep theirs, because
+   crossing a thing off a list to pack is what that gesture means. */
+.stop.done .sh h3{opacity:.62}
 /* The head is a ROW, and the tick box is a SIBLING of the expand button rather
    than inside it — a control nested in a button is neither reachable nor
    valid. It sits under the time so a stop can be marked done from the list,
@@ -232,6 +237,45 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
    only reinforces it (never colour alone). */
 .pricepill{display:inline-block;font-size:12px;font-weight:800;border-radius:999px;
   padding:3px 10px;flex:none}
+/* WHAT THIS STOP IS, as a tab on the card's top edge. The .stop card is
+   overflow:hidden with a radius, so a strip flush to the top-left is clipped
+   into a real tab shape without a single positioned element.
+   The COLOUR is the kind and the WORD is the detail: every meal shares one
+   food colour and says Breakfast / Lunch / Dinner, because six ambers nobody
+   can tell apart is not differentiation. Explicit pairs rather than
+   color-mix(var(--accent)) — a CATEGORY colour has to differ from its
+   NEIGHBOURS, not from the guide's own hue, and every pair here is measured
+   against WCAG AA in check-render.
+   NOTE: no backticks anywhere in this file's CSS. It is emitted from a
+   template literal, so one ends the stylesheet mid-rule and the rest of the
+   file is parsed as JavaScript. */
+.skind{
+  display:inline-block;font:800 10px/1 var(--body);letter-spacing:.7px;
+  text-transform:uppercase;padding:6px 11px 6px 14px;border-radius:0 0 12px 0;
+}
+.skind + .shead{padding-top:9px}
+/* Said in the card, not only on the tab: the tab is a category and this is a
+   sentence the traveller has to be able to act on. Same ink-on-tint pairing as
+   the kind tabs, measured with them. */
+.staynote{
+  margin:0 0 10px;padding:9px 12px;border-radius:12px;
+  background:#EDE9FB;color:#4A3A8C;font-size:13px;font-weight:700;line-height:1.4;
+}
+/* Inline on the Today hero's kicker row. Shares the sk-* colours with the
+   card tabs so the two surfaces speak one language, but not their shape: the
+   tab is cut to sit flush in a card's corner, and this sits in a line. */
+.tdkind{
+  display:inline-block;margin-left:8px;padding:3px 8px;border-radius:99px;
+  font:800 10px/1 var(--body);letter-spacing:.7px;text-transform:uppercase;
+  vertical-align:1px;
+}
+.sk-stay{background:#EDE9FB;color:#4A3A8C}
+.sk-food{background:#FBE9E0;color:#9A4A18}
+.sk-see{background:#E3F1F4;color:#0E6473}
+.sk-do{background:#E7F5EE;color:#1C7150}
+.sk-go{background:#EAEEF5;color:#3A5273}
+.sk-rest{background:#F1EDE7;color:#6A5A48}
+.sk-book{background:#FBF1DC;color:#7A5A06}
 .pb-budget{background:#E7F5EE;color:#1C7150}
 .pb-moderate{background:#E3F1F4;color:#0E6473}
 .pb-pricey{background:#FBF1DC;color:#7A5A06}
@@ -761,6 +805,13 @@ main{max-width:820px;margin:0 auto;padding:16px 14px 80px}
 .stedit-chip{font:700 13px/1 var(--body);border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:9px 13px;cursor:pointer}
 .stedit-busy{text-align:center;font:700 14px/1.4 var(--body);color:var(--soft);padding:18px 0}
 .bkfilters{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}
+/* Two chip GROUPS, wrapping independently so the cuisines never orphan a
+   status chip onto a line of its own. Same chip as the wallet's -- one filter
+   vocabulary across the guide. */
+.eatfilters{display:flex;flex-direction:column;gap:8px;margin:0 0 16px}
+.eatfgrp{display:flex;flex-wrap:wrap;gap:7px}
+.eatf{font:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--mist);color:var(--soft);cursor:pointer}
+.eatf.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .bkf{font:inherit;font-size:12px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--mist);color:var(--soft);cursor:pointer}
 .bkf.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .bkhide{display:none}
@@ -856,6 +907,126 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 .optbtn[disabled]{opacity:.55;cursor:default}
 .optstatus{font-size:13px;margin-top:8px}
 
+
+/* ============ the Today tab — the design system ============
+   One header zone, one card grammar, one timeline. Roles, not decoration:
+   --soft is muted TEXT, --mist is a soft BACKGROUND, the spend chip wears the
+   top bar's own dark ink so it can never blend into the paper again. */
+.tdwrap{display:flex;flex-direction:column;gap:12px}
+.tdtop{display:flex;flex-direction:column;gap:9px}
+.tdtoprow{display:flex;align-items:baseline;gap:10px}
+.tdtoprow h2{font:800 23px/1.12 var(--display);color:var(--ink);margin:0}
+.tddate{font:600 12.5px/1.3 var(--body);color:var(--soft)}
+.tdchiprow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.tdwx{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;
+  font:600 12px/1.3 var(--body);color:var(--ink)}
+.tdwx .tdwxi{font-size:14px}
+.tdspend{display:inline-flex;align-items:baseline;gap:6px;padding:7px 13px;
+  background:var(--ink);border:0;border-radius:999px;cursor:pointer}
+.tdspendv{font:800 13px/1.2 var(--body);color:var(--paper);font-variant-numeric:tabular-nums}
+.tdspendl{font:600 11px/1.2 var(--body);color:var(--paper);opacity:.75}
+.tdsum{font:400 14px/1.5 var(--body);color:var(--ink);opacity:.92;margin:0}
+.tdcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:15px 16px;box-shadow:0 1px 2px color-mix(in srgb,var(--deep) 5%,transparent)}
+.tdk{font:800 10.5px/1 var(--body);letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:9px}
+.tdhero{border:1.5px solid var(--accent)}
+.tdhgrid{display:grid;grid-template-columns:1fr 76px;column-gap:12px;align-items:center}
+.tdhp{width:76px;height:76px;border-radius:14px;overflow:hidden}
+.tdhp:empty{background:transparent}
+.tdhp img{width:100%;height:100%;object-fit:cover;display:block}
+.tdname{font:800 19px/1.2 var(--display);color:var(--ink)}
+.tdsub{font:600 12.5px/1.5 var(--body);color:var(--soft);margin-top:4px}
+.tdleaveband{margin-top:11px;padding:9px 12px;border-radius:11px;
+  background:color-mix(in srgb,var(--accent) 10%,var(--card));
+  font:800 14px/1.25 var(--body);color:var(--accent)}
+.tdacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.tdacts .btn{margin:0}
+.tdnow{display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:10px;
+  border-top:1px dashed var(--line);font:600 12.5px/1.3 var(--body);color:var(--soft)}
+.tdnow .tddot{width:7px;height:7px;border-radius:50%;background:var(--ok);flex:none;
+  animation:tdpulse 2s ease-in-out infinite}
+@keyframes tdpulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.tdnow .tddot{animation:none}}
+.tdrow{display:flex;align-items:flex-start;gap:8px;font:600 13px/1.45 var(--body);
+  color:var(--ink);padding:3px 0}
+.tdrow .tdri{flex:none}
+.tdqat{display:block;font:600 11.5px/1.4 var(--body);color:var(--soft)}
+/* ---- the timeline: five columns, every row renders all five -------------- */
+.tdtl{display:flex;flex-direction:column}
+.tdtlrow,.tdtlgap{display:grid;grid-template-columns:62px 18px 1fr auto 44px;
+  column-gap:9px;align-items:center}
+.tdtlrow{min-height:48px}
+.tdtlt{font:700 12px/1.3 var(--body);color:var(--soft);text-align:right;
+  font-variant-numeric:tabular-nums}
+.tdtlrail{position:relative;align-self:stretch;min-height:20px}
+.tdtlrail::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;
+  margin-left:-1px;background:var(--line)}
+.tdtlfirst .tdtlrail::before{top:50%}
+.tdtllast .tdtlrail::before{bottom:50%}
+.tdtldot{position:absolute;left:50%;top:50%;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;background:var(--accent)}
+.tdtlnm{font:600 13.5px/1.35 var(--body);color:var(--ink);min-width:0}
+.tdtlact{justify-self:end}
+.tdrowskip{background:none;border:0;cursor:pointer;padding:4px 6px;
+  font:700 12px/1.2 var(--body);color:var(--accent);
+  text-decoration:underline;text-underline-offset:3px}
+.tdtlph{width:44px;height:44px;border-radius:10px;overflow:hidden}
+.tdtlph img{width:100%;height:100%;object-fit:cover;display:block}
+.tdtlgap{min-height:22px}
+.tdtlgaptxt{font:600 11.5px/1.3 var(--body);color:var(--soft)}
+/* A LABELLED button borrowing .pwb's delegated toggle — so it must undo .pwb's
+   BADGE geometry. That rule is a 22px circle with padding:0, and a shared
+   single-class specificity means width/height simply carried over: the border
+   drew a ring around the "H" and the rest of the words spilled out of it.
+   Reported from a phone; nothing in a stylesheet-as-a-string could see it. */
+.costwb{width:auto;height:auto;background:var(--mist);border:1px solid var(--line);
+  border-radius:999px;padding:5px 11px;cursor:pointer;color:var(--accent);
+  font:700 11.5px/1.2 var(--body);font-style:normal;white-space:nowrap}
+.costsec{font:800 10px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--soft);margin:10px 0 4px}
+.costrow + .costsec{margin-top:12px}
+.costcalc{display:block;font:600 11px/1.4 var(--body);color:var(--soft);
+  margin-top:1px;font-variant-numeric:tabular-nums}
+.costlead{font:500 12.5px/1.5 var(--body);color:var(--soft);margin-bottom:8px;
+  padding-bottom:8px;border-bottom:1px solid var(--line)}
+.tags .pricepill{margin:0}
+.tdwait{text-align:center;padding:26px 20px}
+.tdwaith{font:800 17px/1.25 var(--display);color:var(--ink);margin-bottom:6px}
+.tdwait .tdsub{margin:0 auto;max-width:34ch}
+.tdwaitc{display:inline-block;margin-top:12px;padding:6px 12px;border-radius:999px;
+  background:var(--mist);font:800 11.5px/1.2 var(--body);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent)}
+
+.tdrowskip{margin-left:auto;flex:none;background:none;border:0;cursor:pointer;
+  padding:2px 4px;font:700 12px/1.2 var(--body);color:var(--accent);
+  text-decoration:underline;text-underline-offset:3px}
+.tdmore{color:var(--soft)}
+.tdgap{border-style:dashed;font:600 13px/1.4 var(--body);color:var(--soft)}
+.tdrain{border-left:3px solid var(--warn)}
+.tdrainrow{font:600 13.5px/1.45 var(--body);color:var(--ink)}
+
+.tdfood .tdname{font:800 16px/1.25 var(--display);color:var(--ink)}
+.tdfood.tdbig{border:1.5px solid var(--accent2)}
+.tdfoodgo{display:block;width:100%;text-align:left;margin-top:11px;padding:10px 0 0;
+  background:none;border:0;border-top:1px dashed var(--line);cursor:pointer;
+  font:700 13px/1.3 var(--body);color:var(--accent)}
+.tdfood > .tdfoodgo:first-child,.tdfood .tdk + .tdfoodgo{margin-top:0;padding-top:0;border-top:0}
+.tdjr{display:flex;gap:8px;margin-top:8px}
+.tdjr input{flex:1;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+  padding:9px 11px;font:500 13px/1.3 var(--body);color:var(--ink)}
+.tdjr button{background:var(--accent);color:#fff;border:0;border-radius:10px;
+  padding:9px 14px;font:700 12.5px/1 var(--body);cursor:pointer}
+.tdjrline{font:500 13px/1.5 var(--body);color:var(--ink);margin-top:8px;
+  padding:8px 11px;background:var(--mist);border-radius:10px}
+.tdtoast{position:fixed;left:12px;right:12px;bottom:14px;z-index:118;
+  display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--paper);
+  border-radius:14px;padding:12px 14px;font:600 13px/1.4 var(--body);
+  box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.tdtoast .tdundo{margin-left:auto;flex:none;font:800 13px/1 var(--body);
+  color:var(--accent2);background:none;border:0;cursor:pointer;padding:6px 8px}
+
 @media print{
 
   .topbar,.tabs,.acts,.iconbtn{display:none!important}
@@ -875,6 +1046,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 </header>
 
 <nav class="tabs" role="tablist" aria-label="Guide sections">
+  <button class="tab" role="tab" data-tab="today" aria-selected="false">Today</button>
   <button class="tab" role="tab" data-tab="overview" aria-selected="false">Overview</button>
   <button class="tab" role="tab" data-tab="bookings" aria-selected="false">Booking wallet <span class="badge" id="bkbadge">0/0</span></button>
   <button class="tab" role="tab" data-tab="mode" aria-selected="false">Plan</button>
@@ -892,6 +1064,14 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 </nav>
 
 <main>
+<section class="panel" data-panel="today" role="tabpanel">
+  <div id="tdroot">
+    <div class="tdcard tdwait">
+      <div class="tdwaith">Your day appears here</div>
+      <div class="tdsub">Once your trip starts, this page shows what&#39;s next, when to leave, and what&#39;s booked.</div>
+    </div>
+  </div>
+</section>
 <section class="panel" data-panel="overview" role="tabpanel">
   <div class="hero reveal">
     <svg viewBox="0 0 800 300" role="img" aria-label="Illustration of coast scenery" xmlns="http://www.w3.org/2000/svg">
@@ -941,7 +1121,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="wxstatus" id="wxstatus"></div>
   </div>
 
-  <div class="callout fact reveal costsum"><b>What the days add up to</b>On-the-ground spend ≈ €272–€272 for 4 of you, plus what you've booked. 2 places have no listed price.</div>
+  <div class="callout fact reveal costsum"><b>What the days add up to</b>On-the-ground spend ≈ €272–€272 for 4 of you, plus what you've booked. 1 places have no listed price.</div>
 
   <div class="card reveal">
     <h3>Who's going</h3>
@@ -1427,6 +1607,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="progtxt" id="ptxt1">0 of 3 done</div>
   </div>
   <article class="stop reveal" data-date="2026-09-12">
+  <span class="skind sk-stay">Stay</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🏨</span>
@@ -1444,6 +1625,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Memmo Alfama Terrace"></div>
@@ -1481,6 +1663,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-12">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -1498,6 +1681,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Miradouro de Santa Luzia"></div>
@@ -1541,6 +1725,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-12">
+  <span class="skind sk-do">Activity</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🎒</span>
@@ -1558,6 +1743,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Fado in the square"></div>
@@ -1603,9 +1789,13 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="meta">Sunday, September 13 · the greatest hits, done right</div>
     
     <div class="costchip">
-    <span class="costhead">≈ €60</span>
-    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
-    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€60</b></div><div class="costrow"><span>Day 2 lunch</span><b></b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+    <span class="costhead">Total estimated cost for today ≈ €60</span>
+    <button class="pwb costwb" type="button" aria-expanded="false"
+      data-lbl-show="Show price breakdown"
+      data-lbl-hide="Hide price breakdown">Show price breakdown</button>
+    <div class="pwhy costwhy" hidden>
+      <div class="costlead">Roughly what today costs on the ground, from the prices in this guide. Tickets count the adults at the low end — children are often free; meals count everyone who eats.</div>
+      <div class="costsec">Tickets & entry</div><div class="costrow"><span>Castelo de São Jorge<span class="costcalc">€15 each × 4</span></span><b>€60</b></div><div class="costrow"><span>Manteigaria · Lunch</span><b></b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
   </div>
     <div class="dayfc" id="dayfc2" data-date="2026-09-13"></div>
     <p style="font-size:14px;color:var(--soft)">Up to the castle before the heat and the crowds, down through Alfama&#39;s tangle, a ride on the famous 28, and an afternoon reward that Nina will remember longer than any of it.</p>
@@ -1620,6 +1810,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="progtxt" id="ptxt2">0 of 3 done</div>
   </div>
   <article class="stop reveal" data-date="2026-09-13">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -1637,6 +1828,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Castelo de São Jorge"></div>
@@ -1678,6 +1870,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-13">
+  <span class="skind sk-do">Activity</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🎒</span>
@@ -1695,6 +1888,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Tram 28"></div>
@@ -1738,6 +1932,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-13">
+  <span class="skind sk-food">Lunch</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🍽️</span>
@@ -1755,6 +1950,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Manteigaria"></div>
@@ -1808,9 +2004,13 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="meta">Monday, September 14 · monuments and monastery</div>
     
     <div class="costchip">
-    <span class="costhead">≈ €72</span>
-    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
-    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€72</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+    <span class="costhead">Total estimated cost for today ≈ €72</span>
+    <button class="pwb costwb" type="button" aria-expanded="false"
+      data-lbl-show="Show price breakdown"
+      data-lbl-hide="Hide price breakdown">Show price breakdown</button>
+    <div class="pwhy costwhy" hidden>
+      <div class="costlead">Roughly what today costs on the ground, from the prices in this guide. Tickets count the adults at the low end — children are often free; meals count everyone who eats.</div>
+      <div class="costsec">Tickets & entry</div><div class="costrow"><span>Mosteiro dos Jerónimos<span class="costcalc">€18 each × 4</span></span><b>€72</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
   </div>
     <div class="dayfc" id="dayfc3" data-date="2026-09-14"></div>
     <p style="font-size:14px;color:var(--soft)">The grand, flat, riverside day — perfect after two on the hills. Monastery, tower, the original tarts, and an afternoon that&#39;s all downhill and sea air.</p>
@@ -1825,6 +2025,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="progtxt" id="ptxt3">0 of 4 done</div>
   </div>
   <article class="stop reveal" data-date="2026-09-14">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -1842,6 +2043,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Mosteiro dos Jerónimos"></div>
@@ -1883,6 +2085,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-14">
+  <span class="skind sk-food">Meal</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🍽️</span>
@@ -1900,6 +2103,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Pastéis de Belém"></div>
@@ -1941,6 +2145,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-14">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -1958,6 +2163,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Torre de Belém"></div>
@@ -1999,6 +2205,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-14">
+  <span class="skind sk-do">Activity</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🎒</span>
@@ -2016,6 +2223,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="LX Factory"></div>
@@ -2069,9 +2277,13 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="meta">Tuesday, September 15 · day trip</div>
     
     <div class="costchip">
-    <span class="costhead">≈ €140</span>
-    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
-    <div class="pwhy costwhy" hidden><div class="costrow"><span>Tickets stated in the guide</span><b>€140</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+    <span class="costhead">Total estimated cost for today ≈ €140</span>
+    <button class="pwb costwb" type="button" aria-expanded="false"
+      data-lbl-show="Show price breakdown"
+      data-lbl-hide="Hide price breakdown">Show price breakdown</button>
+    <div class="pwhy costwhy" hidden>
+      <div class="costlead">Roughly what today costs on the ground, from the prices in this guide. Tickets count the adults at the low end — children are often free; meals count everyone who eats.</div>
+      <div class="costsec">Tickets & entry</div><div class="costrow"><span>Quinta da Regaleira<span class="costcalc">€15 each × 4</span></span><b>€60</b></div><div class="costrow"><span>Palácio da Pena<span class="costcalc">€20 each × 4</span></span><b>€80</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
   </div>
     <div class="dayfc" id="dayfc4" data-date="2026-09-15"></div>
     <p style="font-size:14px;color:var(--soft)">The one big excursion: a misty mountain of palaces half an hour from the city. Pick two, not five, keep it slow, and be back for the anniversary dinner.</p>
@@ -2086,6 +2298,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="progtxt" id="ptxt4">0 of 2 done</div>
   </div>
   <article class="stop reveal" data-date="2026-09-15">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -2103,6 +2316,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Quinta da Regaleira"></div>
@@ -2146,6 +2360,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-15">
+  <span class="skind sk-see">Attraction</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">📍</span>
@@ -2163,6 +2378,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Palácio da Pena"></div>
@@ -2214,9 +2430,13 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="meta">Wednesday, September 16 · anniversary</div>
     
     <div class="costchip">
-    <span class="costhead">2 unpriced</span>
-    <button class="pwb" type="button" aria-expanded="false" aria-label="How this was estimated">ⓘ</button>
-    <div class="pwhy costwhy" hidden><div class="costrow"><span>Day 5 lunch<br>Day 5 dinner</span><b></b></div><div class="costrow"><span>Not priced anywhere: 2 — counted, not guessed</span><b>—</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
+    <span class="costhead">1 unpriced</span>
+    <button class="pwb costwb" type="button" aria-expanded="false"
+      data-lbl-show="Show price breakdown"
+      data-lbl-hide="Hide price breakdown">Show price breakdown</button>
+    <div class="pwhy costwhy" hidden>
+      <div class="costlead">Roughly what today costs on the ground, from the prices in this guide. Tickets count the adults at the low end — children are often free; meals count everyone who eats.</div>
+      <div class="costrow"><span>Time Out Market · Lunch<br>Alma · Dinner</span><b></b></div><div class="costrow"><span>1 places don't list a price — so they're not in the total</span><b>—</b></div><div class="costrow costquiet"><span>Prices move — check before you go.</span><b></b></div></div>
   </div>
     <div class="dayfc" id="dayfc5" data-date="2026-09-16"></div>
     <p style="font-size:14px;color:var(--soft)">A deliberately gentle day — a market, a park, a river cruise at golden hour — wrapped around the evening that matters. Ten years, one very good table.</p>
@@ -2231,6 +2451,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     <div class="progtxt" id="ptxt5">0 of 3 done</div>
   </div>
   <article class="stop reveal" data-date="2026-09-16">
+  <span class="skind sk-food">Lunch</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🍽️</span>
@@ -2248,6 +2469,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Time Out Market"></div>
@@ -2289,6 +2511,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-16">
+  <span class="skind sk-do">Activity</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🎒</span>
@@ -2306,6 +2529,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Cais das Colunas sunset cruise"></div>
@@ -2349,6 +2573,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   </div>
 </article>
 <article class="stop reveal" data-date="2026-09-16">
+  <span class="skind sk-food">Dinner</span>
   <div class="shead">
     <div class="tcol">
       <span class="time">🍽️</span>
@@ -2366,6 +2591,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </button>
   </div>
   <div class="sb">
+    
     
     
     <div class="evslot" data-pname="Alma"></div>
@@ -2414,7 +2640,27 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
 <section class="panel" data-panel="eats" role="tabpanel">
   <h2 class="reveal">Where to eat</h2>
   <p class="eatlead reveal">Your picks are highlighted — they are the ones on your map. Below: more spots nearby, by type.</p>
-  <div class="reveal"><div class="eat sel" data-date="2026-09-13" data-w0="720" data-w1="870" data-eat-pick="1" data-eat-when="Day 2 lunch">
+  <div class="eatfilters reveal" role="group" aria-label="Filter the places to eat">
+        <div class="eatfgrp">
+          <button class="eatf on" data-eatsel="all" type="button">All</button>
+          <button class="eatf" data-eatsel="sel" type="button">In your plan</button>
+          <button class="eatf" data-eatsel="opt" type="button">Other options</button>
+        </div>
+        <div class="eatfgrp">
+          <button class="eatf on" data-eatcui="all" type="button">Every cuisine</button>
+          <button class="eatf" data-eatcui="bakery" type="button">🥐 Bakery</button>
+<button class="eatf" data-eatcui="brunch" type="button">🍳 Brunch</button>
+<button class="eatf" data-eatcui="burgers-prego" type="button">🍔 Burgers &amp; prego</button>
+<button class="eatf" data-eatcui="fine-dining" type="button">🍽️ Fine dining</button>
+<button class="eatf" data-eatcui="food-hall" type="button">🍽️ Food hall</button>
+<button class="eatf" data-eatcui="peruvian" type="button">🍽️ Peruvian</button>
+<button class="eatf" data-eatcui="seafood" type="button">🦞 Seafood</button>
+        </div>
+      </div>
+  <div class="reveal">
+    <div class="eatgroup">
+      <h4 class="eatgh" data-eatgh="bakery">🥐 Bakery</h4>
+      <div class="card"><div class="eat sel" data-eatsel="sel" data-eatcui="bakery" data-date="2026-09-13" data-w0="720" data-w1="870" data-eat-pick="1" data-eat-when="Day 2 lunch">
     <span class="selpill">✓ Currently selected</span>
     <div class="r"><b>🥧 Manteigaria</b>
       <span class="epill">
@@ -2442,68 +2688,10 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       
       
     </div>
-  </div><div class="eat sel" data-date="2026-09-16" data-w0="720" data-w1="870" data-eat-pick="1" data-eat-when="Day 5 lunch">
-    <span class="selpill">✓ Currently selected</span>
-    <div class="r"><b>🍽️ Time Out Market</b>
-      <span class="epill">
-        <span class="rating">★ 4.4 <small>(96k)</small></span>
-        
-      </span>
-    </div>
-    <div class="meta">Day 5 lunch · Cais do Sodré</div>
-    <div class="evslot" data-pname="Time Out Market"></div>
-    
-    <p style="font-size:14px;margin:0 0 6px">Everyone&#39;s favourite, all at once, one table.</p>
-    <div class="whypick"><b>Why this one:<span class="vymark" title="Added by Voyager" aria-label="Added by Voyager"><i aria-hidden="true">🔭</i></span></b><span>The one lunch where a five-person, one-allergy, one-dog crew all win.</span></div>
-    
-    
-    <div class="tags" style="margin-top:8px"><span class="tag">allergen labels at every counter</span></div>
-    <div class="vnote">AI-generated. <b style="display:inline">Always confirm allergens directly with the restaurant</b> — menus and preparation change.</div>
-    
-    
-    
-    <div class="acts">
-      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Time%20Out%20Market%20Lisboa%20Lisbon%2C%20Portugal">Directions →</a>
-      <button class="btn maplocate" type="button" data-locname="Time Out Market">📍 Map locate</button>
-      
-      
-      
-      
-    </div>
-  </div><div class="eat sel" data-date="2026-09-16" data-w0="1080" data-w1="1260" data-eat-pick="1" data-eat-when="Day 5 dinner">
-    <span class="selpill">✓ Currently selected</span>
-    <div class="r"><b>✨ Alma</b>
-      <span class="epill">
-        <span class="rating">★ 4.7 <small>(3.1k)</small></span>
-        
-      </span>
-    </div>
-    <div class="meta">Day 5 dinner · Chiado</div>
-    <div class="evslot" data-pname="Alma"></div>
-    
-    <p style="font-size:14px;margin:0 0 6px">Two stars, one anniversary, the table of the trip.</p>
-    <div class="whypick"><b>Why this one:<span class="vymark" title="Added by Voyager" aria-label="Added by Voyager"><i aria-hidden="true">🔭</i></span></b><span>Ten years earns the best table in Lisbon.</span></div>
-    
-    
-    <div class="tags" style="margin-top:8px"><span class="tag">allergy built into the menu on request</span></div>
-    <div class="vnote">AI-generated. <b style="display:inline">Always confirm allergens directly with the restaurant</b> — menus and preparation change.</div>
-    
-    
-    
-    <div class="acts">
-      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Alma%20Henrique%20S%C3%A1%20Pessoa%20Lisboa%20Lisbon%2C%20Portugal">Directions →</a>
-      <button class="btn maplocate" type="button" data-locname="Alma">📍 Map locate</button>
-      
-      
-      
-      
-    </div>
   </div></div>
-  <div class="reveal">
-    <h3 class="eatmore">More places to eat nearby</h3>
-    <div class="eatgroup">
-      <h4 class="eatgh">🍳 Brunch</h4>
-      <div class="card"><div class="eat">
+    </div><div class="eatgroup">
+      <h4 class="eatgh" data-eatgh="brunch">🍳 Brunch</h4>
+      <div class="card"><div class="eat" data-eatsel="opt" data-eatcui="brunch">
     
     <div class="r"><b>🍳 Dear Breakfast</b>
       <span class="epill">
@@ -2533,8 +2721,8 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </div>
   </div></div>
     </div><div class="eatgroup">
-      <h4 class="eatgh">🍔 Burgers &amp; prego</h4>
-      <div class="card"><div class="eat">
+      <h4 class="eatgh" data-eatgh="burgers-prego">🍔 Burgers &amp; prego</h4>
+      <div class="card"><div class="eat" data-eatsel="opt" data-eatcui="burgers-prego">
     
     <div class="r"><b>🍽️ O Prego da Peixaria</b>
       <span class="epill">
@@ -2565,8 +2753,70 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </div>
   </div></div>
     </div><div class="eatgroup">
-      <h4 class="eatgh">🍽️ Peruvian</h4>
-      <div class="card"><div class="eat">
+      <h4 class="eatgh" data-eatgh="fine-dining">🍽️ Fine dining</h4>
+      <div class="card"><div class="eat sel" data-eatsel="sel" data-eatcui="fine-dining" data-date="2026-09-16" data-w0="1080" data-w1="1260" data-eat-pick="1" data-eat-when="Day 5 dinner">
+    <span class="selpill">✓ Currently selected</span>
+    <div class="r"><b>✨ Alma</b>
+      <span class="epill">
+        <span class="rating">★ 4.7 <small>(3.1k)</small></span>
+        
+      </span>
+    </div>
+    <div class="meta">Day 5 dinner · Chiado</div>
+    <div class="evslot" data-pname="Alma"></div>
+    
+    <p style="font-size:14px;margin:0 0 6px">Two stars, one anniversary, the table of the trip.</p>
+    <div class="whypick"><b>Why this one:<span class="vymark" title="Added by Voyager" aria-label="Added by Voyager"><i aria-hidden="true">🔭</i></span></b><span>Ten years earns the best table in Lisbon.</span></div>
+    
+    
+    <div class="tags" style="margin-top:8px"><span class="tag">allergy built into the menu on request</span></div>
+    <div class="vnote">AI-generated. <b style="display:inline">Always confirm allergens directly with the restaurant</b> — menus and preparation change.</div>
+    
+    
+    
+    <div class="acts">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Alma%20Henrique%20S%C3%A1%20Pessoa%20Lisboa%20Lisbon%2C%20Portugal">Directions →</a>
+      <button class="btn maplocate" type="button" data-locname="Alma">📍 Map locate</button>
+      
+      
+      
+      
+    </div>
+  </div></div>
+    </div><div class="eatgroup">
+      <h4 class="eatgh" data-eatgh="food-hall">🍽️ Food hall</h4>
+      <div class="card"><div class="eat sel" data-eatsel="sel" data-eatcui="food-hall" data-date="2026-09-16" data-w0="720" data-w1="870" data-eat-pick="1" data-eat-when="Day 5 lunch">
+    <span class="selpill">✓ Currently selected</span>
+    <div class="r"><b>🍽️ Time Out Market</b>
+      <span class="epill">
+        <span class="rating">★ 4.4 <small>(96k)</small></span>
+        
+      </span>
+    </div>
+    <div class="meta">Day 5 lunch · Cais do Sodré</div>
+    <div class="evslot" data-pname="Time Out Market"></div>
+    
+    <p style="font-size:14px;margin:0 0 6px">Everyone&#39;s favourite, all at once, one table.</p>
+    <div class="whypick"><b>Why this one:<span class="vymark" title="Added by Voyager" aria-label="Added by Voyager"><i aria-hidden="true">🔭</i></span></b><span>The one lunch where a five-person, one-allergy, one-dog crew all win.</span></div>
+    
+    
+    <div class="tags" style="margin-top:8px"><span class="tag">allergen labels at every counter</span></div>
+    <div class="vnote">AI-generated. <b style="display:inline">Always confirm allergens directly with the restaurant</b> — menus and preparation change.</div>
+    
+    
+    
+    <div class="acts">
+      <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Time%20Out%20Market%20Lisboa%20Lisbon%2C%20Portugal">Directions →</a>
+      <button class="btn maplocate" type="button" data-locname="Time Out Market">📍 Map locate</button>
+      
+      
+      
+      
+    </div>
+  </div></div>
+    </div><div class="eatgroup">
+      <h4 class="eatgh" data-eatgh="peruvian">🍽️ Peruvian</h4>
+      <div class="card"><div class="eat" data-eatsel="opt" data-eatcui="peruvian">
     
     <div class="r"><b>🍽️ A Cevicheria <span class="gempill">💎 Hidden gem</span><span class="vymark" title="Added by Voyager" aria-label="Added by Voyager"><i aria-hidden="true">🔭</i></span></b>
       <span class="epill">
@@ -2596,8 +2846,8 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
     </div>
   </div></div>
     </div><div class="eatgroup">
-      <h4 class="eatgh">🦞 Seafood</h4>
-      <div class="card"><div class="eat">
+      <h4 class="eatgh" data-eatgh="seafood">🦞 Seafood</h4>
+      <div class="card"><div class="eat" data-eatsel="opt" data-eatcui="seafood">
     
     <div class="r"><b>🍽️ Cervejaria Ramiro</b>
       <span class="epill">
@@ -2741,7 +2991,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <div class="evtop"><span class="evcat">🎶 Music · Fado</span>
         <span class="evprice">Free (buy a drink)</span></div>
       <h3>Fado Vadio at Tasca do Chico</h3>
-      <div class="evwhen">🗓️ Day 1 · Saturday, September 12 · </div>
+      <div class="evwhen">🗓️ Day 1 · Saturday, September 12 · 9:00 PM</div>
       <div class="evmeta">Tasca do Chico</div>
       <div class="evmeta">R. do Diário de Notícias 39, Bairro Alto</div>
       
@@ -2749,7 +2999,28 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
         
         <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Tasca%20do%20Chico%20Bairro%20Alto%20Lisboa">Directions →</a>
         <button class="btn evswap" type="button" data-swapkind="event" data-swap="ev1"
-          data-name="Fado Vadio at Tasca do Chico" data-when="2026-09-12"
+          data-name="Fado Vadio at Tasca do Chico" data-when="2026-09-12 21:00"
+          data-clash="">Swap into my plan</button>
+      </div>
+    </div>
+  </article>
+  </div><div>
+    <h3 class="evday">Day 2 · Sunday, September 13</h3>
+    <article class="evcard reveal" id="ev-ev3">
+    
+    <div class="evbody">
+      <div class="evtop"><span class="evcat">🎫 Music · Concert</span>
+        <span class="evprice">From €28</span></div>
+      <h3>Fado Sinfónico at Coliseu dos Recreios</h3>
+      <div class="evwhen">🗓️ Day 2 · Sunday, September 13 · 9:00 PM</div>
+      <div class="evmeta">Coliseu dos Recreios</div>
+      <div class="evmeta">R. das Portas de Santo Antão 96, Lisboa</div>
+      
+      <div class="acts">
+        <a class="btn primary" target="_blank" rel="noopener" href="https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=event&amp;city=Fado%20Sinf%C3%B3nico%20at%20Coliseu%20dos%20Recreios&amp;near=Lisbon%2C%20Portugal">Book now ↗</a>
+        <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Coliseu%20dos%20Recreios%20Lisboa">Directions →</a>
+        <button class="btn evswap" type="button" data-swapkind="event" data-swap="ev3"
+          data-name="Fado Sinfónico at Coliseu dos Recreios" data-when="2026-09-13 21:00"
           data-clash="">Swap into my plan</button>
       </div>
     </div>
@@ -2762,7 +3033,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
       <div class="evtop"><span class="evcat">🎷 Music · Live jazz</span>
         <span class="evprice">€</span></div>
       <h3>Sunset jazz at Park</h3>
-      <div class="evwhen">🗓️ Day 3 · Monday, September 14 · </div>
+      <div class="evwhen">🗓️ Day 3 · Monday, September 14 · 7:00 PM</div>
       <div class="evmeta">Park Rooftop Bar</div>
       <div class="evmeta">Calçada do Combro 58 (top of the car park)</div>
       
@@ -2770,7 +3041,7 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
         
         <a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&amp;destination=Park%20Bar%20Lisboa">Directions →</a>
         <button class="btn evswap" type="button" data-swapkind="event" data-swap="ev2"
-          data-name="Sunset jazz at Park" data-when="2026-09-14"
+          data-name="Sunset jazz at Park" data-when="2026-09-14 19:00"
           data-clash="">Swap into my plan</button>
       </div>
     </div>
@@ -2945,11 +3216,11 @@ footer b{font-family:var(--display);color:var(--ink);font-size:14px;display:bloc
   <div class="bldln">Build sample</div>
 </footer>
 
-<script>window.__VACAYI__={"meta":{"title":"Lisbon, five days with the whole crew","destination":"Lisbon, Portugal","subtitle":"","start_date":"2026-09-12","end_date":"2026-09-17","occasion":"family_vacation","occasion_thread":"Maya & Theo's tenth anniversary, quietly threaded through the week.","party_line":"Maya, Theo, Nina, Grandpa Sal & Pixel","timezone":"","trip_mode":"city","fun_level":"playful","time_format":"12h","language":"en","pace":"","pipeline_version":"sample","agent":"voyager","trip_id":"","built_at":"","arrival":"","departure":"","budget":"","party_adults":0,"generation":1},"days":[{"date":"2026-09-12"},{"date":"2026-09-13"},{"date":"2026-09-14"},{"date":"2026-09-15"},{"date":"2026-09-16"}],"map":{"points":[{"id":"p0","label":"Memmo Alfama Hotel","lat":38.7108,"lng":-9.13,"day":0,"type":"lodging","note":"","place_id":"","confirmed":false},{"id":"p1","label":"Miradouro de Santa Luzia","lat":38.7118,"lng":-9.1305,"day":1,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p2","label":"Castelo de São Jorge","lat":38.7139,"lng":-9.1335,"day":2,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p3","label":"Manteigaria","lat":38.7107,"lng":-9.1435,"day":2,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p4","label":"Mosteiro dos Jerónimos","lat":38.6979,"lng":-9.2065,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p5","label":"Pastéis de Belém","lat":38.6975,"lng":-9.2033,"day":3,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p6","label":"Torre de Belém","lat":38.6916,"lng":-9.2159,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p7","label":"Quinta da Regaleira","lat":38.7962,"lng":-9.3963,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p8","label":"Palácio da Pena","lat":38.7876,"lng":-9.3906,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p9","label":"Time Out Market","lat":38.7067,"lng":-9.1458,"day":5,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p10","label":"Alma","lat":38.7104,"lng":-9.142,"day":5,"type":"eat","note":"","place_id":"","confirmed":false}],"routes":[],"tiles_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/tiles","basemap":null},"events":[{"id":"ev1","name":"Fado Vadio at Tasca do Chico","date":"2026-09-12","time":"","time_tba":false,"category":"Music","emoji":"🎶","genre":"Fado","venue":"Tasca do Chico","address":"R. do Diário de Notícias 39, Bairro Alto","maps_query":"Tasca do Chico Bairro Alto Lisboa","url":"","image":"","price":"Free (buy a drink)","day":1,"clashes_with":""},{"id":"ev2","name":"Sunset jazz at Park","date":"2026-09-14","time":"","time_tba":false,"category":"Music","emoji":"🎷","genre":"Live jazz","venue":"Park Rooftop Bar","address":"Calçada do Combro 58 (top of the car park)","maps_query":"Park Bar Lisboa","url":"","image":"","price":"€","day":3,"clashes_with":""}],"events_api":{"url":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/events","lat":38.72,"lng":-9.16},"weather_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/weather","theme":{"accent":"#EE4D77","accent2":"#F7941D","ink":"#241A2E","deep":"#3A2233"},"lang_name":"Portuguese","feature":{"ranks":[{"name":"Just landed","at":0},{"name":"Getting the hang of it","at":25},{"name":"Basically a local","at":55},{"name":"Lisboeta for life","at":85}],"items":[{"points":15},{"points":10},{"points":20},{"points":20},{"points":15},{"points":10},{"points":10}]}};</script>
+<script>window.__VACAYI__={"meta":{"title":"Lisbon, five days with the whole crew","destination":"Lisbon, Portugal","subtitle":"","start_date":"2026-09-12","end_date":"2026-09-17","occasion":"family_vacation","occasion_thread":"Maya & Theo's tenth anniversary, quietly threaded through the week.","party_line":"Maya, Theo, Nina, Grandpa Sal & Pixel","timezone":"","trip_mode":"city","fun_level":"playful","time_format":"12h","language":"en","pace":"","pipeline_version":"sample","agent":"voyager","trip_id":"","built_at":"","arrival":"","departure":"","budget":"","stay_status":"","party_adults":0,"party_infants":0,"generation":1},"days":[{"date":"2026-09-12"},{"date":"2026-09-13"},{"date":"2026-09-14"},{"date":"2026-09-15"},{"date":"2026-09-16"}],"td":[{"date":"2026-09-12","stops":[{"n":"Memmo Alfama Terrace","s":"","e":"","c":"lodging","k":"Stay","kc":"sk-stay","el":0,"bk":0},{"n":"Miradouro de Santa Luzia","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0},{"n":"Fado in the square","s":"","e":"","c":"activity","k":"Activity","kc":"sk-do","el":1,"bk":0}],"eve":null,"pbr":"Swap the viewpoint for the Fado Museum two streets down — small, dry, and a lovely first taste of the city's sound.","need":[{"t":"Memmo Alfama Hotel","k":"lodging"}],"q":[{"w":"Nina","t":"Find five different tile patterns","p":15,"at":"Miradouro de Santa Luzia"}],"sm":"Ease in gently after the flight — one hill, one viewpoint, an early dinner steps from the hotel, and everyone in bed before the jet lag bites."},{"date":"2026-09-13","stops":[{"n":"Castelo de São Jorge","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0},{"n":"Tram 28","s":"","e":"","c":"activity","k":"Activity","kc":"sk-do","el":1,"bk":0},{"n":"Manteigaria","s":"","e":"","c":"meal","k":"Lunch","kc":"sk-food","el":1,"bk":0}],"eve":null,"pbr":"The castle is largely open-air — move it to the afternoon and do the (indoor, air-conditioned) Museu do Aljube first: powerful, and right on the way up.","need":[],"q":[{"w":"Nina","t":"Ride Tram 28 without falling over","p":10,"at":"Tram 28"},{"w":"Maya","t":"Order a coffee entirely in Portuguese","p":15,"at":"Manteigaria"}],"sm":"Up to the castle before the heat and the crowds, down through Alfama's tangle, a ride on the famous 28, and an afternoon reward that Nina will remember longer than any of it.","cost":{"lo":60,"hi":60,"cur":"€","open":false,"un":0}},{"date":"2026-09-14","stops":[{"n":"Mosteiro dos Jerónimos","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0},{"n":"Pastéis de Belém","s":"","e":"","c":"meal","k":"Meal","kc":"sk-food","el":1,"bk":0},{"n":"Torre de Belém","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0},{"n":"LX Factory","s":"","e":"","c":"activity","k":"Activity","kc":"sk-do","el":1,"bk":0}],"eve":null,"pbr":"The monastery cloister and the coach museum next door are both indoor and both extraordinary — a full, dry day without changing neighbourhoods.","need":[],"q":[{"w":"","t":"Spot the flying bicycle","p":10,"at":"LX Factory"}],"sm":"The grand, flat, riverside day — perfect after two on the hills. Monastery, tower, the original tarts, and an afternoon that's all downhill and sea air.","cost":{"lo":72,"hi":72,"cur":"€","open":false,"un":0}},{"date":"2026-09-15","stops":[{"n":"Quinta da Regaleira","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0},{"n":"Palácio da Pena","s":"","e":"","c":"sight","k":"Attraction","kc":"sk-see","el":1,"bk":0}],"eve":null,"pbr":"Sintra is often in cloud even when Lisbon isn't — that's the magic, not a problem. Pena's interiors and the Quinta's grottoes are wonderful wet.","need":[],"q":[{"w":"Nina","t":"Climb out of the Initiation Well the right way","p":20,"at":"Quinta da Regaleira"}],"sm":"The one big excursion: a misty mountain of palaces half an hour from the city. Pick two, not five, keep it slow, and be back for the anniversary dinner.","cost":{"lo":140,"hi":140,"cur":"€","open":false,"un":0}},{"date":"2026-09-16","stops":[{"n":"Time Out Market","s":"","e":"","c":"meal","k":"Lunch","kc":"sk-food","el":1,"bk":0},{"n":"Cais das Colunas sunset cruise","s":"","e":"","c":"activity","k":"Activity","kc":"sk-do","el":1,"bk":0},{"n":"Alma","s":"","e":"","c":"meal","k":"Dinner","kc":"sk-food","el":1,"bk":0}],"eve":{"n":"Alma","wh":"Day 5 dinner","pill":""},"pbr":"The market is covered and the cruise runs rain or shine (and is lovely under a grey sky). Only the park is weather-dependent — swap it for the Gulbenkian's indoor collection.","need":[],"q":[{"w":"Theo","t":"Land the golden-hour bridge shot","p":20,"at":"Cais das Colunas sunset cruise"}],"sm":"A deliberately gentle day — a market, a park, a river cruise at golden hour — wrapped around the evening that matters. Ten years, one very good table.","cost":{"lo":0,"hi":0,"cur":"€","open":false,"un":1}}],"map":{"points":[{"id":"p0","label":"Memmo Alfama Hotel","lat":38.7108,"lng":-9.13,"day":0,"type":"lodging","note":"","place_id":"","confirmed":false},{"id":"p1","label":"Miradouro de Santa Luzia","lat":38.7118,"lng":-9.1305,"day":1,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p2","label":"Castelo de São Jorge","lat":38.7139,"lng":-9.1335,"day":2,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p3","label":"Manteigaria","lat":38.7107,"lng":-9.1435,"day":2,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p4","label":"Mosteiro dos Jerónimos","lat":38.6979,"lng":-9.2065,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p5","label":"Pastéis de Belém","lat":38.6975,"lng":-9.2033,"day":3,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p6","label":"Torre de Belém","lat":38.6916,"lng":-9.2159,"day":3,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p7","label":"Quinta da Regaleira","lat":38.7962,"lng":-9.3963,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p8","label":"Palácio da Pena","lat":38.7876,"lng":-9.3906,"day":4,"type":"stop","note":"","place_id":"","confirmed":false},{"id":"p9","label":"Time Out Market","lat":38.7067,"lng":-9.1458,"day":5,"type":"eat","note":"","place_id":"","confirmed":false},{"id":"p10","label":"Alma","lat":38.7104,"lng":-9.142,"day":5,"type":"eat","note":"","place_id":"","confirmed":false}],"routes":[],"tiles_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/tiles","basemap":null},"events":[{"id":"ev1","name":"Fado Vadio at Tasca do Chico","date":"2026-09-12","time":"21:00","time_tba":false,"category":"Music","emoji":"🎶","genre":"Fado","venue":"Tasca do Chico","address":"R. do Diário de Notícias 39, Bairro Alto","maps_query":"Tasca do Chico Bairro Alto Lisboa","url":"","image":"","price":"Free (buy a drink)","day":1,"clashes_with":""},{"id":"ev2","name":"Sunset jazz at Park","date":"2026-09-14","time":"19:00","time_tba":false,"category":"Music","emoji":"🎷","genre":"Live jazz","venue":"Park Rooftop Bar","address":"Calçada do Combro 58 (top of the car park)","maps_query":"Park Bar Lisboa","url":"","image":"","price":"€","day":3,"clashes_with":""},{"id":"ev3","name":"Fado Sinfónico at Coliseu dos Recreios","date":"2026-09-13","time":"21:00","time_tba":false,"category":"Music","emoji":"🎫","genre":"Concert","venue":"Coliseu dos Recreios","address":"R. das Portas de Santo Antão 96, Lisboa","maps_query":"Coliseu dos Recreios Lisboa","url":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/go?kind=event&city=Fado%20Sinf%C3%B3nico%20at%20Coliseu%20dos%20Recreios&near=Lisbon%2C%20Portugal","image":"","price":"From €28","day":2,"clashes_with":""}],"events_api":{"url":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/events","lat":38.72,"lng":-9.16},"weather_api":"https://pqpnspnyqpalwrohlcir.supabase.co/functions/v1/weather","theme":{"accent":"#EE4D77","accent2":"#F7941D","ink":"#241A2E","deep":"#3A2233"},"lang_name":"Portuguese","feature":{"ranks":[{"name":"Just landed","at":0},{"name":"Getting the hang of it","at":25},{"name":"Basically a local","at":55},{"name":"Lisboeta for life","at":85}],"items":[{"points":15},{"points":10},{"points":20},{"points":20},{"points":15},{"points":10},{"points":10}]}};</script>
 <script>(function(){
 "use strict";
 /* Labels + date locale for THIS guide's language (content.meta.language). */
-var LBL={"noteDelete":"Delete note","optTitle":"A tighter order for this day","optSave":"Saves about {km} km and {mins} min of travelling","optKept":"Your meals, bookings and the start and end of the day stay exactly where they are.","optApply":"Use the tighter order","optWorking":"Reordering…","optDone":"Done — this day has been reordered","optFailed":"Couldn't reorder this day","optOffline":"Open the guide in the app to use this","tripComplete":"Trip complete","tomorrow":"Tomorrow!","tminus":"T-minus {n} days","dayOf":"Day {n} of {total}","stopOne":"{n} stop","stopMany":"{n} stops","onFoot":"~{d} on foot","routeWalk":"{d} walking · {t}","routeDrive":"{d} driving · {t}","routeTransit":"{d} by train · {t}","minShort":"{n} min","mapLive":"Interactive map — pinch to zoom","hrShort":"{h} h","hrMinShort":"{h} h {m} min","navRoute":"Navigate this route →","pinHint":"Tap a pin for details. Distances are straight-line.","blueDot":"The blue dot is you. Straight-line distance.","locNoMap":"Can’t place you on this map.","staying":"where you’re staying","food":"food","allStops":"All stops","day":"Day {n}","navigate":"Navigate →","happeningNow":"Happening now","doneOf":"{done} of {total} done","bkSorted":"{done} of {total} sorted","wToday":"Today","wTomorrow":"Tomorrow","wInDays":"In {n} days","editStop":"this stop","dayN":"Day {n}","editTime":"Change the time","editUp":"Move earlier in the day","editDown":"Move later in the day","editDay":"Move to another day","editRemove":"Remove from the plan","editReplace":"Replace with something new","editPreview":"Preview the change","editWhatHappens":"What this will do:","editNoImpact":"No knock-on effects that this guide can see.","editClash":"Overlaps {name} ({start}–{end}) — the shorter of the two will be trimmed.","editReorder":"It will sit past {name}, so the day re-orders to read by the clock.","editHours":"Listed hours: {hours} — check your new time falls inside them.","editBooked":"This stop carries a booking — check the time against it: {note}","editTimeTo":"Move {name} to {time}","editMovedUp":"Move {name} earlier","editMovedDown":"Move {name} later","editSlots":"The day keeps its time slots — stops swap places, no hour changes.","editTakesSlot":"It takes the {time} slot.","editToDay":"Move {name} to Day {n}","editDayMoves":"Its map pin and route move to Day {n}, and it slots into that day by its time.","editRemoveT":"Remove {name}","editGone":"Its pin comes off the map and the day's route re-measures.","editQuests":"{n} quest(s) point here and will lose their location.","editApply":"Apply","editBack":"Back","editApplying":"Applying — the guide will refresh…","editCaution":"Hand edits skip the planner's checks — give the day a once-over after you apply. Undo is in the assistant.","bookingLbl":"Booking","everyStop":"Every stop, in order","copy":"Copy","copied":"Copied","select":"Select","copyAddress":"Copy address","youAreHere":"You’re here","nearestStop":"nearest stop","locate":"📍 Where am I?","locating":"📍 Locating…","locDenied":"Location permission was denied.","locFailed":"Couldn’t get your location.","locUnavailable":"Location isn’t available here.","wxNoPlace":"Typical climate shown (no map location to fetch a live forecast).","wxUnsupported":"Typical climate shown (live forecast not supported here).","wxOffline":"⚠ Not live — no connection to update. Showing typical climate.","wxLive":"🟢 Live forecast · updated {time}","wxHorizon":"⚪ Live forecast opens ~10 days out — showing typical climate for now.","wxHorizonSlot":"Forecast opens ~10 days out — showing typical climate for now.","wxStale":"⚪ Showing typical climate — no connection to update.","wxLowVal":"low {t}°","wxRainChance":"{n}% rain","wxWindy":"Windy","wxSleet":"Rain and snow","wxHail":"Hail","wx0":"Clear","wx1":"Mainly clear","wx2":"Partly cloudy","wx3":"Overcast","wx45":"Fog","wx48":"Rime fog","wx51":"Light drizzle","wx53":"Drizzle","wx55":"Heavy drizzle","wx56":"Freezing drizzle","wx57":"Freezing drizzle","wx61":"Light rain","wx63":"Rain","wx65":"Heavy rain","wx66":"Freezing rain","wx67":"Freezing rain","wx71":"Light snow","wx73":"Snow","wx75":"Heavy snow","wx77":"Snow grains","wx80":"Showers","wx81":"Showers","wx82":"Violent showers","wx85":"Snow showers","wx86":"Snow showers","wx95":"Thunderstorm","wx96":"Storm + hail","wx99":"Storm + hail","evOffline":"Offline — showing the copy saved with your guide","evChecking":"Checking for updates…","evSaved":"Showing the copy saved with your guide","evFresh":"Live · checked just now","evNone":"Checked just now — nothing listed","evNothingNow":"Nothing listed near here for your dates right now.","evLead":"Real events on your dates, near where you are staying — add any you like.","evClash":"Overlaps \u003cb>{what}\u003c/b> in your plan","evTickets":"Book now ↗","evDirections":"Directions →","evSwap":"Swap into my plan","evBadge":"Something is on","evBadgeAt":"Something is on at {time}","evTba":"time to be announced","swapThisOne":"this one","swapAskEat":"Make \"{name}\"{when} one of my restaurant picks. Choose the meal it suits best, swap out whichever current pick makes sense there, and keep everything else as it is.","swapAskReplace":"Swap \"{clash}\" out of my plan and put \"{name}\"{when} in its place. Keep everything else as it is.","swapAskAdd":"Add \"{name}\"{when} to my plan, fitting it around what is already booked that day.","swapSent":"Sent — opening your planner…","swapSentShort":"Sent to your planner ✓","swapNoApp":"Open in the vacayi app to swap","pickWhich":"Which meal should {name} take over?","pickCancel":"Cancel","pickApplying":"Updating your plan…","pickNoSlots":"No meals to swap yet","pickSummary":"Made {name} the pick for {when}","uvLow":"Low","uvModerate":"Moderate","uvHigh":"High","uvVeryHigh":"Very High","uvExtreme":"Extreme","uv":"UV","sunrise":"sunrise","sunset":"sunset"},LOC="en-US";
+var LBL={"noteDelete":"Delete note","optTitle":"A tighter order for this day","optSave":"Saves about {km} km and {mins} min of travelling","optKept":"Your meals, bookings and the start and end of the day stay exactly where they are.","optApply":"Use the tighter order","optWorking":"Reordering…","optDone":"Done — this day has been reordered","optFailed":"Couldn't reorder this day","optOffline":"Open the guide in the app to use this","tripComplete":"Trip complete","tomorrow":"Tomorrow!","tminus":"T-minus {n} days","dayOf":"Day {n} of {total}","stopOne":"{n} stop","stopMany":"{n} stops","onFoot":"~{d} on foot","routeWalk":"{d} walking · {t}","routeDrive":"{d} driving · {t}","routeTransit":"{d} by train · {t}","minShort":"{n} min","mapLive":"Interactive map — pinch to zoom","hrShort":"{h} h","hrMinShort":"{h} h {m} min","navRoute":"Navigate this route →","pinHint":"Tap a pin for details. Distances are straight-line.","blueDot":"The blue dot is you. Straight-line distance.","locNoMap":"Can’t place you on this map.","staying":"where you’re staying","food":"food","allStops":"All stops","day":"Day {n}","navigate":"Navigate →","happeningNow":"Happening now","doneOf":"{done} of {total} done","bkSorted":"{done} of {total} sorted","wToday":"Today","wTomorrow":"Tomorrow","wInDays":"In {n} days","tdDay":"Day {n} of {m}","tdLeaveBy":"Leave by {t}","tdFirst":"First up","tdNext":"Next up","tdNow":"Now","tdLeft":"{t} left","tdAway":"≈ {n} min away","tdSkip":"Skip","tdSkipping":"Skipping…","tdDir":"Directions","tdNeeds":"You'll need today","tdQuests":"Today's quests","tdRain":"Rain likely today — {p}%","tdRainPlan":"See the rain plan","tdGap":"Free until {t}","tdHungry":"🍽 Hungry? See places to eat","tdTonight":"Tonight","tdTomorrow":"Tomorrow","tdTomorrowFirst":"First: {name} · {t}","tdJournal":"One line about today…","tdSave":"Save","tdSaved":"Saved ✓","tdWrap":"Today: {a} of {b} stops ticked","tdWrapEnd":"That's the trip — safe travels 👋","tdUndo":"Undo","tdSkipped":"Skipped {name} — nothing else moved","tdLater":"Later today","tdSpend":"expected today","tdQuestAt":"at {place}","tdWaitTitle":"Your day appears here","tdWaitBody":"Once your trip starts, this page shows what's next, when to leave, and what's booked.","tdDoneTitle":"This trip is complete","tdDoneBody":"Everything is still here — open Overview or any day to look back.","tdOpenDay":"Open the full day","tdDone":"All done for today","editStop":"this stop","dayN":"Day {n}","editTime":"Change the time","editUp":"Move earlier in the day","editDown":"Move later in the day","editDay":"Move to another day","editRemove":"Remove from the plan","editReplace":"Replace with something new","editPreview":"Preview the change","editWhatHappens":"What this will do:","editNoImpact":"No knock-on effects that this guide can see.","editClash":"Overlaps {name} ({start}–{end}) — the shorter of the two will be trimmed.","editReorder":"It will sit past {name}, so the day re-orders to read by the clock.","editHours":"Listed hours: {hours} — check your new time falls inside them.","editBooked":"This stop carries a booking — check the time against it: {note}","editTimeTo":"Move {name} to {time}","editMovedUp":"Move {name} earlier","editMovedDown":"Move {name} later","editSlots":"The day keeps its time slots — stops swap places, no hour changes.","editTakesSlot":"It takes the {time} slot.","editToDay":"Move {name} to Day {n}","editDayMoves":"Its map pin and route move to Day {n}, and it slots into that day by its time.","editRemoveT":"Remove {name}","editGone":"Its pin comes off the map and the day's route re-measures.","editQuests":"{n} quest(s) point here and will lose their location.","editApply":"Apply","editBack":"Back","editApplying":"Applying — the guide will refresh…","editCaution":"Hand edits skip the planner's checks — give the day a once-over after you apply. Undo is in the assistant.","bookingLbl":"Booking","everyStop":"Every stop, in order","copy":"Copy","copied":"Copied","select":"Select","copyAddress":"Copy address","youAreHere":"You’re here","nearestStop":"nearest stop","locate":"📍 Where am I?","locating":"📍 Locating…","locDenied":"Location permission was denied.","locFailed":"Couldn’t get your location.","locUnavailable":"Location isn’t available here.","wxNoPlace":"Typical climate shown (no map location to fetch a live forecast).","wxUnsupported":"Typical climate shown (live forecast not supported here).","wxOffline":"⚠ Not live — no connection to update. Showing typical climate.","wxLive":"🟢 Live forecast · updated {time}","wxHorizon":"⚪ Live forecast opens ~10 days out — showing typical climate for now.","wxHorizonSlot":"Forecast opens ~10 days out — showing typical climate for now.","wxStale":"⚪ Showing typical climate — no connection to update.","wxLowVal":"low {t}°","wxRainChance":"{n}% rain","wxWindy":"Windy","wxSleet":"Rain and snow","wxHail":"Hail","wx0":"Clear","wx1":"Mainly clear","wx2":"Partly cloudy","wx3":"Overcast","wx45":"Fog","wx48":"Rime fog","wx51":"Light drizzle","wx53":"Drizzle","wx55":"Heavy drizzle","wx56":"Freezing drizzle","wx57":"Freezing drizzle","wx61":"Light rain","wx63":"Rain","wx65":"Heavy rain","wx66":"Freezing rain","wx67":"Freezing rain","wx71":"Light snow","wx73":"Snow","wx75":"Heavy snow","wx77":"Snow grains","wx80":"Showers","wx81":"Showers","wx82":"Violent showers","wx85":"Snow showers","wx86":"Snow showers","wx95":"Thunderstorm","wx96":"Storm + hail","wx99":"Storm + hail","evOffline":"Offline — showing the copy saved with your guide","evChecking":"Checking for updates…","evSaved":"Showing the copy saved with your guide","evFresh":"Live · checked just now","evNone":"Checked just now — nothing listed","evNoConn":"Offline — events are checked live, so they aren't saved with your guide","evNothingNow":"Nothing listed near here for your dates right now.","evLead":"Real events on your dates, near where you are staying — add any you like.","evClash":"Overlaps \u003cb>{what}\u003c/b> in your plan","evTickets":"Book now ↗","evDirections":"Directions →","evSwap":"Swap into my plan","evBadge":"Something is on","evBadgeAt":"Something is on at {time}","evTba":"time to be announced","swapThisOne":"this one","swapAskEat":"Make \"{name}\"{when} one of my restaurant picks. Choose the meal it suits best, swap out whichever current pick makes sense there, and keep everything else as it is.","swapAskReplace":"Swap \"{clash}\" out of my plan and put \"{name}\"{when} in its place. Keep everything else as it is.","swapAskAdd":"Add \"{name}\"{when} to my plan, fitting it around what is already booked that day.","swapSent":"Sent — opening your planner…","swapSentShort":"Sent to your planner ✓","swapNoApp":"Open in the vacayi app to swap","pickWhich":"Which meal should {name} take over?","pickCancel":"Cancel","pickApplying":"Updating your plan…","pickNoSlots":"No meals to swap yet","pickSummary":"Made {name} the pick for {when}","uvLow":"Low","uvModerate":"Moderate","uvHigh":"High","uvVeryHigh":"Very High","uvExtreme":"Extreme","uv":"UV","sunrise":"sunrise","sunset":"sunset"},LOC="en-US";
 function L(k,v){var s=LBL[k]||k;return v?s.replace(/\{(\w+)\}/g,function(m,n){return n in v?String(v[n]):m}):s}
 /* THE LABEL TABLE, REACHABLE FROM OUTSIDE — the one thing a shared guide's
    translator cannot get at any other way.
@@ -2967,7 +3238,7 @@ window.__VACAYI_LBL__ = LBL;
 window.__VACAYI_RELABEL__ = function(){ try{ tick(); }catch(e){} };
 /* Bump this whenever the runtime changes so a guide can be identified.
    Visible in the guide via window.VACAYI_RUNTIME. */
-window.VACAYI_RUNTIME = "2.23.0";
+window.VACAYI_RUNTIME = "2.31.0";
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var DATA=window.__VACAYI__;
@@ -3127,6 +3398,17 @@ $$(".tabs .tab").forEach(function(b){ b.addEventListener("click",function(){show
    shared link or downloaded file falls back to the guide's own Map tab and
    pulses the pin so the eye lands on it. */
 function locNorm(s){return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim()}
+/* Whole-word containment over normalised names — the pin names the PLACE, the
+   card names the ACTIVITY ("Diamond Head" vs "Hike Diamond Head State
+   Monument"). ONE rule shared by the map-locate pulse and the Today leg
+   lookup, so the two surfaces can never disagree about what matches. */
+function locHit(a,b){
+  var x=locNorm(a),y=locNorm(b);
+  if(!x||!y)return false;
+  if(x===y||x.indexOf(y)===0||y.indexOf(x)===0)return true;
+  var sh=x.length<=y.length?x:y,lo=sh===x?y:x;
+  return sh.length>=6&&(" "+lo+" ").indexOf(" "+sh+" ")>=0;
+}
 document.addEventListener("click",function(ev){
   var b=ev.target&&ev.target.closest?ev.target.closest(".maplocate"):null;
   if(!b)return;
@@ -3143,11 +3425,7 @@ document.addEventListener("click",function(ev){
   // finds nothing. Whole-word containment, padded with spaces so "spa" cannot
   // match "spanish steps" — the same rule the worker and the app use.
   for(var i=0;i<pins.length;i++){
-    var l=locNorm(pins[i].getAttribute("aria-label"));
-    if(!l)continue;
-    if(l===want||l.indexOf(want)===0||want.indexOf(l)===0){hit=pins[i];break}
-    var sh=l.length<=want.length?l:want,lo=sh===l?want:l;
-    if(sh.length>=6&&(" "+lo+" ").indexOf(" "+sh+" ")>=0){hit=pins[i];break}
+    if(locHit(pins[i].getAttribute("aria-label"),name)){hit=pins[i];break}
   }
   if(!hit)return;
   try{hit.dispatchEvent(new MouseEvent("click",{bubbles:true}))}catch(e){}
@@ -3175,6 +3453,7 @@ function tick(){
   var ch=$("#chip"); if(ch)ch.textContent=tripChip();
   markNow();
   wCountdowns();
+  if(window.__tdCompose)try{window.__tdCompose()}catch(e){}
 }
 
 /* ============ wallet countdowns ============
@@ -3228,6 +3507,11 @@ document.addEventListener("click",function(e){
   var opening=w.hasAttribute("hidden");
   if(opening){w.removeAttribute("hidden")}else{w.setAttribute("hidden","")}
   b.setAttribute("aria-expanded",opening?"true":"false");
+  /* A button that still says "Show price breakdown" while the breakdown is
+     open is lying about what it does. Only buttons that CARRY both words swap
+     — the packing list's ⓘ has neither attribute and is left alone. */
+  var ls=b.getAttribute("data-lbl-show"),lh=b.getAttribute("data-lbl-hide");
+  if(ls&&lh)b.textContent=opening?lh:ls;
 });
 
 /* ============ stops: expand + done ============ */
@@ -3513,6 +3797,44 @@ document.addEventListener("click",function(ev){
   });
 });
 
+/* ============ eats: two filters that AND together ============
+   Cuisine and in-the-plan are independent questions, so each chip group keeps
+   its own selection and a card has to satisfy BOTH. The card carries the facts
+   as attributes -- never its own words, which are the writer's and in the
+   guide's language -- and a cuisine heading hides when the filter leaves it
+   nothing to head, the same way a wallet group does. */
+function eatsApply(){
+  var cui=(document.querySelector(".eatf.on[data-eatcui]")||{}).dataset;
+  var sel=(document.querySelector(".eatf.on[data-eatsel]")||{}).dataset;
+  var wantC=cui?cui.eatcui:"all", wantS=sel?sel.eatsel:"all";
+  $$(".panel[data-panel='eats'] .eat").forEach(function(card){
+    var okC=wantC==="all"||card.dataset.eatcui===wantC;
+    var okS=wantS==="all"||card.dataset.eatsel===wantS;
+    card.classList.toggle("bkhide",!(okC&&okS));
+  });
+  $$(".eatgh").forEach(function(h){
+    var g=h.dataset.eatgh;
+    var any=$$(".eat[data-eatcui='"+g+"']").some(function(card){
+      return !card.classList.contains("bkhide")});
+    /* The heading follows its CARDS, not the cuisine chip: a cuisine emptied by
+       the STATUS filter has to hide too. */
+    h.classList.toggle("bkhide",!any);
+    /* The group's own card box goes with its heading, or an empty rounded
+       shell sits where a cuisine used to be. */
+    var box=h.parentNode?h.parentNode.querySelector(".card"):null;
+    if(box)box.classList.toggle("bkhide",!any);
+  });
+}
+document.addEventListener("click",function(ev){
+  var chip=ev.target.closest(".eatf");
+  if(!chip)return;
+  /* Only within its OWN group: two dimensions, two selections. */
+  var group=chip.parentNode;
+  Array.prototype.forEach.call(group.querySelectorAll(".eatf"),function(b){
+    b.classList.toggle("on",b===chip)});
+  eatsApply();
+});
+
 /* Attach / open a confirmation. Host-app affordances: the picker, the upload
    and the signed read all live on the other side of the bridge, so on a
    shared link or an opened file the buttons are hidden at boot rather than
@@ -3793,6 +4115,52 @@ function decodePoly(str){
     }
     return sigPoints(day);
   }
+  /* Today's leave-by asks: how long is the baked leg that ENDS at this stop?
+     Same canonical point list, same legs, same fingerprint refusal as the
+     drawn labels — bakedRoute() already answers null when the plan moved, so
+     a stale route yields NO leave-by rather than a wrong one. */
+  /* The leg ENDING at a stop, formatted exactly as the map labels it —
+     "1.2 km · 6 min", in the guide's own units. Today asks for it rather than
+     formatting distances itself, so the two can never disagree about the same
+     gap, and a stale route yields nothing here for the same reason it draws
+     nothing there. */
+  window.__legLabel=function(day,name){
+    try{
+      var st=sigPoints(String(day)),r=bakedRoute(String(day));
+      if(!r||!r.legs||st.length<2)return "";
+      for(var i=1;i<st.length;i++){
+        if(locHit(st[i].label,name)){
+          var lg=r.legs[i-1];
+          if(!lg)return "";
+          var d=(typeof lg.meters==="number")?lg.meters/1000:null;
+          var mins=fmtMins(lg.seconds);
+          var bits=[];
+          if(d!=null)bits.push(fmtDist(d));
+          if(mins)bits.push(mins);
+          return bits.join(" · ");
+        }
+      }
+    }catch(e){}
+    return "";
+  };
+  /* The Today page composes BEFORE this module runs — it lives in the earlier
+     IIFE — so its first paint has no leg to offer and leave-by and the gaps
+     were blank until the 30-second tick came round. Recompose the moment the
+     hooks exist, exactly as the weather fetch does when its answer lands. */
+  setTimeout(function(){ if(window.__tdCompose)try{window.__tdCompose()}catch(e){} },0);
+  window.__legMin=function(day,name){
+    try{
+      var st=sigPoints(String(day)),r=bakedRoute(String(day));
+      if(!r||!r.legs||st.length<2)return null;
+      for(var i=1;i<st.length;i++){
+        if(locHit(st[i].label,name)){
+          var lg=r.legs[i-1];
+          return (lg&&typeof lg.seconds==="number"&&lg.seconds>0)?Math.max(1,Math.round(lg.seconds/60)):null;
+        }
+      }
+    }catch(e){}
+    return null;
+  };
   /* Distinct itinerary days that have at least one routeable stop (the lodging
      start makes even a one-stop day drawable). */
   function daysWithRoute(){
@@ -4191,6 +4559,25 @@ function decodePoly(str){
         (typeof w.pop==="number"?' · '+escapeHtml(L("wxRainChance",{n:w.pop})):'')+'</span>'+
         '<span class="wxlive">● live · '+stamp+'</span></div>'+sun;
     });
+    window.__WXD=days;
+    /* Today's page asks the WEATHER MODULE for its line rather than
+       reformatting the same numbers itself — the __legMin arrangement, and for
+       the same reason: two formatters drift, and the drift would show as the
+       day card and the Today card disagreeing about the same afternoon. */
+    window.__wxLine=function(d){
+      var w=days&&days[d]; if(!w)return "";
+      var em=COND[w.cond]||["🌡️",""];
+      var hi=(typeof w.hi==="number")?Math.round(w.hi):null;
+      var lo=(typeof w.lo==="number")?Math.round(w.lo):null;
+      var bits=[];
+      if(em[1])bits.push(escapeHtml(L(em[1])));
+      if(hi!=null)bits.push(hi+"°F ("+f2c(hi)+"°C)");
+      if(lo!=null)bits.push(escapeHtml(L("wxLowVal",{t:lo})));
+      if(typeof w.pop==="number")bits.push(escapeHtml(L("wxRainChance",{n:w.pop})));
+      if(!bits.length)return "";
+      return '<span class="tdwxi">'+em[0]+'</span>'+bits.join(" · ");
+    };
+    if(window.__tdCompose)try{window.__tdCompose()}catch(e){}
     if(statusEl)statusEl.textContent=any?L("wxLive",{time:stamp}):L("wxHorizon");
     if(!any)slots.forEach(function(el){el.innerHTML='<span class="wxoff">'+escapeHtml(L("wxHorizonSlot"))+'</span>'});
   }).catch(function(){
@@ -4425,11 +4812,14 @@ var featureTotals=null;
   });
 
   /* ---------- live refresh ----------
-     The guide ships with a copy of its events so the tab works offline. This is
-     what keeps that copy honest: whenever the reader is online we re-check the
-     live source, so a cancelled or rescheduled gig stops being presented as
-     fact. Any failure leaves the saved copy exactly where it is and says so —
-     never a blank tab. No API key is in the guide; it talks to our own proxy. */
+     EVENTS ARE DELIBERATELY NOT STORED IN THE GUIDE. Nothing bakes them, so an
+     event tab is live-fetched or it is honest about needing a connection - it
+     never shows a stale gig as fact. That is a LICENCE posture as much as a
+     design one: a feed we never cache needs no argument about what a
+     'reasonable period' is, which is the clause that bites an offline-first
+     product. A guide built before the Ticketmaster removal still carries a baked
+     copy, so a failure leaves whatever is on the page alone and says which case
+     it is. No API key is in the guide; it talks to our own proxy. */
   var API=DATA.events_api;
   var DAYS=(DATA.days||[]).map(function(d){return d.date}).filter(Boolean);
   var TF=(DATA.meta&&DATA.meta.time_format)||"24h";
@@ -4530,6 +4920,14 @@ var featureTotals=null;
     var box=document.getElementById("evstatus");
     if(box){box.textContent=msg;box.className="evstatus "+(cls||"")}
   }
+  /* IS THERE ACTUALLY A SAVED COPY? Both failure messages used to promise one
+     unconditionally - and since Ticketmaster came out and eventsEnrich went with
+     it, NOTHING bakes events any more, so on every guide built since then those
+     messages described a list that does not exist. A guide from before the
+     removal still carries one, so the answer is read off the page rather than
+     assumed either way: the rule the photo strip had to learn, where "nothing"
+     and "could not tell" have to be different sentences. */
+  function haveSaved(){return !!document.querySelector("#evlist .evcard")}
 
   var running=false, done=false;
   function refresh(){
@@ -4547,7 +4945,7 @@ var featureTotals=null;
         if(!j||j.source!=="live"||!Array.isArray(j.events)){
           /* The proxy answered but has nothing authoritative (no key, upstream
              error). The saved copy is the better answer — leave it alone. */
-          say(L("evSaved"),"save");
+          say(haveSaved()?L("evSaved"):L("evNoConn"),"save");
           return;
         }
         done=true;
@@ -4557,7 +4955,7 @@ var featureTotals=null;
       })
       .catch(function(){
         clearTimeout(timer); running=false;
-        say(L("evOffline"),"save");
+        say(haveSaved()?L("evOffline"):L("evNoConn"),"save");
       });
   }
   /* Refresh regardless of whether the Events tab is opened: the clash badges
@@ -4629,10 +5027,473 @@ function boot(){
   DATA.days.forEach(function(d,i){ if(d.date===today)idx=i });
   var hash=(location.hash||"").replace("#","");
   if(hash&&$('.panel[data-panel="'+hash+'"]')){showTab(hash)}
-  else if(idx>=0){showTab("day"+(idx+1))}
+  else if(idx>=0){showTab(window.__TD_MID__===true?"today":"day"+(idx+1))}
   else{showTab("overview")}
   revealScan();
 }
+
+/* ============ the Today tab ============
+   Composed on the DEVICE, because "today" is a fact only the phone knows.
+   The brain (tdMin/tdPhase/tdModel) is embedded below from todayLogic.js via
+   toString(), and scripts/check-today.mjs imports that same file and runs the
+   same decisions with an injected clock — the page's time-adaptivity is a
+   TESTED property, not a hoped one. The runtime's job here is only to turn
+   decisions into HTML and wire the taps. */
+function tdMin(hm) {
+  if (typeof hm !== "string") return null;
+  var m = /^(\d{1,2}):(\d{2})/.exec(hm);
+  if (!m) return null;
+  var v = (+m[1]) * 60 + (+m[2]);
+  return v >= 0 && v < 1440 ? v : null;
+}
+function tdPhase(minutes, firstStart, lastEnd) {
+  if (firstStart == null || lastEnd == null) {
+    if (minutes < 600) return "morning";
+    if (minutes >= 1200) return "evening";
+    return "day";
+  }
+  if (minutes < firstStart) return "morning";
+  if (minutes >= lastEnd || minutes >= 1200) return "evening";
+  return "day";
+}
+function tdModel(inp) {
+  var dayIdx = -1;
+  for (var i = 0; i < inp.days.length; i++) if (inp.days[i].date === inp.date) dayIdx = i;
+  if (dayIdx < 0) return { show: false };
+
+  var stops = inp.days[dayIdx].stops || [];
+  var timed = [];
+  for (var j = 0; j < stops.length; j++) {
+    var a = tdMin(stops[j].s), b = tdMin(stops[j].e);
+    if (a != null && b != null) timed.push({ i: j, a: a, b: b, st: stops[j] });
+  }
+  var firstStart = timed.length ? timed[0].a : null;
+  var lastEnd = null;
+  for (var t = 0; t < timed.length; t++) if (lastEnd == null || timed[t].b > lastEnd) lastEnd = timed[t].b;
+
+  var m = inp.minutes;
+  var phase = tdPhase(m, firstStart, lastEnd);
+  var blocks = [];
+
+  // The two stops the hero cares about: what is running, what is next.
+  var current = null, next = null;
+  for (var u = 0; u < timed.length; u++) {
+    if (timed[u].a <= m && m <= timed[u].b) current = timed[u];
+    if (next == null && timed[u].a > m) next = timed[u];
+  }
+
+  if (phase === "morning") {
+    blocks.push({ k: "dayline" });
+    if (inp.needs && inp.needs.length) blocks.push({ k: "needs" });
+    var mHero = timed.length ? timed[0].i : null;
+    if (timed.length) {
+      blocks.push({
+        k: "hero", first: true,
+        idx: timed[0].i, startMin: timed[0].a,
+        // Leave-by is the one derived number, and it is EXACT or ABSENT:
+        // next.start minus the measured leg, never a guessed buffer.
+        leaveBy: inp.travelMin != null ? timed[0].a - inp.travelMin : null,
+        travelMin: inp.travelMin,
+      });
+    }
+    // The rest of the day, and the way into it. Without this the page shows
+    // one stop and no route to the plan, which reads as the tab hiding it.
+    if (stops.length > 1) blocks.push({ k: "later", from: mHero == null ? -1 : mHero });
+    if (inp.quests && inp.quests.length) blocks.push({ k: "quests" });
+    return { show: true, dayIdx: dayIdx, phase: phase, blocks: blocks };
+  }
+
+  if (phase === "evening") {
+    var lastDay = dayIdx === inp.days.length - 1;
+    if (!lastDay) blocks.push({ k: "tomorrow", dayIdx: dayIdx + 1 });
+    blocks.push({ k: "journal" });
+    blocks.push({ k: "wrapped", lastDay: lastDay });
+    return { show: true, dayIdx: dayIdx, phase: phase, blocks: blocks };
+  }
+
+  // ---- the day itself ----
+  if (next) {
+    blocks.push({
+      k: "hero",
+      idx: next.i, startMin: next.a,
+      leaveBy: inp.travelMin != null ? next.a - inp.travelMin : null,
+      travelMin: inp.travelMin,
+      now: current ? { idx: current.i, endMin: current.b } : null,
+    });
+  } else if (current) {
+    // Inside the day's final stop: nothing to leave for, so the hero is the
+    // running stop itself — with tonight or the wrap just behind it.
+    blocks.push({ k: "hero", lastRunning: true, idx: current.i, endMin: current.b });
+  }
+  var dHero = next ? next.i : (current ? current.i : null);
+
+  // Rain earns pixels only when it ACTS: a probability the forecast actually
+  // delivered, at or past the bar, with something still ahead to rain on.
+  if (inp.pop != null && inp.pop >= 60 && (next || current)) {
+    blocks.push({ k: "rain", pop: inp.pop, hasPlan: !!(inp.planRain && inp.planRain.length) });
+  }
+
+  // A real gap before the next stop is a card, not a blank: the freed-window
+  // moment, whether it came from a skip or from a light plan.
+  if (!current && next && next.a - m >= 60) {
+    blocks.push({ k: "gap", untilMin: next.a });
+  }
+
+  // A booked table at 19:30 is key information at 13:40, not only at 08:00 —
+  // both of these were morning-only in the first build and were reported
+  // missing from a real afternoon. Conditional, so a quiet day still shows
+  // three blocks.
+  if (inp.needs && inp.needs.length) blocks.push({ k: "needs" });
+  if (stops.length > 1) blocks.push({ k: "later", from: dHero == null ? -1 : dHero });
+  if (inp.quests && inp.quests.length) blocks.push({ k: "quests" });
+
+  blocks.push({ k: "hungry" });
+
+  if (inp.eve) {
+    // Tonight rises from 16:00; before that it waits small at the end.
+    blocks.push({ k: "tonight", big: m >= 960 });
+  }
+
+  return { show: true, dayIdx: dayIdx, phase: phase, blocks: blocks };
+}
+
+var TD_ROOT=$("#tdroot"),TD_DAYN=0,TD_DATE="",TD_CUR=0;
+var TDTF=(DATA.meta&&DATA.meta.time_format)||"24h";
+function tdHM(min){
+  if(min==null||min<0)return "";
+  var h=Math.floor(min/60)%24,mn=min%60;
+  if(TDTF==="24h")return pad(h)+":"+pad(mn);
+  var ap=h<12?"AM":"PM",h12=h%12;if(h12===0)h12=12;
+  return h12+":"+pad(mn)+" "+ap;
+}
+function tdSpan(min){
+  min=Math.max(0,Math.round(min));
+  var h=Math.floor(min/60),mn=min%60;
+  if(!h)return mn+"m"; if(!mn)return h+"h"; return h+"h "+mn+"m";
+}
+function tdDateStr(ds){
+  var p=String(ds||"").split("-");
+  if(p.length<3)return String(ds||"");
+  try{return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString(LOC,{weekday:"short",month:"short",day:"numeric"})}catch(e){return String(ds)}
+}
+function tdTodayStr(){var n=new Date();return n.getFullYear()+"-"+pad(n.getMonth()+1)+"-"+pad(n.getDate())}
+function tdStopEl(dayN,i){
+  var p=$('.panel[data-panel="day'+dayN+'"]');
+  if(!p)return null;
+  var a=$$(".stop",p);
+  return a[i]||null;
+}
+/* The stop's own photograph, read out of the day panel that is already in
+   this document. NOT carried in DATA: the image is a baked data URI worth
+   kilobytes, and shipping it twice is the mistake "map.basemap.src" is
+   excluded from the payload to avoid. */
+function tdThumb(dayN,i){
+  var el=tdStopEl(dayN,i),img=el?el.querySelector(".pphoto img"):null;
+  return img?String(img.getAttribute("src")||""):"";
+}
+function tdNavHref(dayN,i){
+  var el=tdStopEl(dayN,i),b=el?el.querySelector(".btn.primary"):null;
+  return b?String(b.getAttribute("href")||""):"";
+}
+var TD_KIND={flight:"✈️",lodging:"🏨",restaurant:"🍽️",rail:"🚆",car:"🚗",ferry:"⛴️",tour:"🎟️",activity:"🎟️",event:"🎟️"};
+/* ---- the card grammar: one shell for every section ----------------------
+   Uppercase accent kicker, same radius, same padding. The page reads as one
+   designed system because every block is literally the same component. */
+function tdCard(kick,inner,cls){
+  return '<section class="tdcard'+(cls?" "+cls:"")+'">'+
+    (kick?'<div class="tdk">'+escapeHtml(kick)+'</div>':"")+inner+'</section>';
+}
+function tdNeedsCard(list){
+  if(!list||!list.length)return "";
+  var rows="";
+  for(var i=0;i<list.length;i++){
+    rows+='<div class="tdrow"><span class="tdri">'+(TD_KIND[list[i].k]||"📌")+'</span><span>'+escapeHtml(list[i].t)+'</span></div>';
+  }
+  return tdCard(L("tdNeeds"),rows);
+}
+function tdHeroCard(b,dayN,stops){
+  var st=stops[b.idx]||{};
+  var kick=b.lastRunning?L("tdNow"):(b.first?L("tdFirst"):L("tdNext"));
+  var sub=[];
+  if(b.lastRunning){sub.push(L("tdLeft",{t:tdSpan(b.endMin-TD_CUR)}))}
+  else{
+    sub.push(tdHM(b.startMin));
+    if(b.travelMin!=null)sub.push(L("tdAway",{n:b.travelMin}));
+  }
+  var thumb=tdThumb(dayN,b.idx);
+  /* The kind rides ON the kicker row rather than adding one: the page fits
+     one screen, and "UP NEXT" and "BREAKFAST" answer the same glance. */
+  var h='<div class="tdk">'+escapeHtml(kick)
+    +(st.k?'<span class="tdkind '+escapeHtml(st.kc||"sk-do")+'">'+escapeHtml(st.k)+'</span>':"")
+    +'</div>';
+  h+='<div class="tdhgrid"><div class="tdhmain">';
+  h+='<div class="tdname">'+escapeHtml(st.n||"")+'</div>';
+  h+='<div class="tdsub">'+escapeHtml(sub.join(" · "))+'</div>';
+  h+='</div>';
+  /* The photo COLUMN is always in the grid, photo or not, so the text block
+     never reflows between stops — the Skip-drift lesson, applied here too. */
+  h+='<div class="tdhp">'+(thumb?'<img src="'+escapeHtml(thumb)+'" alt="">':"")+'</div></div>';
+  if(!b.lastRunning&&b.leaveBy!=null&&b.leaveBy>=TD_CUR){
+    h+='<div class="tdleaveband">⏰ '+escapeHtml(L("tdLeaveBy",{t:tdHM(b.leaveBy)}))+'</div>';
+  }
+  var acts="",href=b.lastRunning?"":tdNavHref(dayN,b.idx);
+  if(href)acts+='<a class="btn primary" target="_blank" rel="noopener" href="'+escapeHtml(href)+'">'+escapeHtml(L("tdDir"))+'</a>';
+  if(INAPP&&st.el)acts+='<button class="btn tdskip" type="button" data-day="'+dayN+'" data-index="'+b.idx+'" data-bk="'+(st.bk?1:0)+'" data-name="'+escapeHtml(st.n||"")+'">'+escapeHtml(L("tdSkip"))+'</button>';
+  if(acts)h+='<div class="tdacts">'+acts+'</div>';
+  if(b.now){
+    var ns=stops[b.now.idx]||{};
+    h+='<div class="tdnow"><span class="tddot"></span>'+escapeHtml(L("tdNow")+": "+(ns.n||"")+" · "+L("tdLeft",{t:tdSpan(b.now.endMin-TD_CUR)}))+'</div>';
+  }
+  return tdCard("",h,"tdhero");
+}
+function tdLaterCard(b,dayN,stops){
+  var rows=[],i;
+  for(i=Math.max(0,b.from+1);i<stops.length;i++){
+    if(tdMin(stops[i].s)==null)continue;
+    rows.push({st:stops[i],i:i});
+  }
+  if(!rows.length)return "";
+  /* THE TIMELINE. Five fixed columns — time, rail, name, action, photo slot —
+     and every row renders ALL FIVE, so nothing can drift out of line when a
+     photo or a Skip is absent. The measured leg sits ON the rail between two
+     dots: an unlabelled stretch of rail reads as a quiet connection, where the
+     old floating line read as something missing. */
+  var h='<div class="tdtl">';
+  for(i=0;i<rows.length;i++){
+    var st=rows[i].st;
+    var pos=(i===0?" tdtlfirst":"")+(i===rows.length-1?" tdtllast":"");
+    h+='<div class="tdtlrow'+pos+'">';
+    h+='<span class="tdtlt">'+escapeHtml(tdHM(tdMin(st.s)))+'</span>';
+    h+='<span class="tdtlrail"><i class="tdtldot"></i></span>';
+    h+='<span class="tdtlnm">'+escapeHtml(st.n)+'</span>';
+    h+='<span class="tdtlact">'+
+      (INAPP&&st.el?'<button class="tdrowskip tdskip" type="button" data-day="'+dayN+'" data-index="'+rows[i].i+'" data-bk="'+(st.bk?1:0)+'" data-name="'+escapeHtml(st.n||"")+'">'+escapeHtml(L("tdSkip"))+'</button>':"")+
+      '</span>';
+    var th=tdThumb(dayN,rows[i].i);
+    h+='<span class="tdtlph">'+(th?'<img src="'+escapeHtml(th)+'" alt="">':"")+'</span>';
+    h+='</div>';
+    if(i+1<rows.length){
+      var gap=(typeof window.__legLabel==="function")?window.__legLabel(dayN,rows[i+1].st.n):"";
+      h+='<div class="tdtlgap"><span></span><span class="tdtlrail"></span>'+
+        '<span class="tdtlgaptxt">'+(gap?escapeHtml(gap):"")+'</span><span></span><span></span></div>';
+    }
+  }
+  h+='</div>';
+  h+='<div class="tdacts"><button class="btn tdgo" type="button" data-go="day'+dayN+'">'+escapeHtml(L("tdOpenDay"))+'</button></div>';
+  return tdCard(L("tdLater"),h);
+}
+function tdQuestsCard(list){
+  if(!list||!list.length)return "";
+  var rows="";
+  for(var i=0;i<list.length;i++){
+    var q=list[i];
+    rows+='<div class="tdrow"><span class="tdri">🎯</span><span>'+escapeHtml((q.w?q.w+": ":"")+q.t+(q.p?" · ⭐ "+q.p:""))+
+      (q.at?'<span class="tdqat">'+escapeHtml(L("tdQuestAt",{place:q.at}))+'</span>':"")+'</span></div>';
+  }
+  return tdCard(L("tdQuests"),rows);
+}
+/* ONE FOOD HOME. Tonight's pick when it exists, and the hungry door always —
+   the old full-width Hungry bar floated between cards belonging to nothing. */
+function tdFoodCard(b,eve){
+  var h="";
+  if(eve){
+    h+='<div class="tdname">'+escapeHtml(eve.n||"")+'</div>';
+    h+='<div class="tdsub">'+escapeHtml(eve.wh||"")+'</div>'+(eve.pill||"");
+  }
+  h+='<button class="tdfoodgo tdgo" type="button" data-go="eats">'+escapeHtml(L("tdHungry"))+' →</button>';
+  return tdCard(eve?L("tdTonight"):"",h,"tdfood"+(b&&b.big?" tdbig":""));
+}
+function tdTomorrowCard(nextIdx){
+  var d=(DATA.td||[])[nextIdx];
+  if(!d)return "";
+  var h="",first=null,i;
+  for(i=0;i<(d.stops||[]).length;i++){if(tdMin(d.stops[i].s)!=null){first=d.stops[i];break}}
+  if(first)h+='<div class="tdrow"><span class="tdri">⏰</span><span>'+escapeHtml(L("tdTomorrowFirst",{name:first.n,t:tdHM(tdMin(first.s))}))+'</span></div>';
+  var wx=window.__WXD&&window.__WXD[d.date];
+  if(wx&&typeof wx.pop==="number")h+='<div class="tdrow"><span class="tdri">☔</span><span>'+escapeHtml(L("wxRainChance",{n:wx.pop}))+'</span></div>';
+  for(i=0;i<(d.need||[]).length;i++){
+    h+='<div class="tdrow"><span class="tdri">'+(TD_KIND[d.need[i].k]||"📌")+'</span><span>'+escapeHtml(d.need[i].t)+'</span></div>';
+  }
+  h+='<div class="tdacts"><button class="btn tdgo" type="button" data-go="day'+(nextIdx+1)+'">'+escapeHtml(L("tdOpenDay"))+'</button></div>';
+  return tdCard(L("tdTomorrow"),h);
+}
+function tdJournalCard(date){
+  var id="jr:"+date,raw=STATE.notes[id],dead={},rows=[],i;
+  if(Array.isArray(raw)){
+    for(i=0;i<raw.length;i++)if(raw[i]&&raw[i].d)dead[raw[i].i]=1;
+    for(i=0;i<raw.length;i++)if(raw[i]&&raw[i].t&&!dead[raw[i].i])rows.push(raw[i].t);
+  }
+  var h="";
+  for(i=0;i<rows.length;i++)h+='<div class="tdjrline">'+escapeHtml(rows[i])+'</div>';
+  h+='<div class="tdjr"><input class="tdjin" type="text" maxlength="200" placeholder="'+escapeHtml(L("tdJournal"))+'">'+'<button type="button" class="tdjsave">'+escapeHtml(L("tdSave"))+'</button></div>';
+  return tdCard("📓 "+L("tdJournal"),h);
+}
+function tdWrapCard(b,dayN,total){
+  var pn=$('.panel[data-panel="day'+dayN+'"]');
+  var done=pn?$$(".stop.done",pn).length:0;
+  var h='<div class="tdsub">'+escapeHtml(L("tdWrap",{a:done,b:total}))+'</div>';
+  return tdCard(L(b.lastDay?"tdWrapEnd":"tdDone"),h);
+}
+function tdInput(){
+  var td=DATA.td;
+  if(!td||!td.length)return null;
+  var n=new Date();
+  var date=tdTodayStr(),minutes=n.getHours()*60+n.getMinutes();
+  var idx=-1,i;
+  for(i=0;i<td.length;i++)if(td[i].date===date)idx=i;
+  var wx=window.__WXD&&window.__WXD[date];
+  return {
+    date:date,minutes:minutes,days:td,
+    travelMin:null,
+    pop:(wx&&typeof wx.pop==="number")?wx.pop:null,
+    planRain:idx>=0?(td[idx].pbr||""):"",
+    eve:idx>=0?td[idx].eve:null,
+    needs:idx>=0?(td[idx].need||[]):[],
+    quests:idx>=0?(td[idx].q||[]):[],
+    doneToday:0
+  };
+}
+function tdRecompose(){
+  if(!TD_ROOT)return;
+  /* Never repaint under a typing thumb — a 30s tick must not eat a journal
+     line mid-sentence. The next tick catches up. */
+  if(TD_ROOT.contains(document.activeElement)&&document.activeElement&&document.activeElement.tagName==="INPUT")return;
+  var inp=tdInput();
+  var model=inp?tdModel(inp):{show:false};
+  if(!model.show){
+    /* Outside the trip the page still ANSWERS — a blank panel reads as broken,
+       and this is the state most guides sit in for most of their life. Which
+       side of the trip we are on comes from tripChip() arithmetic, so the card
+       and the header chip can never disagree. */
+    window.__TD_MID__=false;
+    var over=false;
+    try{ over = new Date() > new Date(DATA.meta.end_date+"T23:59:59"); }catch(e){}
+    var wh=over?L("tdDoneTitle"):L("tdWaitTitle");
+    var wb=over?L("tdDoneBody"):L("tdWaitBody");
+    var hw='<div class="tdwrap"><div class="tdcard tdwait">'+
+      '<div class="tdwaith">'+escapeHtml(wh)+'</div>'+
+      '<div class="tdsub">'+escapeHtml(wb)+'</div>';
+    if(!over)hw+='<div class="tdwaitc">'+escapeHtml(tripChip())+'</div>';
+    TD_ROOT.innerHTML=hw+'</div></div>';
+    return;
+  }
+  /* Two passes: the model names the hero, the map answers how far away it is
+     (exact baked leg or nothing), then the model re-decides with the number. */
+  var hero=null,i;
+  for(i=0;i<model.blocks.length;i++)if(model.blocks[i].k==="hero")hero=model.blocks[i];
+  if(hero&&!hero.lastRunning&&hero.idx!=null&&typeof window.__legMin==="function"){
+    var hst=inp.days[model.dayIdx].stops[hero.idx];
+    var lm=window.__legMin(model.dayIdx+1,hst?hst.n:"");
+    if(lm!=null){inp.travelMin=lm;model=tdModel(inp)}
+  }
+  window.__TD_MID__=true;
+  TD_DAYN=model.dayIdx+1;
+  TD_DATE=inp.date;
+  TD_CUR=inp.minutes;
+  var day=inp.days[model.dayIdx],stops=day.stops||[];
+
+  /* ---- THE HEADER ZONE, the same every hour of every day -----------------
+     Day + date on one line; then one chip row: the live forecast and the
+     expected spend, the spend in the SAME dark ink the top bar's chips wear —
+     the old mist pill vanished into the paper it sat on. */
+  var h='<div class="tdwrap"><div class="tdtop">';
+  h+='<div class="tdtoprow"><h2>'+escapeHtml(L("tdDay",{n:TD_DAYN,m:inp.days.length}))+'</h2><span class="tddate">'+escapeHtml(tdDateStr(day.date))+'</span></div>';
+  var wxl=(typeof window.__wxLine==="function")?window.__wxLine(day.date):"";
+  var spend="";
+  if(day.cost&&day.cost.cur&&(day.cost.lo>0||day.cost.hi>0)){
+    var money=day.cost.lo===day.cost.hi
+      ? day.cost.cur+day.cost.lo
+      : day.cost.cur+day.cost.lo+"–"+day.cost.cur+day.cost.hi;
+    spend='<button class="tdspend tdgo" type="button" data-go="day'+TD_DAYN+'">'+
+      '<span class="tdspendv">≈ '+escapeHtml(money)+(day.cost.open?"+":"")+'</span>'+
+      '<span class="tdspendl">'+escapeHtml(L("tdSpend"))+'</span></button>';
+  }
+  if(wxl||spend){
+    h+='<div class="tdchiprow">'+(wxl?'<span class="tdwx">'+wxl+'</span>':"")+spend+'</div>';
+  }
+  h+='</div>';
+
+  var foodDone=false;
+  for(i=0;i<model.blocks.length;i++){
+    var b=model.blocks[i];
+    if(b.k==="dayline"&&day.sm)h+='<p class="tdsum">'+escapeHtml(day.sm)+'</p>';
+    else if(b.k==="needs")h+=tdNeedsCard(inp.needs);
+    else if(b.k==="hero")h+=tdHeroCard(b,TD_DAYN,stops);
+    else if(b.k==="later")h+=tdLaterCard(b,TD_DAYN,stops);
+    else if(b.k==="quests")h+=tdQuestsCard(inp.quests);
+    else if(b.k==="rain")h+=tdCard("",'<div class="tdrainrow">☔ '+escapeHtml(L("tdRain",{p:b.pop}))+'</div>'+(b.hasPlan?'<div class="tdacts"><button class="btn tdgo" type="button" data-go="rainplan">'+escapeHtml(L("tdRainPlan"))+'</button></div>':""),"tdrain");
+    else if(b.k==="gap")h+=tdCard("",escapeHtml(L("tdGap",{t:tdHM(b.untilMin)})),"tdgap");
+    else if(b.k==="hungry"){
+      /* The hungry door rides the food card. When tonight's pick exists the
+         TONIGHT block (always later in the model) carries it; otherwise this
+         is the food card, alone. */
+      if(!inp.eve){h+=tdFoodCard(null,null);foodDone=true;}
+    }
+    else if(b.k==="tonight"&&inp.eve){h+=tdFoodCard(b,inp.eve);foodDone=true;}
+    else if(b.k==="tomorrow")h+=tdTomorrowCard(b.dayIdx);
+    else if(b.k==="journal")h+=tdJournalCard(inp.date);
+    else if(b.k==="wrapped")h+=tdWrapCard(b,TD_DAYN,stops.length);
+  }
+  TD_ROOT.innerHTML=h+"</div>";
+}
+window.__tdCompose=tdRecompose;
+tdRecompose();
+document.addEventListener("click",function(ev){
+  var t=ev.target;
+  if(!t||!t.closest)return;
+  var sk=t.closest(".tdskip");
+  if(sk){
+    if(sk.getAttribute("data-busy"))return;
+    sk.setAttribute("data-busy","1");
+    sk.textContent=L("tdSkipping");
+    try{window.ReactNativeWebView.postMessage(JSON.stringify({type:"skipstop",day:+(sk.getAttribute("data-day")||0),index:+(sk.getAttribute("data-index")||0),name:sk.getAttribute("data-name")||"",booked:sk.getAttribute("data-bk")==="1"}))}catch(e){}
+    /* The host confirms (booked stops), applies and reloads; if the person
+       cancels the dialog nothing reloads, so hand the button back. */
+    setTimeout(function(){sk.removeAttribute("data-busy");sk.textContent=L("tdSkip")},9000);
+    return;
+  }
+  var go=t.closest(".tdgo");
+  if(go){
+    var g=go.getAttribute("data-go")||"";
+    if(g==="eats")showTab("eats");
+    else if(g==="rainplan"){
+      showTab("day"+TD_DAYN);
+      var pb=$('.panel[data-panel="day'+TD_DAYN+'"] .planb');
+      if(pb)setTimeout(function(){try{pb.scrollIntoView({block:"center",behavior:"smooth"})}catch(e){pb.scrollIntoView()}},260);
+    }
+    else if(g.indexOf("day")===0)showTab(g);
+    return;
+  }
+  var js=t.closest(".tdjsave");
+  if(js){
+    var jin=$(".tdjin",TD_ROOT),tx=(jin&&jin.value||"").trim();
+    if(!tx)return;
+    var id="jr:"+TD_DATE;
+    var nid=Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+    STATE.notes[id]=(STATE.notes[id]||[]).concat([{i:nid,t:tx.slice(0,280)}]);
+    save(STATE);
+    tdRecompose();
+    return;
+  }
+});
+/* The skip receipt: the host injects __VACAYI_SKIPPED__ on the reload after a
+   successful skip. Undo rides the toast — the reversible action acts first
+   and carries its own way back, instead of asking permission up front. */
+(function(){
+  var skd=window.__VACAYI_SKIPPED__;
+  if(!skd||!skd.name)return;
+  var el=document.createElement("div");
+  el.className="tdtoast";
+  el.innerHTML='<span>✓</span><div>'+escapeHtml(L("tdSkipped",{name:skd.name}))+'</div><button class="tdundo" type="button">'+escapeHtml(L("tdUndo"))+'</button>';
+  document.body.appendChild(el);
+  var un=el.querySelector(".tdundo");
+  if(un)un.addEventListener("click",function(){
+    un.disabled=true;
+    try{window.ReactNativeWebView.postMessage(JSON.stringify({type:"undolast"}))}catch(e){}
+  });
+  setTimeout(function(){try{el.parentNode.removeChild(el)}catch(e){}},12000);
+})();
+
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",boot)}else{boot()}
 })();
 
@@ -4658,6 +5519,12 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
    offline, or no key is configured, nothing here happens and the guide shows
    exactly the map it always did. */
 (function(){
+  /* This IIFE sits OUTSIDE the main closure (the wrapper closes right after
+     boot), so DATA is not in scope here — it never was, and the read threw a
+     silent ReferenceError on every load, which is why the embed never
+     mounted. Found 2026-08-31 by reading a live console; the failure mode
+     (the baked map standing in) looked exactly like the honest fallback. */
+  var DATA=window.__VACAYI__||{};
   var api=DATA.map&&DATA.map.tiles_api;
   var pts=(DATA.map&&DATA.map.points)||[];
   var wrap=document.querySelector(".mapwrap");
