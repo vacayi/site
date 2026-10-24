@@ -1,0 +1,44 @@
+{
+  "collab": {
+    "w": 840,
+    "h": 1328,
+    "src": "img/shots/collab.jpg",
+    "src2x": "img/shots/collab@2x.jpg"
+  },
+  "crew": {
+    "w": 860,
+    "h": 1246,
+    "src": "img/shots/crew.jpg",
+    "src2x": "img/shots/crew@2x.jpg"
+  },
+  "days": {
+    "w": 830,
+    "h": 1223,
+    "src": "img/shots/days.jpg",
+    "src2x": "img/shots/days@2x.jpg"
+  },
+  "quests": {
+    "w": 824,
+    "h": 1237,
+    "src": "img/shots/quests.jpg",
+    "src2x": "img/shots/quests@2x.jpg"
+  },
+  "today": {
+    "w": 808,
+    "h": 1244,
+    "src": "img/shots/today.jpg",
+    "src2x": "img/shots/today@2x.jpg"
+  },
+  "trips": {
+    "w": 840,
+    "h": 1334,
+    "src": "img/shots/trips.jpg",
+    "src2x": "img/shots/trips@2x.jpg"
+  },
+  "wallet": {
+    "w": 852,
+    "h": 1242,
+    "src": "img/shots/wallet.jpg",
+    "src2x": "img/shots/wallet@2x.jpg"
+  }
+}
